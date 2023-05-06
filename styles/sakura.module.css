@@ -1,0 +1,493 @@
+.boxPetal {
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+}
+.boxPetal::-webkit-scrollbar {
+    display: none;
+}
+.boxPetal::-moz-scrollbar {
+    display: none;
+}
+@keyframes fall1 {
+  0% {
+    transform: rotate(0deg);
+    opacity: 1;
+    top: 0;
+    margin-left: 90%;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 0;
+    top: 90%;
+    margin-left: 20%;
+  }
+}
+@keyframes fall2 {
+  0% {
+    transform: rotate(0deg);
+    opacity: 1;
+    top: 0;
+    margin-left: 98%;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 0;
+    top: 90%;
+    margin-left: 10%;
+  }
+}
+@keyframes fall3 {
+  0% {
+    transform: rotate(0deg);
+    opacity: 1;
+    top: 0;
+    margin-left: 94%;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 0;
+    top: 90%;
+    margin-left: 30%;
+  }
+}
+@keyframes fall4 {
+  0% {
+    transform: rotate(0deg);
+    opacity: 1;
+    top: 0;
+    margin-left: 80%;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 0;
+    top: 90%;
+    margin-left: 26%;
+  }
+}
+@keyframes fall5 {
+  0% {
+    transform: rotate(0deg);
+    opacity: 1;
+    top: 0;
+    margin-left: 70%;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 0;
+    top: 70%;
+    margin-left: 10%;
+  }
+}
+@keyframes fall6 {
+  0% {
+    transform: rotate(0deg);
+    opacity: 1;
+    top: 0;
+    margin-left: 76%;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 0;
+    top: 90%;
+    margin-left: 40%;
+  }
+}
+@keyframes fall7 {
+  0% {
+    transform: rotate(0deg);
+    opacity: 1;
+    top: 0;
+    margin-left: 74%;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 0;
+    top: 90%;
+    margin-left: 22%;
+  }
+}
+@keyframes fall8 {
+  0% {
+    transform: rotate(0deg);
+    opacity: 1;
+    top: 0;
+    margin-left: 60%;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 0;
+    top: 80%;
+    margin-left: 50%;
+  }
+}
+@keyframes fall9 {
+  0% {
+    transform: rotate(0deg);
+    opacity: 1;
+    top: 0;
+    margin-left: 66%;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 0;
+    top: 90%;
+    margin-left: 44%;
+  }
+}
+@keyframes fall10 {
+  0% {
+    transform: rotate(0deg);
+    opacity: 1;
+    top: 10%;
+    margin-left: 98%;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 0;
+    top: 90%;
+    margin-left: 86%;
+  }
+}
+@keyframes fall11 {
+  0% {
+    transform: rotate(0deg);
+    opacity: 1;
+    top: 0;
+    margin-left: 62%;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 0;
+    top: 90%;
+    margin-left: 74%;
+  }
+}
+@keyframes fall12 {
+  0% {
+    transform: rotate(0deg);
+    opacity: 1;
+    top: 12%;
+    margin-left: 98%;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 0;
+    top: 90%;
+    margin-left: 4%;
+  }
+}
+@keyframes fall13 {
+  0% {
+    transform: rotate(0deg);
+    opacity: 1;
+    top: 0;
+    margin-left: 88%;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 0;
+    top: 90%;
+    margin-left: 68%;
+  }
+}
+@keyframes fall14 {
+  0% {
+    transform: rotate(0deg);
+    opacity: 1;
+    top: 0;
+    margin-left: 62%;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 0;
+    top: 90%;
+    margin-left: 58%;
+  }
+}
+@keyframes fall15 {
+  0% {
+    transform: rotate(0deg);
+    opacity: 1;
+    top: 0;
+    margin-left: 86%;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 0;
+    top: 90%;
+    margin-left: 70%;
+  }
+}
+@keyframes fall16 {
+  0% {
+    transform: rotate(0deg);
+    opacity: 1;
+    top: 0;
+    margin-left: 68%;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 0;
+    top: 70%;
+    margin-left: 8%;
+  }
+}
+@keyframes fall17 {
+  0% {
+    transform: rotate(0deg);
+    opacity: 1;
+    top: 0;
+    margin-left: 88%;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 0;
+    top: 90%;
+    margin-left: 52%;
+  }
+}
+@keyframes fall18 {
+  0% {
+    transform: rotate(0deg);
+    opacity: 1;
+    top: 0;
+    margin-left: 72%;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 0;
+    top: 90%;
+    margin-left: 18%;
+  }
+}
+@keyframes fall19 {
+  0% {
+    transform: rotate(0deg);
+    opacity: 1;
+    top: 0;
+    margin-left: 84%;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 0;
+    top: 90%;
+    margin-left: 48%;
+  }
+}
+@keyframes fall20 {
+  0% {
+    transform: rotate(0deg);
+    opacity: 1;
+    top: 0;
+    margin-left: 96%;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 0;
+    top: 90%;
+    margin-left: 94%;
+  }
+}
+
+.petal1 {
+  position: absolute;
+  width: 10px;
+  height: 12px;
+  background-color: rgba(255, 183, 197, 0.9);
+  border-radius: 0 100px 0 100px;
+  box-shadow: 0 0 5px rgba(255, 183, 197, 0.9);
+  animation: fall1 13s linear infinite;
+  animation-delay: calc(1s * var(--delay));
+}
+.petal2 {
+  position: absolute;
+  width: 13px;
+  height: 10px;
+  background-color: rgba(255,189,189);
+  border-radius: 100px 0 100px 0;
+  box-shadow: 0 0 5px rgba(255,189,189);
+  animation: fall2 14s linear infinite;
+  animation-delay: calc(1s * var(--delay));
+}
+.petal3 {
+  position: absolute;
+  width: 10px;
+  height: 14px;
+  background-color: rgba(227,170,181);
+  border-radius: 0 100px 0 100px;
+  box-shadow: 0 0 5px rgba(227,170,181);
+  animation: fall3 15s linear infinite;
+  animation-delay: calc(1s * var(--delay));
+}
+.petal4 {
+  position: absolute;
+  width: 14px;
+  height: 10px;
+  background-color: rgba(255, 197, 208, 0.9);
+  border-radius: 100px 0 100px 0;
+  box-shadow: 0 0 5px rgba(255, 197, 208, 0.9);
+  animation: fall4 16s linear infinite;
+  animation-delay: calc(1s * var(--delay));
+}
+.petal5 {
+  position: absolute;
+  width: 10px;
+  height: 13px;
+  background-color: #ffc0cb;
+  border-radius: 0 100px 0 100px;
+  box-shadow: 0 0 5px #ffc0cb;
+  animation: fall5 13s linear infinite;
+  animation-delay: calc(1s * var(--delay));
+}
+.petal6 {
+  position: absolute;
+  width: 12px;
+  height: 10px;
+  background-color: rgba(212,152,163);
+  border-radius: 100px 0 100px 0;
+  box-shadow: 0 0 5px rgba(212,152,163);
+  animation: fall6 14s linear infinite;
+  animation-delay: calc(1s * var(--delay));
+}
+.petal7 {
+  position: absolute;
+  width: 10px;
+  height: 13px;
+  background-color: rgba(242,185,196);
+  border-radius: 0 100px 0 100px;
+  box-shadow: 0 0 5px rgba(242,185,196);
+  animation: fall7 15s linear infinite;
+  animation-delay: calc(1s * var(--delay));
+}
+.petal8 {
+  position: absolute;
+  width: 14px;
+  height: 10px;
+  background-color: rgba(255, 183, 197, 0.9);
+  border-radius: 100px 0 100px 0;
+  box-shadow: 0 0 5px rgba(255, 183, 197, 0.9);
+  animation: fall8 16s linear infinite;
+  animation-delay: calc(1s * var(--delay));
+}
+.petal9 {
+  position: absolute;
+  width: 10px;
+  height: 13px;
+  background-color: rgba(255, 197, 208, 0.9);
+  border-radius: 0 100px 0 100px;
+  box-shadow: 0 0 5px rgba(255, 197, 208, 0.9);
+  animation: fall9 13s linear infinite;
+  animation-delay: calc(1s * var(--delay));
+}
+.petal10 {
+  position: absolute;
+  width: 10px;
+  height: 11px;
+  background-color: rgba(255,189,189);
+  border-radius: 100px 0 100px 0;
+  box-shadow: 0 0 5px rgba(255,189,189);
+  animation: fall10 14s linear infinite;
+  animation-delay: calc(1s * var(--delay));
+}
+.petal11 {
+  position: absolute;
+  width: 10px;
+  height: 12px;
+  background-color: rgba(227,170,181);
+  border-radius: 0 100px 0 100px;
+  box-shadow: 0 0 5px rgba(227,170,181);
+  animation: fall11 15s linear infinite;
+  animation-delay: calc(1s * var(--delay));
+}
+.petal12 {
+  position: absolute;
+  width: 14px;
+  height: 10px;
+  background-color: rgba(212,152,163);
+  border-radius: 100px 0 100px 0;
+  box-shadow: 0 0 5px rgba(212,152,163);
+  animation: fall12 16s linear infinite;
+  animation-delay: calc(1s * var(--delay));
+}
+.petal13 {
+  position: absolute;
+  width: 10px;
+  height: 13px;
+  background-color: rgba(242,185,196);
+  border-radius: 0 100px 0 100px;
+  box-shadow: 0 0 5px rgba(242,185,196);
+  animation: fall13 13s linear infinite;
+  animation-delay: calc(1s * var(--delay));
+}
+.petal14 {
+  position: absolute;
+  width: 12px;
+  height: 10px;
+  background-color: #ffc0cb;
+  border-radius: 100px 0 100px 0;
+  box-shadow: 0 0 5px #ffc0cb;
+  animation: fall14 14s linear infinite;
+  animation-delay: calc(1s * var(--delay));
+}
+.petal15 {
+  position: absolute;
+  width: 10px;
+  height: 13px;
+  background-color: rgba(255, 183, 197, 0.9);
+  border-radius: 0 100px 0 100px;
+  box-shadow: 0 0 5px rgba(255, 183, 197, 0.9);
+  animation: fall15 15s linear infinite;
+  animation-delay: calc(1s * var(--delay));
+}
+.petal16 {
+  position: absolute;
+  width: 14px;
+  height: 10px;
+  background-color: rgba(255, 197, 208, 0.9);
+  border-radius: 100px 0 100px 0;
+  box-shadow: 0 0 5px rgba(255, 197, 208, 0.9);
+  animation: fall16 16s linear infinite;
+  animation-delay: calc(1s * var(--delay));
+}
+.petal17 {
+  position: absolute;
+  width: 10px;
+  height: 11px;
+  background-color: rgba(255,189,189);
+  border-radius: 0 100px 0 100px;
+  box-shadow: 0 0 5px rgba(255,189,189);
+  animation: fall17 13s linear infinite;
+  animation-delay: calc(1s * var(--delay));
+}
+.petal18 {
+  position: absolute;
+  width: 12px;
+  height: 10px;
+  background-color: rgba(227,170,181);
+  border-radius: 100px 0 100px 0;
+  box-shadow: 0 0 5px rgba(227,170,181);
+  animation: fall18 14s linear infinite;
+  animation-delay: calc(1s * var(--delay));
+}
+.petal19 {
+  position: absolute;
+  width: 10px;
+  height: 13px;
+  background-color: rgba(212,152,163);
+  border-radius: 0 100px 0 100px;
+  box-shadow: 0 0 5px rgba(212,152,163);
+  animation: fall19 15s linear infinite;
+  animation-delay: calc(1s * var(--delay));
+}
+.petal20 {
+  position: absolute;
+  width: 14px;
+  height: 10px;
+  background-color: #ffc0cb;
+  border-radius: 100px 0 100px 0;
+  box-shadow: 0 0 5px #ffc0cb;
+  animation: fall20 16s linear infinite;
+  animation-delay: calc(1s * var(--delay));
+}
