@@ -1,27 +1,26 @@
-import { ROLE } from '@/const/app-const'
-import { ClassManager, SidebarAdmin } from '@/features/admin'
-import { ProtectPage } from '@/middleware/ProtectPage'
-import { Col, Row, Tabs, TabsProps } from 'antd'
-import { ReactElement, useCallback, useState } from 'react'
+import { ROLE } from "@/const/app-const";
+import { ProductManager } from "@/features/admin";
+import { ProtectPage } from "@/middleware/client/ProtectPage";
+import { Row, Tabs, TabsProps } from "antd";
 
 export default function AdminPage() {
-  const [feature, setFeature] = useState(<ClassManager />)
-  const changeFeature = useCallback(
-    function changeFeature(newFt: ReactElement) {
-      setFeature(newFt)
+  const items: TabsProps["items"] = [
+    {
+      label: <p className="textTheme">Quản lý sản phẩm</p>,
+      key: "product-manager",
+      children: <ProductManager />,
     },
-    [setFeature]
-  )
+  ];
   return (
     <ProtectPage role={ROLE.ADMIN}>
-      <Row style={{ minHeight: '80vh' }}>
-        <Col xxl={4}>
-          <SidebarAdmin changeFeature={changeFeature} />
-        </Col>
-        <Col xxl={20} style={{ padding: 16 }}>
-          {feature}
-        </Col>
+      <Row style={{ minHeight: "80vh" }}>
+        <Tabs
+          defaultActiveKey="1"
+          tabPosition="left"
+          style={{ height: "80vh" }}
+          items={items}
+        />
       </Row>
     </ProtectPage>
-  )
+  );
 }

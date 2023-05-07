@@ -1,37 +1,37 @@
-import axios, { AxiosResponse } from 'axios'
-import { METHOD, STORAGE_KEY } from '../../const/app-const'
+import axios, { AxiosResponse } from "axios";
+import { METHOD, STORAGE_KEY } from "../../const/app-const";
 
 interface headerProps {
-  'Content-Type'?: string
-  'X-Access-Token'?: string
+  "Content-Type"?: string;
+  "X-Access-Token"?: string;
 }
 
 export interface ResponseProps<p> {
-  code: number
-  msg: string
-  data: p
+  code: number;
+  msg: string;
+  data: p;
 }
 interface apihanlderProps extends headerProps {
-  url: string
-  method: METHOD.GET | METHOD.POST | METHOD.PATCH | METHOD.PUT | METHOD.DELETE
-  token?: string
-  data?: any
+  url: string;
+  method: METHOD.GET | METHOD.POST | METHOD.PATCH | METHOD.PUT | METHOD.DELETE;
+  token?: string;
+  data?: any;
 }
 interface headersProps {
-  'x-access-token'?: string
-  'Content-Type': 'application/json'
+  "x-access-token"?: string;
+  "Content-Type": "application/json";
 }
 export async function apiHandler<T>({
   url,
   method,
-  data
+  data,
 }: apihanlderProps): Promise<ResponseProps<T>> {
   const headers: headersProps = {
-    'Content-Type': 'application/json'
-  }
+    "Content-Type": "application/json",
+  };
 
-  headers['x-access-token'] =
-    window.sessionStorage.getItem(STORAGE_KEY.LOCAL_USER) ?? ''
+  headers["x-access-token"] =
+    window.sessionStorage.getItem(STORAGE_KEY.LOCAL_USER) ?? "";
 
   try {
     //console.log(headers)
@@ -39,24 +39,24 @@ export async function apiHandler<T>({
       method: method,
       url: url,
       data: JSON.stringify(data) ?? undefined,
-      headers: { ...headers }
-    })
+      headers: { ...headers },
+    });
     if (response) {
-      return response.data
+      return response.data;
     } else {
-      throw new Error('no response - sender: `api-handler.ts`')
+      throw new Error("no response - sender: `api-handler.ts`");
     }
   } catch (error: any) {
-    return error
+    return error;
   }
 }
 
-import { RESPONSE_CODE } from '../../const/app-const'
+import { RESPONSE_CODE } from "../../const/app-const";
 
 export interface PagingResponseProps<T> {
-  dataTable: T[]
-  paging: { page: number; pageSize: number }
-  totalCount: number
+  dataTable: T[];
+  paging: { page: number; pageSize: number };
+  totalCount: number;
 }
 
 export function checkRes(
@@ -71,11 +71,11 @@ export function checkRes(
       (response !== null && response.code === RESPONSE_CODE.OK)
     ) {
       if (response.data && response.data !== null) {
-        success()
+        success();
       }
     } else {
-      failed()
+      failed();
     }
-    always()
-  }, 1000)
+    always();
+  }, 1000);
 }
