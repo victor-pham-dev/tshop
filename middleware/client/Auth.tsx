@@ -1,8 +1,8 @@
 import React, { ReactNode, useCallback, useEffect } from "react";
-import { PATH, STORAGE_KEY } from "../const/app-const";
-import { useLoading, useUser } from "../hooks";
-import { AuthenApi } from "../pages/api/user.api";
-import { useActor } from "../ultis/useActor";
+import { PATH, STORAGE_KEY } from "../../const/app-const";
+import { useLoading, useUser } from "../../hooks";
+import { AuthenApi } from "../../pages/api/user.api";
+
 import { useRouter } from "next/router";
 import { checkRes } from "@/network/services/api-handler";
 interface Props {
@@ -12,7 +12,6 @@ interface Props {
 const Auth: React.FC<Props> = ({ children }) => {
   const router = useRouter();
   const currentPath = router.pathname;
-  const actor = useActor();
   const { user, update, reset } = useUser();
   const { setIsLoading } = useLoading();
   const localToken =
@@ -37,11 +36,11 @@ const Auth: React.FC<Props> = ({ children }) => {
         () => setIsLoading(false)
       );
     },
-    [actor, router, reset, update, currentPath]
+    [router, reset, update, currentPath]
   );
 
   useEffect(() => {
-    if (!user._id && localToken) {
+    if (!user.id && localToken) {
       setIsLoading(true);
       authChecker(localToken);
     }

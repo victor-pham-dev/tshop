@@ -3,9 +3,8 @@ import { SelectProps } from "antd";
 export const textWhite = "#fff";
 
 export enum ROLE {
-  ADMIN = 0,
-  STAFF = 1,
-  USER = 2,
+  ADMIN = "ADMIN",
+  USER = "USER",
 }
 
 export const PATH = {
@@ -35,14 +34,17 @@ export const STORAGE_KEY = {
 
 export const API = `${process.env.be_url}/api`;
 
-export const TOKEN_KEY = process.env.TOKEN_KEY;
+export const TOKEN_KEY = process.env.TOKEN_KEY as string;
 
 export enum STATUS_CODE {
+  INVALID_METHOD = 405,
   CONFLICT = 409,
   CREATED = 201,
   OK = 200,
   FAILED = 400,
   INTERNAL = 500,
+  MISSING_TOKEN = 403,
+  AUTH_FAILED = 401,
 }
 
 export enum METHOD {
@@ -183,3 +185,19 @@ export enum POST_STATUS {
   APPROVAL = 0,
   APPROVED = 1,
 }
+
+export enum PRODUCTS_STATUS {
+  NEW = "Mới",
+  SECOND_HAND = "Đã qua sử dụng",
+}
+
+export const productStatusOptions = [
+  {
+    label: PRODUCTS_STATUS.NEW,
+    value: PRODUCTS_STATUS.NEW,
+  },
+  {
+    label: PRODUCTS_STATUS.SECOND_HAND,
+    value: PRODUCTS_STATUS.SECOND_HAND,
+  },
+];

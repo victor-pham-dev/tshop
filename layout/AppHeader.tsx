@@ -1,56 +1,56 @@
-import React, { useEffect, useState } from 'react'
-import { Row, Col, Switch, Button, Avatar, Badge, Dropdown } from 'antd'
-import type { MenuProps } from 'antd'
-import MenuTop from '@/components/menu/MenuTop'
-import { useTheme, useUser } from '@/hooks'
-import { Router, useRouter } from 'next/router'
-import { PATH, ROLE } from '@/const/app-const'
+import React, { useEffect, useState } from "react";
+import { Row, Col, Switch, Button, Avatar, Badge, Dropdown } from "antd";
+import type { MenuProps } from "antd";
+import MenuTop from "@/components/menu/MenuTop";
+import { useTheme, useUser } from "@/hooks";
+import { Router, useRouter } from "next/router";
+import { PATH, ROLE } from "@/const/app-const";
 import {
   CrownTwoTone,
   EnvironmentOutlined,
   FacebookOutlined,
   PhoneOutlined,
-  YoutubeOutlined
-} from '@ant-design/icons'
-import Link from 'next/link'
-import { AdminMenu } from '@/components/menu/AdminMenu'
-import { UserMenu } from '@/components/menu/UserMenu'
-import Image from 'next/image'
+  YoutubeOutlined,
+} from "@ant-design/icons";
+import Link from "next/link";
+import { AdminMenu } from "@/components/menu/AdminMenu";
+import { UserMenu } from "@/components/menu/UserMenu";
+import Image from "next/image";
 
 export default function AppHeader(): JSX.Element {
-  const router = useRouter()
-  const { user } = useUser()
-  const { theme, changeTheme } = useTheme()
-  const [activeSwitch, setActiveSwitch] = useState(false)
+  const router = useRouter();
+  const { user } = useUser();
+  const { theme, changeTheme } = useTheme();
+  const [activeSwitch, setActiveSwitch] = useState(false);
   useEffect(() => {
-    let active = false
-    const header = document.getElementById('header')
-    if (theme.section === 'lightSection') {
-      header?.classList.add('lightSection')
-      header?.classList.remove('darkSection')
-      active = true
+    let active = false;
+    const header = document.getElementById("header");
+    if (theme.section === "lightSection") {
+      header?.classList.add("lightSection");
+      header?.classList.remove("darkSection");
+      active = true;
     } else {
-      header?.classList.add('darkSection')
-      header?.classList.remove('lightSection')
+      header?.classList.add("darkSection");
+      header?.classList.remove("lightSection");
     }
-    return setActiveSwitch(active)
-  }, [theme])
+    return setActiveSwitch(active);
+  }, [theme]);
 
   function handleNavigate() {
-    router.push(`/${PATH.LOGIN}`)
+    router.push(`/${PATH.LOGIN}`);
   }
 
   return (
     <Row>
-      <Col style={{ background: 'white' }} xxl={24} xs={0}>
+      <Col style={{ background: "white" }} xxl={24} xs={0}>
         <Row justify="space-between" align="middle">
           <Col>
             <Row>
-              <Col style={{ padding: '0.6rem', color: 'red' }}>
+              <Col style={{ padding: "0.6rem", color: "red" }}>
                 <EnvironmentOutlined />
                 &nbsp;Số 19 - Ngõ 33 - Chùa Láng - Hà Nội
               </Col>
-              <Col style={{ padding: '0.6rem', color: 'red' }}>
+              <Col style={{ padding: "0.6rem", color: "red" }}>
                 <PhoneOutlined rotate={90} />
                 &nbsp;+24 3775 7264
               </Col>
@@ -88,13 +88,13 @@ export default function AppHeader(): JSX.Element {
         id="header"
         className="lightSection"
         span={24}
-        style={{ padding: '0 1rem' }}
+        style={{ padding: "0 1rem" }}
       >
         <Row align="middle">
           <Col span={6}>
             <Row
-              style={{ cursor: 'pointer' }}
-              onClick={() => router.push('/')}
+              style={{ cursor: "pointer" }}
+              onClick={() => router.push("/")}
               align="middle"
             >
               <Col>
@@ -108,8 +108,8 @@ export default function AppHeader(): JSX.Element {
               <Col xs={0} xxl={18}>
                 <p
                   style={{
-                    fontFamily: 'Poltawski Nowy, serif',
-                    marginLeft: '-0.6rem'
+                    fontFamily: "Poltawski Nowy, serif",
+                    marginLeft: "-0.6rem",
                   }}
                 >
                   TIẾNG NHẬT CHO MỌI NGƯỜI
@@ -126,35 +126,25 @@ export default function AppHeader(): JSX.Element {
             <Row align="middle" gutter={[18, 0]} justify="end">
               <Col xxl={{ push: 0, span: 16 }} xs={{ push: 14, span: 6 }}>
                 <Row gutter={[4, 0]} justify="end">
-                  {user.token && user.token !== '' ? (
+                  {user.token && user.token !== "" ? (
                     <React.Fragment>
                       <Col>
-                        <Badge
-                          count={
-                            user.role === ROLE.ADMIN ? (
-                              <CrownTwoTone twoToneColor={'green'} />
-                            ) : user.role === ROLE.STAFF ? (
-                              <CrownTwoTone />
-                            ) : null
-                          }
-                        >
+                        <Badge count={1}>
                           <Avatar
                             src={
-                              user.avatar ??
-                              'https://xsgames.co/randomusers/avatar.php?g=pixel'
+                              "https://xsgames.co/randomusers/avatar.php?g=pixel"
                             }
                           />
                         </Badge>
                       </Col>
                       <Col xxl={14} xs={0}>
-                        {user.role === ROLE.ADMIN ||
-                        user.role === ROLE.STAFF ? (
+                        {user.role === ROLE.ADMIN ? (
                           <AdminMenu
-                            userName={user.name ?? ''}
+                            userName={user.name ?? ""}
                             role={user.role}
                           />
                         ) : (
-                          <UserMenu userName={user.name ?? ''} />
+                          <UserMenu userName={user.name ?? ""} />
                         )}
                       </Col>
                     </React.Fragment>
@@ -169,7 +159,7 @@ export default function AppHeader(): JSX.Element {
                 <Switch
                   checked={activeSwitch}
                   onChange={(checked: Boolean) =>
-                    checked ? changeTheme('light') : changeTheme('dark')
+                    checked ? changeTheme("light") : changeTheme("dark")
                   }
                   checkedChildren="Sáng"
                   unCheckedChildren="Tối"
@@ -180,5 +170,5 @@ export default function AppHeader(): JSX.Element {
         </Row>
       </Col>
     </Row>
-  )
+  );
 }

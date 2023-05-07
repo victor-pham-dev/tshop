@@ -11,7 +11,7 @@ datasource db {
 }
 
 model User {
-  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime @default(now())
   email     String   @unique
   name      String
@@ -22,4 +22,25 @@ model User {
 enum Role {
   USER
   ADMIN
+}
+
+model Product {
+  id              String           @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @default(now())
+  status          String
+  name            String
+  images          String[]
+  description     String
+  classifications Classification[]
+}
+
+model Classification {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  image     String
+  price     Int
+  quantity  Int      @default(0)
+  Product   Product? @relation(fields: [productId], references: [id])
+  productId String?  @db.ObjectId
 }

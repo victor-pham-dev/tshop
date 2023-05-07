@@ -1,10 +1,16 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient } from "@prisma/client";
+import { Classification, PrismaClient } from "@prisma/client";
 import { METHOD, STATUS_CODE } from "@/const/app-const";
-import bcrypt from "bcrypt";
 import { ResponseProps } from "@/network/services/api-handler";
 const prisma = new PrismaClient();
 
+interface BodyProps {
+  name: string;
+  status: string;
+  images: string[];
+  description: string;
+  classifications: Classification[];
+}
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseProps<null>>
@@ -16,37 +22,28 @@ export default async function handler(
       msg: "Invalid method",
     });
   }
-
-  const { name, email, password } = req.body;
-
+  const { name, status, images, description, classifications } =
+    req.body as BodyProps;
   try {
-    const findExisted = await prisma.user.findUnique({
-      where: {
-        email,
-      },
-    });
-    if (findExisted !== null) {
-      return res.status(STATUS_CODE.INVALID_METHOD).json({
-        code: STATUS_CODE.INVALID_METHOD,
-        data: null,
-        msg: "Email đã được sử dụng",
-      });
-    }
-    const encryptedPassword = await bcrypt.hash(password, 10);
-    await prisma.user.create({
+    await prisma.product.create({
       data: {
         name,
-        email,
-        role: "USER",
-        password: encryptedPassword,
+        status,
+        images,
+        description,
+        classifications: {
+          create: classifications.map((item) => item),
+        },
       },
     });
+
     return res.status(STATUS_CODE.CREATED).json({
       code: STATUS_CODE.CREATED,
       data: null,
-      msg: "Đăng ký thành công",
+      msg: "Tạo sản phẩm thành công",
     });
   } catch (error) {
+    console.log(error);
     return res
       .status(STATUS_CODE.INTERNAL)
       .json({ code: STATUS_CODE.INTERNAL, data: null, msg: "internal" });
