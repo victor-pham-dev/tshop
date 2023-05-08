@@ -9,17 +9,19 @@ import {
   EnvironmentOutlined,
   FacebookOutlined,
   PhoneOutlined,
-  StarOutlined,
+  ShoppingCartOutlined,
   YoutubeOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
 import { AdminMenu } from "@/components/menu/AdminMenu";
 import { UserMenu } from "@/components/menu/UserMenu";
 import Image from "next/image";
+import { useCart } from "@/hooks/useAppContext";
 
 export default function AppHeader(): JSX.Element {
   const router = useRouter();
   const { user } = useUser();
+  const { cart } = useCart();
   const { theme, changeTheme } = useTheme();
   const [activeSwitch, setActiveSwitch] = useState(false);
   useEffect(() => {
@@ -42,48 +44,6 @@ export default function AppHeader(): JSX.Element {
 
   return (
     <Row>
-      <Col style={{ background: "white" }} xxl={24} xs={0}>
-        <Row justify="space-between" align="middle">
-          <Col>
-            <Row>
-              <Col style={{ padding: "0.6rem", color: "red" }}>
-                <EnvironmentOutlined />
-                &nbsp;Số 19 - Ngõ 33 - Chùa Láng - Hà Nội
-              </Col>
-              <Col style={{ padding: "0.6rem", color: "red" }}>
-                <PhoneOutlined rotate={90} />
-                &nbsp;+24 3775 7264
-              </Col>
-            </Row>
-          </Col>
-          <Col>
-            <Row>
-              <Col>
-                <Link
-                  href="https://www.youtube.com/channel/UCEypAcOaTK_tpwvzhLBUpaA"
-                  target="_blank"
-                >
-                  <div className="youtube">
-                    <YoutubeOutlined className="yticon" />
-                    &nbsp;Youtube
-                  </div>
-                </Link>
-              </Col>
-              <Col>
-                <Link
-                  href="https://www.facebook.com/TrungTamTiengNhatMina1/"
-                  target="_blank"
-                >
-                  <div className="facebook">
-                    <FacebookOutlined className="faceicon" />
-                    &nbsp;Facebook
-                  </div>
-                </Link>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-      </Col>
       <Col
         id="header"
         className="lightSection"
@@ -100,7 +60,7 @@ export default function AppHeader(): JSX.Element {
               <Col>
                 <Image
                   src="/favicon.svg"
-                  alt="Trung tâm tiếng nhật Mina"
+                  alt="Tshop Mini PC"
                   width={64}
                   height={64}
                 />
@@ -112,15 +72,13 @@ export default function AppHeader(): JSX.Element {
                     marginLeft: "-0.6rem",
                   }}
                 >
-                  TIẾNG NHẬT CHO MỌI NGƯỜI
+                  HÃI NHẾ
                 </p>
               </Col>
             </Row>
           </Col>
 
-          <Col xxl={12} xs={0}>
-            <MenuTop />
-          </Col>
+          <Col xxl={12} xs={0}></Col>
 
           <Col xxl={6} xs={10}>
             <Row align="middle" gutter={[18, 0]} justify="end">
@@ -129,24 +87,29 @@ export default function AppHeader(): JSX.Element {
                   {user.token && user.token !== "" ? (
                     <React.Fragment>
                       <Col>
-                        <Badge count={1}>
-                          <Avatar
-                            src={
-                              "https://xsgames.co/randomusers/avatar.php?g=pixel"
-                            }
-                          />
-                        </Badge>
+                        <Avatar
+                          src={
+                            "https://xsgames.co/randomusers/avatar.php?g=pixel"
+                          }
+                        />
                       </Col>
                       <Col xxl={14} xs={0}>
                         {user.role === ROLE.ADMIN ? (
-                          <AdminMenu
-                            userName={user.name ?? ""}
-                            role={user.role}
-                          />
+                          <AdminMenu userName={user.name ?? ""} />
                         ) : (
                           <UserMenu userName={user.name ?? ""} />
                         )}
                       </Col>
+
+                      {user.role === ROLE.USER && (
+                        <Col>
+                          <Link href={`/${PATH.CART}`}>
+                            <Badge count={cart.length ?? 0}>
+                              <ShoppingCartOutlined />
+                            </Badge>
+                          </Link>
+                        </Col>
+                      )}
                     </React.Fragment>
                   ) : (
                     <Button type="primary" onClick={handleNavigate}>

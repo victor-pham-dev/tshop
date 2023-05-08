@@ -16,14 +16,14 @@ export default async function handler(
       msg: "Invalid method",
     });
   }
-  const tokenValid = AuthToken(req, res, "ADMIN");
+  const tokenValid = AuthToken(req, res, "USER");
   if (!tokenValid.pass) {
     return null;
   }
 
-  const productId = req.query.id as string;
+  const cartItemId = req.query.id as string;
   try {
-    await prisma.product.delete({ where: { id: productId } });
+    await prisma.cart.delete({ where: { id: cartItemId } });
     return res.status(STATUS_CODE.OK).json({
       code: STATUS_CODE.OK,
       data: null,

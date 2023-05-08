@@ -1,5 +1,3 @@
-import { SelectProps } from "antd";
-
 export const textWhite = "#fff";
 
 export enum ROLE {
@@ -8,22 +6,15 @@ export enum ROLE {
 }
 
 export const PATH = {
-  ABOUT_US: "ve-mina",
-  COURSE: "khoa-hoc",
-  OPENING_SCHEDULE: "lich-khai-giang",
-  CLASS_REGISTRATION: "dang-ky-hoc",
-  CLASS: "lop-hoc",
-  TAKE_THE_TEST: "lam-bai-test",
   LOGIN: "dang-nhap",
   REGISTER: "dang-ky",
   FORGOT_PASSWORD: "quen-mat-khau",
   PROFILE: "thong-tin-ca-nhan",
-  MANAGE: "quan-tri",
-  STUDENT: "hoc-vien",
   USER: "user",
   ADMIN: "admin",
-  NEWS_AND_EVENTS: "tin-tuc-&-su-kien",
-  STUDIES_SPACE: "goc-hoc-tap",
+  PRODUCT: "san-pham",
+  CART: "gio-hang",
+  ORDER: "don-hang",
 };
 
 export const STORAGE_KEY = {
@@ -70,122 +61,6 @@ export const STORAGE = {
   SESSION: "session",
 };
 
-export const ACCEPT_FILE = ["image/jpeg", "image/jpg", "image/png"];
-
-export const menuitemsList = [
-  {
-    path: PATH.ABOUT_US,
-    label: "Về mina",
-  },
-  {
-    path: PATH.STUDIES_SPACE,
-    label: "Góc học tập",
-  },
-  {
-    path: PATH.COURSE,
-    label: "Khoá học",
-  },
-  {
-    path: PATH.CLASS,
-    label: "Lớp học",
-  },
-  {
-    path: PATH.TAKE_THE_TEST,
-    label: "Làm bài Test",
-  },
-];
-
-export enum CLASS_STATUS {
-  OPEN = 0, //for recruit student
-  PROCESSING = 1, //class is started
-  END = 2, // class ended
-}
-export enum CLASS_LEVEL {
-  N1 = "N1",
-  N2 = "N2",
-  N3 = "N3",
-  N4 = "N4",
-  N5 = "N5",
-  N5B = "N5B",
-}
-
-export const classLevelOption = [
-  {
-    label: CLASS_LEVEL.N1,
-    value: CLASS_LEVEL.N1,
-  },
-  {
-    label: CLASS_LEVEL.N2,
-    value: CLASS_LEVEL.N2,
-  },
-  {
-    label: CLASS_LEVEL.N3,
-    value: CLASS_LEVEL.N3,
-  },
-  {
-    label: CLASS_LEVEL.N4,
-    value: CLASS_LEVEL.N4,
-  },
-  {
-    label: CLASS_LEVEL.N5,
-    value: CLASS_LEVEL.N5,
-  },
-];
-
-export const dayOfWeekOption: SelectProps["options"] = [
-  {
-    label: "Thứ Hai",
-    value: "Thứ Hai",
-  },
-  {
-    label: "Thứ Ba",
-    value: "Thứ Ba",
-  },
-  {
-    label: "Thứ Tư",
-    value: "Thứ Tư",
-  },
-  {
-    label: "Thứ Năm",
-    value: "Thứ Năm",
-  },
-  {
-    label: "Thứ Sáu",
-    value: "Thứ Sáu",
-  },
-  {
-    label: "Thứ Bảy",
-    value: "Thứ Bảy",
-  },
-  {
-    label: "Chủ Nhật",
-    value: "Chủ Nhật",
-  },
-];
-
-export enum REGIS_STATUS {
-  INIT = 0,
-  CHECKED = 1,
-  CONFIRMED = 2,
-  CANCELED = 3,
-}
-
-export enum STUDENT_STATUS {
-  WAITING = 0,
-  STUDYING = 1,
-  DONE = 2,
-  CANCELED = 3,
-}
-
-export enum POST_TYPE {
-  STUDY = "study",
-  NEWS = "news",
-}
-export enum POST_STATUS {
-  APPROVAL = 0,
-  APPROVED = 1,
-}
-
 export enum PRODUCTS_STATUS {
   NEW = "Mới",
   SECOND_HAND = "Đã qua sử dụng",
@@ -199,5 +74,62 @@ export const productStatusOptions = [
   {
     label: PRODUCTS_STATUS.SECOND_HAND,
     value: PRODUCTS_STATUS.SECOND_HAND,
+  },
+];
+
+export enum PRODUCTS_CATEGORY {
+  CASE = "Vỏ case",
+  PSU = "Nguồn",
+  COOLER = "Tản nhiệt",
+  CPU = "CPU",
+  RAM = "RAM",
+  MAIN = "Mainboard",
+  ACCESSORY = "Phụ kiện",
+}
+
+export const productCategoryOptions = [
+  {
+    label: PRODUCTS_CATEGORY.CASE,
+    value: PRODUCTS_CATEGORY.CASE,
+  },
+  {
+    label: PRODUCTS_CATEGORY.PSU,
+    value: PRODUCTS_CATEGORY.PSU,
+  },
+  {
+    label: PRODUCTS_CATEGORY.COOLER,
+    value: PRODUCTS_CATEGORY.COOLER,
+  },
+  {
+    label: PRODUCTS_CATEGORY.CPU,
+    value: PRODUCTS_CATEGORY.CPU,
+  },
+  {
+    label: PRODUCTS_CATEGORY.RAM,
+    value: PRODUCTS_CATEGORY.RAM,
+  },
+  {
+    label: PRODUCTS_CATEGORY.MAIN,
+    value: PRODUCTS_CATEGORY.MAIN,
+  },
+  {
+    label: PRODUCTS_CATEGORY.ACCESSORY,
+    value: PRODUCTS_CATEGORY.ACCESSORY,
+  },
+];
+
+export enum PAYMENT_METHOD {
+  COD = "Thanh toán khi nhận hàng",
+  ONLINE = "Online (Banking, Ví điện tử)",
+}
+
+export const PaymentMethodOptions = [
+  {
+    label: PAYMENT_METHOD.ONLINE,
+    value: PAYMENT_METHOD.ONLINE,
+  },
+  {
+    label: PAYMENT_METHOD.COD,
+    value: PAYMENT_METHOD.COD,
   },
 ];
