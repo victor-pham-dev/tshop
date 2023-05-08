@@ -62,6 +62,7 @@ export function ProductCard(product: Product): JSX.Element {
             }}
           >
             <img
+
               src={avatar}
               alt={product.name}
               style={{ borderRadius: "8px", width: "100%", maxHeight: 180 }}
