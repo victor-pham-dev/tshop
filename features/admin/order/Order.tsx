@@ -20,7 +20,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Product } from "@prisma/client";
 import { CreateProductApi } from "@/pages/api/product.api";
 
-export function Product(): JSX.Element {
+export function Order(): JSX.Element {
   const [form] = Form.useForm();
   const { setIsLoading } = useLoading();
   const queryClient = useQueryClient();

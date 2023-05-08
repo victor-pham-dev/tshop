@@ -1,6 +1,6 @@
 import { ResponseProps } from "@/network/services/api-handler";
 import { METHOD } from "../../const/app-const";
-import { UserProps } from "@/entities/user.entities";
+import { User } from "@prisma/client";
 
 export interface LoginApiProps {
   email: string;
@@ -46,9 +46,7 @@ async function LoginWithAccountApi(
   return result;
 }
 
-async function AuthenApi(
-  token: string
-): Promise<ResponseProps<UserProps | null>> {
+async function AuthenApi(token: string): Promise<ResponseProps<User | null>> {
   const url = `/api/user/auth`;
   const response = await fetch(url, {
     method: METHOD.GET,

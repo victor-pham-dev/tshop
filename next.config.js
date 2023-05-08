@@ -5,18 +5,10 @@ const nextConfig = {
   publicRuntimeConfig: {
     favicon: './public/favicon.svg'
   },
-  images: {
-    unoptimized :true,
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'picsum.photos'
-      },
-      {
-        protocol: 'http',
-        hostname: 'localhost'
-      }
-    ]
+  serverRuntimeConfig: {
+    images: {
+      domains: ['*'],
+    },
   },
   reactStrictMode: true
 }
@@ -31,5 +23,7 @@ module.exports = {
   env: {
     // be_url: 'https://minamvp.click',https://103.179.191.52/
     be_url: 'http://localhost:8888',
+    CLIENT_ID_MAIL: '868706765725-ep1f8l96esatfg5irbhr4n753207qu46.apps.googleusercontent.com',
+    CLIENT_SECRET_MAIL: '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',
   },
 }

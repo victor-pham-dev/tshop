@@ -1,7 +1,7 @@
 import React, { createContext, ReactNode, useCallback, useState } from "react";
 import { STORAGE_KEY } from "../const/app-const";
-import { UserProps } from "@/entities/user.entities";
 import { useRouter } from "next/router";
+import { User } from "@prisma/client";
 
 const UserContext = createContext<UserConextProps>({} as UserConextProps);
 
@@ -13,7 +13,7 @@ interface TokenProps {
   token: string;
 }
 
-type UserType = Partial<UserProps & TokenProps>;
+type UserType = Partial<User & TokenProps>;
 
 const initUser: UserType = {
   id: undefined,

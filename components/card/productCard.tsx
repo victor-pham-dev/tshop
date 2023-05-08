@@ -3,33 +3,17 @@ import { Card } from "antd";
 import Image from "next/image";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import styles from "../../styles/Home.module.css";
+import { Product } from "@prisma/client";
 
-interface CardProps {
-  product?: string;
-  _id?: string;
-  status?: number;
-  cardImg?: string;
-  price?: number;
-  discount?: number;
-}
-
-export function CardProduct({
-  product,
-  _id,
-  status,
-  cardImg,
-  price,
-  discount,
-}: CardProps): JSX.Element {
-  let imgUrl = cardImg ?? "https://picsum.photos/180/200";
-  if (price != undefined && discount != undefined) {
-    let salePrice = price - (price * discount) / 100;
-  }
-
+export function ProductCard(product: Product): JSX.Element {
+  console.log(product);
+  const avatar = product.images[0];
   return (
     <Card
+      bordered={false}
+      className="hoverEffect"
       style={{
-        width: 200,
+        width: "100%",
         backgroundColor: "#ffc107",
         overflow: "hidden",
       }}
@@ -40,6 +24,7 @@ export function CardProduct({
               display: "flex",
               flexDirection: "row",
               padding: "6px",
+              marginBottom: 6,
               backgroundColor: "#8dcbe6",
             }}
           >
@@ -72,18 +57,14 @@ export function CardProduct({
           </div>
           <div
             style={{
-              width: "100%",
-              textAlign: "center",
-              padding: "10px",
+              padding: 8,
+              margin: "auto",
             }}
           >
-            <Image
-              src={imgUrl}
-              alt="ngoc"
-              width={180}
-              height={200}
-              style={{ borderRadius: "8px" }}
-              priority={true}
+            <img
+              src={avatar}
+              alt={product.name}
+              style={{ borderRadius: "8px", width: "100%", maxHeight: 180 }}
             />
           </div>
         </div>
@@ -114,7 +95,7 @@ export function CardProduct({
             overflow: "hidden",
           }}
         >
-          Banana
+          {product.name}
         </blockquote>
         <del
           style={{

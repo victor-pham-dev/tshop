@@ -45,9 +45,13 @@ export default async function handler(
       });
     }
 
-    const accessToken = jwt.sign({ email: email, role: user.role }, TOKEN_KEY, {
-      expiresIn: "7d",
-    });
+    const accessToken = jwt.sign(
+      { email: email, role: user.role, id: user.id },
+      TOKEN_KEY,
+      {
+        expiresIn: "7d",
+      }
+    );
 
     return res
       .status(STATUS_CODE.OK)

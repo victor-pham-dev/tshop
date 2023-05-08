@@ -6,6 +6,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 export interface DecodedTokenProps {
   email: string;
   role: "USER" | "ADMIN";
+  id: string;
   iat: number;
   exp: number;
 }
@@ -21,46 +22,32 @@ export function AuthToken(
   role: "USER" | "ADMIN"
 ): ResultProps {
   let pass = true;
-  let data: DecodedTokenProps = {} as DecodedTokenProps;
   const token = req.headers["x-access-token"] as string | undefined;
-  if (!token) {
-    res.status(STATUS_CODE.MISSING_TOKEN).json({
-      code: STATUS_CODE.MISSING_TOKEN,
-      data: null,
-      msg: "Hết phiên sử dụng, vui lòng đăng nhập lại",
-    });
-    pass = false;
-  }
-  //decode and check role
+  let sentResponse = false;
   try {
-    if (token !== undefined) {
-      const user = jwt.verify(token, TOKEN_KEY) as DecodedTokenProps;
-
-      if (role === "ADMIN" && user.role !== "ADMIN") {
-        res.status(STATUS_CODE.MISSING_TOKEN).json({
-          code: STATUS_CODE.AUTH_FAILED,
-          data: null,
-          msg: "Không có quyền",
-        });
-        pass = false;
-      }
-
-      return {
-        pass,
-        data: user,
-      };
-    } else {
-      return {
-        pass: false,
-        data: {} as DecodedTokenProps,
-      };
+    const user = jwt.verify(token ?? "", TOKEN_KEY) as DecodedTokenProps;
+    if (role === "ADMIN" && user.role !== "ADMIN") {
+      res.status(STATUS_CODE.MISSING_TOKEN).json({
+        code: STATUS_CODE.AUTH_FAILED,
+        data: null,
+        msg: "Không có quyền",
+      });
+      sentResponse = true;
+      pass = false;
     }
+
+    return {
+      pass,
+      data: user,
+    };
   } catch (error) {
-    res.status(STATUS_CODE.AUTH_FAILED).json({
-      code: STATUS_CODE.AUTH_FAILED,
-      data: null,
-      msg: "Hết phiên sử dụng",
-    });
+    if (!sentResponse) {
+      res.status(STATUS_CODE.AUTH_FAILED).json({
+        code: STATUS_CODE.AUTH_FAILED,
+        data: null,
+        msg: "Hết phiên sử dụng",
+      });
+    }
     return {
       pass: false,
       data: {} as DecodedTokenProps,

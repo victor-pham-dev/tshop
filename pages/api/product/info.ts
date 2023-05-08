@@ -1,33 +1,33 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Product } from "@prisma/client";
 import { METHOD, STATUS_CODE } from "@/const/app-const";
 import { ResponseProps } from "@/network/services/api-handler";
-import { AuthToken } from "@/middleware/server/auth";
 const prisma = new PrismaClient();
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<ResponseProps<null>>
+  res: NextApiResponse<ResponseProps<Product | null>>
 ) {
-  if (req.method !== METHOD.DELETE) {
+  if (req.method !== METHOD.GET) {
     return res.status(STATUS_CODE.INVALID_METHOD).json({
       code: STATUS_CODE.INVALID_METHOD,
       data: null,
       msg: "Invalid method",
     });
   }
-  const tokenValid = AuthToken(req, res, "ADMIN");
-  if (!tokenValid.pass) {
-    return null;
-  }
-
-  const productId = req.query.id as string;
+  const { id } = req.query;
   try {
-    await prisma.product.delete({ where: { id: productId } });
+    const product = await prisma.product.findUnique({
+      where: { id: id?.toString() },
+      include: {
+        classifications: true,
+      },
+    });
+
     return res.status(STATUS_CODE.OK).json({
       code: STATUS_CODE.OK,
-      data: null,
-      msg: "Đã xoá",
+      data: product,
+      msg: "ok",
     });
   } catch (error) {
     return res

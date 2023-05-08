@@ -9,6 +9,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import type { AppProps } from "next/app";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { CartProvider } from "@/contexts/CartContext";
 
 export default function App({ Component, pageProps }: AppProps) {
   const queryClient = new QueryClient();
@@ -18,11 +19,13 @@ export default function App({ Component, pageProps }: AppProps) {
       <AppLoadingProvider>
         <ThemeContextProvider>
           <UserProvider>
-            <Auth>
-              <AppLayout>
-                <Component {...pageProps}></Component>
-              </AppLayout>
-            </Auth>
+            <CartProvider>
+              <Auth>
+                <AppLayout>
+                  <Component {...pageProps}></Component>
+                </AppLayout>
+              </Auth>
+            </CartProvider>
           </UserProvider>
         </ThemeContextProvider>
       </AppLoadingProvider>
