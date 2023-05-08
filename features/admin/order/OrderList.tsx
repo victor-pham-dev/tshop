@@ -8,7 +8,7 @@ import queryString from "query-string";
 import React, { useMemo, useState } from "react";
 import { useQuery } from "react-query";
 
-export function ProductList() {
+export function OrderList() {
   const [filter, setFilter] = useState<SearchProductParamsProps>({
     pageSize: 6,
   });
