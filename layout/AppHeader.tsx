@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Switch, Button, Avatar, Badge, Dropdown } from "antd";
-import type { MenuProps } from "antd";
+import { Row, Col, Switch, Button, Avatar, Badge } from "antd";
 import MenuTop from "@/components/menu/MenuTop";
 import { useTheme, useUser } from "@/hooks";
-import { Router, useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { PATH, ROLE } from "@/const/app-const";
 import {
-  CrownTwoTone,
+  CloudOutlined,
   EnvironmentOutlined,
   FacebookOutlined,
   PhoneOutlined,
+  StarOutlined,
   YoutubeOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";

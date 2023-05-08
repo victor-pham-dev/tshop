@@ -29,7 +29,7 @@ export function CardProduct({
   return (
     <Card
       style={{
-        width: 200,
+        width: "100%",
         backgroundColor: "#ffc107",
         overflow: "hidden",
       }}
@@ -77,13 +77,12 @@ export function CardProduct({
               padding: "10px",
             }}
           >
-            <Image
+            <img
               src={imgUrl}
               alt="ngoc"
-              width={180}
-              height={200}
+              width="100%"
+              height="auto"
               style={{ borderRadius: "8px" }}
-              priority={true}
             />
           </div>
         </div>
