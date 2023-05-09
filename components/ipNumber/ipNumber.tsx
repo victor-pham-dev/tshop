@@ -6,9 +6,11 @@ interface NumberInputProps {
   max?: number;
   step?: number;
   onChange?: (value: number) => void;
+  disabled: Boolean;
 }
 
 export default function NumberInput({
+  disabled,
   value,
   min = 1,
   max,
@@ -50,21 +52,28 @@ export default function NumberInput({
       className="number-input"
       style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
     >
-      <button onClick={decrement} style={{ width: "20px", height: "30px" }}>
-        -
-      </button>
+      {!disabled && (
+        <button onClick={decrement} style={{ width: "20px", height: "30px" }}>
+          -
+        </button>
+      )}
+
       <input
+        disabled={disabled ? true : false}
         type="number"
         value={currentValue}
         min={min}
         max={max}
+        id="cart-input-number"
         step={step}
         onChange={handleInputChange}
         style={{ textAlign: "center", height: "30px", width: "80px" }}
       />
-      <button onClick={increment} style={{ width: "20px", height: "30px" }}>
-        +
-      </button>
+      {!disabled && (
+        <button onClick={increment} style={{ width: "20px", height: "30px" }}>
+          +
+        </button>
+      )}
     </div>
   );
 }

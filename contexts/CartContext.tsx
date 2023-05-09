@@ -29,7 +29,31 @@ function CartProvider({ children }: Props) {
   }
 
   function add(newItem: CartDataProps) {
-    return setCart([newItem, ...cart]);
+    const findExist = cart.find((item) => item.id === newItem.id);
+    let newQuantity = 0;
+
+    if (findExist === undefined) {
+      return setCart([newItem, ...cart]);
+    } else {
+      const max = findExist.Product.classifications.find(
+        (item) => item.id === findExist.classificationId
+      )?.quantity;
+      if (max !== undefined && max >= findExist.quantity + newItem.quantity) {
+        newQuantity = findExist.quantity + newItem.quantity;
+      } else if (
+        max !== undefined &&
+        max < findExist.quantity + newItem.quantity
+      )
+        newQuantity = max;
+    }
+    return setCart((prev) =>
+      prev.map((item) => {
+        if (item.id === newItem.id) {
+          return { ...item, quantity: newQuantity };
+        }
+        return item;
+      })
+    );
   }
 
   function update(newQuantity: number, id: string) {

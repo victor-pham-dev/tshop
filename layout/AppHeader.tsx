@@ -105,7 +105,9 @@ export default function AppHeader(): JSX.Element {
                         <Col>
                           <Link href={`/${PATH.CART}`}>
                             <Badge count={cart.length ?? 0}>
-                              <ShoppingCartOutlined />
+                              <ShoppingCartOutlined
+                                style={{ fontSize: 32, color: "white" }}
+                              />
                             </Badge>
                           </Link>
                         </Col>
