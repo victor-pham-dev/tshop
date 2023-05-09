@@ -1,6 +1,5 @@
 import { Col, Divider, Radio, Rate, Row } from "antd";
 import React from "react";
-import { GetPostByIdApi } from "../api/post.api";
 import { BreadCrumb } from "@/components";
 import { CrumbProps } from "@/components/breadCrumb/BreadCrumb";
 import NumberInput from "@/components/ipNumber/ipNumber";
@@ -261,29 +260,29 @@ export default function ProductDetails() {
   );
 }
 
-export async function getServerSideProps(context: any) {
-  try {
-    const id = context.params.slug[0].split("&pid")[1] as string;
+// export async function getServerSideProps(context: any) {
+//   try {
+//     // const id = context.params.slug[0].split("&pid")[1] as string;
 
-    const result = await GetPostByIdApi(id ?? "");
-    if (result.data !== null) {
-      return {
-        props: {
-          data: result.data,
-        },
-      };
-    } else {
-      return {
-        props: {
-          data: {},
-        },
-      };
-    }
-  } catch (error) {
-    return {
-      props: {
-        data: {},
-      },
-    };
-  }
-}
+//     // const result = await GetPostByIdApi(id ?? "");
+//     // if (result.data !== null) {
+//     //   return {
+//     //     props: {
+//     //       data: result.data,
+//     //     },
+//     //   };
+//     // } else {
+//       return {
+//         props: {
+//           data: {},
+//         },
+//       };
+//     }
+//   } catch (error) {
+//     return {
+//       props: {
+//         data: {},
+//       },
+//     };
+//   }
+// }

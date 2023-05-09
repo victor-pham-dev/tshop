@@ -2,36 +2,36 @@ import React, { ReactNode, useEffect, useState } from "react";
 import { Col, Layout, Row, message } from "antd";
 import { AppFooter } from "./AppFooter";
 import { useLoading, useTheme, useUser } from "../hooks";
-import { FullPageLoading } from "../components/loading/FullPageLoading";
 import AppHeader from "./AppHeader";
 
 type Props = {
   children: ReactNode;
 };
 
-const { Content, Footer } = Layout;
+const { Header, Content, Footer } = Layout;
 
 export const AppLayout: React.FC<Props> = ({ children }) => {
   const { isLoading } = useLoading();
   const { theme } = useTheme();
   const { user } = useUser();
-  //console.log(user)
 
   useEffect(() => {
-    const content = document.getElementById("content-mina");
-    const footer = document.getElementById("footer-mina");
-    const bg = document.getElementById("bg-mina");
+    const content = document.getElementById("content-shop");
+    const footer = document.getElementById("footer-shop");
+    const bg = document.getElementById("bg-shop");
     if (theme.section === "lightSection") {
       content?.classList.replace("darkTheme", "lightTheme");
       footer?.classList.replace("darkSection", "lightSection");
-      bg?.classList.replace("darkbg", "lightbg");
+      bg?.classList.replace("darkBg", "lightBg");
     } else {
       content?.classList.replace("lightTheme", "darkTheme");
       footer?.classList.replace("lightSection", "darkSection");
-      bg?.classList.replace("lightbg", "darkbg");
+      bg?.classList.replace("lightBg", "darkBg");
     }
   }, [theme]);
+
   const [messageApi, contextHolder] = message.useMessage();
+
   useEffect(() => {
     if (isLoading) {
       messageApi.open({
@@ -48,15 +48,13 @@ export const AppLayout: React.FC<Props> = ({ children }) => {
 
   useEffect(() => {
     const container = document.getElementById("__next");
-
     setWidth(container?.offsetWidth ?? 1000);
   }, []);
-  //console.log(width)
+
   return (
-    <Row id="bg-mina" className="lightbg" justify="center">
-      <Col xs={24} sm={24} md={24} lg={24} xl={20} xxl={16}>
+    <Row id="bg-shop" className="lightBg" justify="center">
+      <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={18}>
         <Layout
-          className="layout"
           style={{
             margin: "0 auto",
             minHeight: "100vh",
@@ -65,17 +63,25 @@ export const AppLayout: React.FC<Props> = ({ children }) => {
         >
           {/* {width < 576 && <MobileMenu />} */}
           {contextHolder}
+          <Header
+            style={{ width: "100%", height: "auto", padding: 0, margin: 0 }}
+          >
+            <AppHeader />
+          </Header>
 
-          <AppHeader />
           <Content
-            style={{ paddingBottom: "2rem" }}
             className="lightTheme"
-            id="content-mina"
+            id="content-shop"
+            style={{ width: "100%", height: "auto", padding: 0, margin: 0 }}
           >
             {children}
           </Content>
 
-          <Footer className="lightSection" id="footer-mina">
+          <Footer
+            className="lightSection"
+            id="footer-shop"
+            style={{ width: "100%", height: "auto", padding: 0, margin: 0 }}
+          >
             <AppFooter />
           </Footer>
         </Layout>
