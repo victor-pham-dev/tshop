@@ -52,7 +52,7 @@ async function DeleteProductApi(id: string): Promise<ResponseProps<null>> {
   return result;
 }
 
-interface ClassifyProps {
+export interface ClassifyProps {
   classifications: Classification[];
 }
 async function GetInfoProductByIdApi(
@@ -61,9 +61,17 @@ async function GetInfoProductByIdApi(
   const url = `/api/product/info?id=${id}`;
   const response = await fetch(url, {
     method: METHOD.GET,
-    headers: {
-      "x-access-token": localToken ?? "",
-    },
+  });
+  const result = await response.json();
+  return result;
+}
+
+async function GetRelatedProductByIdApi(
+  id: string
+): Promise<ResponseProps<(Product & ClassifyProps)[]>> {
+  const url = `/api/product/related?id=${id}`;
+  const response = await fetch(url, {
+    method: METHOD.GET,
   });
   const result = await response.json();
   return result;
@@ -74,4 +82,5 @@ export {
   SearchProductApi,
   DeleteProductApi,
   GetInfoProductByIdApi,
+  GetRelatedProductByIdApi,
 };

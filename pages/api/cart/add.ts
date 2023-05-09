@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<ResponseProps<null>>
+  res: NextApiResponse<ResponseProps<string | null>>
 ) {
   if (req.method !== METHOD.POST) {
     return res.status(STATUS_CODE.INVALID_METHOD).json({
@@ -21,36 +21,61 @@ export default async function handler(
     return null;
   }
 
-  let { classificationId, userId, productId, image } = req.body as Cart;
+  let { classificationId, userId, productId, image, quantity } =
+    req.body as Cart;
   try {
+    let id: string = "";
     const existedCartItem = await prisma.cart.findFirst({
       where: {
         userId,
         classificationId,
       },
+      include: {
+        Product: {
+          include: {
+            classifications: true,
+          },
+        },
+      },
     });
 
     if (existedCartItem !== null) {
+      id = existedCartItem.id;
+      let newQuantity = 0;
+      const max = existedCartItem.Product?.classifications.find(
+        (item) => item.id === classificationId
+      )?.quantity;
+      if (max !== undefined && max >= existedCartItem.quantity + quantity) {
+        newQuantity = existedCartItem.quantity + quantity;
+      } else if (
+        max !== undefined &&
+        max < existedCartItem.quantity + quantity
+      ) {
+        newQuantity = max;
+      }
+
       await prisma.cart.update({
         where: { id: existedCartItem.id },
         data: {
-          quantity: { increment: 1 },
+          quantity: newQuantity,
         },
       });
     } else {
-      await prisma.cart.create({
+      const createResult = await prisma.cart.create({
         data: {
           classificationId,
           userId,
           image,
           productId,
+          quantity,
         },
       });
+      id = createResult.id;
     }
 
     return res.status(STATUS_CODE.CREATED).json({
       code: STATUS_CODE.CREATED,
-      data: null,
+      data: id,
       msg: "Thêm thành công",
     });
   } catch (error) {

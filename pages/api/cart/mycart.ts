@@ -33,13 +33,9 @@ export default async function handler(
       },
     });
 
-    const filterCartsNotYetOrder = carts.filter(
-      (item) => item.orderId === null
-    );
-
     return res.status(STATUS_CODE.OK).json({
       code: STATUS_CODE.OK,
-      data: filterCartsNotYetOrder,
+      data: carts,
       msg: "ok",
     });
   } catch (error) {

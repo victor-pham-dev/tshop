@@ -9,6 +9,7 @@ import { ProductCard } from "@/components/card/ProductCard";
 import Link from "next/link";
 import { PATH } from "@/const/app-const";
 import { removeMark } from "@/ultis/dataConvert";
+import { CardLoading } from "@/components";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -90,12 +91,38 @@ function Home() {
           </Col>
         </Row>
 
-        <Row style={{ padding: "1rem" }} gutter={[16, 16]}>
+        {getProducts.isLoading && (
+          <Row style={{ padding: "0.5rem" }} gutter={[16, 16]}>
+            <Col xxl={6}>
+              <CardLoading />
+            </Col>
+            <Col xxl={6}>
+              <CardLoading />
+            </Col>
+            <Col xxl={6}>
+              <CardLoading />
+            </Col>
+            <Col xxl={6}>
+              <CardLoading />
+            </Col>
+            <Col xxl={6}>
+              <CardLoading />
+            </Col>
+            <Col xxl={6}>
+              <CardLoading />
+            </Col>
+            <Col xxl={6}>
+              <CardLoading />
+            </Col>
+          </Row>
+        )}
+
+        <Row style={{ padding: "0.5rem" }} gutter={[16, 16]}>
           {productsResult?.dataTable !== undefined &&
             productsResult?.dataTable.map((item) => (
               <Col key={`product so ${item.id}`} xs={12} sm={8} md={6} xl={4}>
                 <Link
-                  href={`/${PATH.PRODUCT}/${removeMark(item.name)}&pid=${
+                  href={`/${PATH.PRODUCT}/${removeMark(item.name)}?pid=${
                     item.id
                   }`}
                 >

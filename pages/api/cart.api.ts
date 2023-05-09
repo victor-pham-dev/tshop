@@ -4,7 +4,16 @@ import { Cart } from "@prisma/client";
 import { localToken } from "@/ultis/useActor";
 import { CartDataProps } from "@/contexts/CartContext";
 
-async function AddCartItemApi(data: Cart): Promise<ResponseProps<null>> {
+export interface AddCartDataProps {
+  userId: string;
+  classificationId: string;
+  productId: string;
+  image: string;
+  quantity: number;
+}
+async function AddCartItemApi(
+  data: AddCartDataProps
+): Promise<ResponseProps<string | null>> {
   const url = `/api/cart/add`;
   const response = await fetch(url, {
     method: METHOD.POST,
