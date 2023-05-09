@@ -17,13 +17,12 @@ export default function Order() {
   const router = useRouter();
   const { id } = router.query;
   const { user } = useUser();
-  console.log(user.token);
+  console.log(id);
   const getOrder = useQuery(`order ${id}`, () => {
-    if (user.token !== undefined) {
-      return GetInfoOrderByIdApi(id?.toString() ?? "", user.token);
-    }
+    return GetInfoOrderByIdApi(id?.toString() ?? "");
   });
   const dataMemo = useMemo(() => getOrder.data?.data, [getOrder.data?.data]);
+  // console.log(dataMemo);
   const itemsMemo: CartDataProps[] = useMemo(() => {
     if (dataMemo?.items !== undefined) {
       return JSON.parse(dataMemo.items);
@@ -34,7 +33,7 @@ export default function Order() {
     <React.Fragment>
       {getOrder.isLoading ? (
         <ContentLoading />
-      ) : (
+      ) : dataMemo !== undefined && dataMemo !== null ? (
         <Row gutter={[16, 16]} style={{ padding: "1rem" }}>
           <Divider className="textTheme">
             Cảm ơn Quý khách đã đặt hàng - Thông tin đơn hàng {id}
@@ -119,7 +118,11 @@ export default function Order() {
               {dataMemo?.paymentMethod !== PAYMENT_METHOD.COD && (
                 <Text
                   code
-                  className="textTheme"
+                  type={
+                    dataMemo?.paymentStatus === "Chưa thanh toán"
+                      ? "warning"
+                      : "success"
+                  }
                 >{`Trạng thái thanh toán : ${dataMemo?.paymentStatus}`}</Text>
               )}
               {dataMemo?.paymentMethod !== PAYMENT_METHOD.COD &&
@@ -141,6 +144,14 @@ export default function Order() {
                     <Text code className="textTheme">
                       CTK: PHAM VAN TRUONG - 03960870688 - TP
                     </Text>
+                    <Text code type="danger">
+                      Đơn hàng của bạn sẽ được xử lý nhanh hơn vào giờ hành
+                      chính - LH:{" "}
+                      <Text code copyable type="success">
+                        0343241299
+                      </Text>{" "}
+                      hoặc Messenger để nhận tư vấn
+                    </Text>
                     <img
                       style={{ width: "100%", borderRadius: "0.5rem" }}
                       src="https://img.vietqr.io/image/TPB-03960870688-compact.png"
@@ -154,6 +165,10 @@ export default function Order() {
             </Space>
           </Col>
         </Row>
+      ) : (
+        <p style={{ paddingTop: 30, textAlign: "center" }}>
+          Vui lòng đăng nhập để xem đơn hàng của bạn
+        </p>
       )}
       {getOrder.isError && <p>{getOrder.data?.msg}</p>}
     </React.Fragment>

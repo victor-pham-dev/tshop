@@ -59,6 +59,14 @@ export default function MyOrders() {
                   </Col>
                 );
               })}
+              {ordersMemo.length === 0 && (
+                <p
+                  className="textTheme"
+                  style={{ textAlign: "center", width: "100%" }}
+                >
+                  Bạn chưa có đơn hàng nào cả
+                </p>
+              )}
             </Row>
           </Col>
         </Row>

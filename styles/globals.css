@@ -323,14 +323,18 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .buttonAddCart {
+  border-radius: 0.5rem;
   height: 60px;
   padding: 0 10px;
   font-size: 20px;
   color: red;
   background-color: #fff;
   border: 1px solid red;
+  transition: all 0.3s;
+  cursor: pointer
 }
 .buttonAddCart:hover {
+  transform: translateY(-2px);
   color: #1677ff;
   border-color: #1677ff;
 }

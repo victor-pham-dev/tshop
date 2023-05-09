@@ -1,18 +1,17 @@
-import { Col, Row, Skeleton, Space } from 'antd'
+import { Row, Skeleton, Space } from "antd";
 
 export function CardLoading() {
   return (
-    <Row gutter={[20, 20]}>
-      <Col xxl={8}>
-        <Space direction="vertical">
-          <Skeleton.Input active={true} />
+    <div className="roundedBox boxShadow">
+      <Space direction="vertical" style={{ width: "100%" }}>
+        <Skeleton.Input active={true} />
 
-          <Skeleton.Input active={true} />
-          <Skeleton.Input active={true} block />
+        <Skeleton.Input active={true} />
+        <Skeleton.Input active={true} />
+        <Skeleton.Input active={true} block />
 
-          <Skeleton.Input active={true} block />
-        </Space>
-      </Col>
-    </Row>
-  )
+        <Skeleton.Input active={true} block />
+      </Space>
+    </div>
+  );
 }

@@ -64,14 +64,13 @@ async function GetMyOrdersApi(): Promise<ResponseProps<Order[] | null>> {
 }
 
 async function GetInfoOrderByIdApi(
-  id: string,
-  token: string
+  id: string
 ): Promise<ResponseProps<Order | null>> {
   const url = `/api/order/info?id=${id}`;
   const response = await fetch(url, {
     method: METHOD.GET,
     headers: {
-      "x-access-token": token,
+      "x-access-token": localToken ?? "",
     },
   });
   const result = await response.json();
