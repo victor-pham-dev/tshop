@@ -4,14 +4,7 @@ import MenuTop from "@/components/menu/MenuTop";
 import { useTheme, useUser } from "@/hooks";
 import { useRouter } from "next/router";
 import { PATH, ROLE } from "@/const/app-const";
-import {
-  CloudOutlined,
-  EnvironmentOutlined,
-  FacebookOutlined,
-  PhoneOutlined,
-  ShoppingCartOutlined,
-  YoutubeOutlined,
-} from "@ant-design/icons";
+import { ShoppingCartOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { AdminMenu } from "@/components/menu/AdminMenu";
 import { UserMenu } from "@/components/menu/UserMenu";
@@ -48,16 +41,16 @@ export default function AppHeader(): JSX.Element {
         id="header"
         className="lightSection"
         span={24}
-        style={{ padding: "0 1rem" }}
+        style={{ padding: "1rem" }}
       >
-        <Row align="middle">
-          <Col span={6}>
+        <Row align="middle" justify="space-between">
+          <Col span={12}>
             <Row
               style={{ cursor: "pointer" }}
               onClick={() => router.push("/")}
               align="middle"
             >
-              <Col>
+              <Col style={{ height: "64px" }}>
                 <Image
                   src="/favicon.svg"
                   alt="Tshop Mini PC"
@@ -65,25 +58,23 @@ export default function AppHeader(): JSX.Element {
                   height={64}
                 />
               </Col>
-              <Col xs={0} xxl={18}>
+              <Col>
                 <p
                   style={{
                     fontFamily: "Poltawski Nowy, serif",
-                    marginLeft: "-0.6rem",
+                    fontSize: "16px",
+                    marginLeft: "10px",
                   }}
                 >
-                  HÃI NHẾ
+                  TRƯƠNG ĐẸP TRAI NHƯNG MINI
                 </p>
               </Col>
             </Row>
           </Col>
-
-          <Col xxl={12} xs={0}></Col>
-
-          <Col xxl={6} xs={10}>
-            <Row align="middle" gutter={[18, 0]} justify="end">
-              <Col xxl={{ push: 0, span: 16 }} xs={{ push: 14, span: 6 }}>
-                <Row gutter={[4, 0]} justify="end">
+          <Col span={12}>
+            <Row align="middle" gutter={[16, 0]} justify="end">
+              <Col>
+                <Row gutter={[4, 0]} justify="end" align="middle">
                   {user.token && user.token !== "" ? (
                     <React.Fragment>
                       <Col>
@@ -93,7 +84,7 @@ export default function AppHeader(): JSX.Element {
                           }
                         />
                       </Col>
-                      <Col xxl={14} xs={0}>
+                      <Col>
                         {user.role === ROLE.ADMIN ? (
                           <AdminMenu userName={user.name ?? ""} />
                         ) : (
@@ -120,7 +111,7 @@ export default function AppHeader(): JSX.Element {
                   )}
                 </Row>
               </Col>
-              <Col xxl={6} xs={0}>
+              <Col>
                 <Switch
                   checked={activeSwitch}
                   onChange={(checked: Boolean) =>

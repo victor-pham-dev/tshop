@@ -47,37 +47,44 @@ function Home() {
     const searchParamsString = queryString.stringify(cloneFilter);
     return setParams(searchParamsString);
   }
+
   return (
     <>
       <Head>
         <title>Mini PC - Nghiện nhưng không dở</title>
         <meta name="description" content="Cửa hàng mini PC" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.svg" style={{ fontSize: "4rem" }} />
+        <link rel="icon" href="/favicon.svg" />
       </Head>
       <main>
-        {/* banner and effect, regis form */}
-        <div style={{ width: "100%", position: "relative" }}>
-          <img
-            src="/banner.jpeg"
-            alt="Mini PC-Shop Nghiện nhưng không dở"
-            width="100%"
-          />
-        </div>
+        <Row style={{ position: "relative" }}>
+          <Col span={24}>
+            <img
+              src="/banner.jpg"
+              alt="Mini PC-Shop Nghiện nhưng không dở"
+              width="100%"
+              height="360px"
+            />
+          </Col>
+        </Row>
 
-        <Row
-          style={{ padding: "0.5rem" }}
-          justify="center"
-          className="roundedBox"
-          gutter={[16, 0]}
-        >
-          <Col xxl={8} xs={20}>
+        <Row style={{ padding: "1rem" }} justify="center">
+          <Col
+            xs={24}
+            lg={14}
+            xl={12}
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <Input
               onChange={(e) => handleFilterChange("name", e.target.value)}
               placeholder="Nhập tên sản phẩm hoặc từ khoá để tìm kiếm"
+              style={{ marginRight: "0.5rem" }}
             />
-          </Col>
-          <Col xxl={3} xs={4}>
             <Button onClick={() => onSearch("name")} type="primary">
               Tìm kiếm
             </Button>
@@ -113,7 +120,7 @@ function Home() {
         <Row style={{ padding: "0.5rem" }} gutter={[16, 16]}>
           {productsResult?.dataTable !== undefined &&
             productsResult?.dataTable.map((item) => (
-              <Col key={`product so ${item.id}`} xxl={6}>
+              <Col key={`product so ${item.id}`} xs={12} sm={8} md={6} xl={4}>
                 <Link
                   href={`/${PATH.PRODUCT}/${removeMark(item.name)}?pid=${
                     item.id
@@ -125,10 +132,13 @@ function Home() {
             ))}
         </Row>
 
-        <Row style={{ padding: "0.5rem" }} justify="center">
+        <Row style={{ padding: "1rem" }} justify="center">
           <Pagination
-            className="roundedBox"
-            style={{ background: "#fff" }}
+            style={{
+              background: "#fff",
+              padding: "6px 0",
+              borderRadius: "8px",
+            }}
             pageSize={filter.pageSize}
             showQuickJumper={
               productsResult?.totalCount !== undefined &&

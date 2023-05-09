@@ -1,6 +1,5 @@
 import React from "react";
 import { Card } from "antd";
-import Image from "next/image";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import styles from "../../styles/Home.module.css";
 import { Product } from "@prisma/client";
@@ -25,7 +24,7 @@ export function ProductCard(product: Product): JSX.Element {
               flexDirection: "row",
               padding: "6px",
               marginBottom: 6,
-              backgroundColor: "#8dcbe6",
+              backgroundColor: "#55e6ff",
             }}
           >
             <div
@@ -62,10 +61,11 @@ export function ProductCard(product: Product): JSX.Element {
             }}
           >
             <img
-
               src={avatar}
               alt={product.name}
-              style={{ borderRadius: "8px", width: "100%", maxHeight: 180 }}
+              width="100%"
+              height="180"
+              style={{ borderRadius: "8px" }}
             />
           </div>
         </div>
