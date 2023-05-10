@@ -8,7 +8,6 @@ export function ProductCard(product: ProductWithClassifyProps): JSX.Element {
 
   const price = useMemo(() => {
     const sort = product.classifications?.sort((a, b) => a.price - b.price);
-    console.log(sort);
     let result: string = "";
     if (sort !== undefined && sort.length === 1) {
       result = `${sort[0].price.toLocaleString()} đ`;

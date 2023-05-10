@@ -5,7 +5,7 @@ import { RichTextEditor } from "./richTexteditor/RichTextEditor";
 import { CardLoading } from "./loading/CardLoading";
 import { BreadCrumb } from "./breadCrumb/BreadCrumb";
 import CarouselProduct from "./carousel/carouselProductDetail";
-import { ProductCard } from "./card/productCard";
+import { ProductCard } from "./card/ProductCard";
 export {
   FullPageLoading,
   TagsLoading,

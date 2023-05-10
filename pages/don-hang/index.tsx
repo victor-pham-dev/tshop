@@ -19,7 +19,6 @@ export default function MyOrders() {
     }
     return [];
   }, [getMyOrders.data?.data]);
-  console.log(ordersMemo);
   return (
     <React.Fragment>
       {getMyOrders.isLoading ? (
