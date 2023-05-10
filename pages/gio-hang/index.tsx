@@ -145,7 +145,17 @@ export default function UserCart() {
 
   return (
     <Row justify="center">
-      <Col xxl={16}>
+      <Col
+        xxl={16}
+        xs={24}
+        style={{
+          background: "#bdbdbd",
+          marginTop: 30,
+          marginBottom: 30,
+          opacity: 0.9,
+        }}
+        className="roundedBox"
+      >
         <Row
           className="roundedBox "
           style={{ background: "#fff", marginTop: 16, marginBottom: 8 }}

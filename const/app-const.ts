@@ -118,6 +118,11 @@ export const productCategoryOptions = [
   },
 ];
 
+export enum PAYMENT_STATUS {
+  NOT_YET = "Chưa thanh toán",
+  DONE = "Đã thanh toán",
+}
+
 export enum PAYMENT_METHOD {
   COD = "Thanh toán khi nhận hàng",
   ONLINE = "Online (Banking, Ví điện tử)",
@@ -131,5 +136,36 @@ export const PaymentMethodOptions = [
   {
     label: PAYMENT_METHOD.COD,
     value: PAYMENT_METHOD.COD,
+  },
+];
+
+export const ORDER_STATUS = {
+  WAITING_FOR_CONFIRM: "Chờ xác nhận",
+  CONFIRMED: "Đã xác nhận",
+  SHIPPING: "Đang vận chuyển",
+  CANCELED: "Đã huỷ",
+  DONE: "Đã hoàn thành",
+};
+
+export const OrderStatusOptions = [
+  {
+    label: ORDER_STATUS.WAITING_FOR_CONFIRM,
+    value: ORDER_STATUS.WAITING_FOR_CONFIRM,
+  },
+  {
+    label: ORDER_STATUS.CONFIRMED,
+    value: ORDER_STATUS.CONFIRMED,
+  },
+  {
+    label: ORDER_STATUS.SHIPPING,
+    value: ORDER_STATUS.SHIPPING,
+  },
+  {
+    label: ORDER_STATUS.CANCELED,
+    value: ORDER_STATUS.CANCELED,
+  },
+  {
+    label: ORDER_STATUS.DONE,
+    value: ORDER_STATUS.DONE,
   },
 ];

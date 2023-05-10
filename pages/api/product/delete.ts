@@ -1,9 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient } from "@prisma/client";
 import { METHOD, STATUS_CODE } from "@/const/app-const";
 import { ResponseProps } from "@/network/services/api-handler";
 import { AuthToken } from "@/middleware/server/auth";
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,7 +17,7 @@ export default async function handler(
   }
   const tokenValid = AuthToken(req, res, "ADMIN");
   if (!tokenValid.pass) {
-    return null;
+    return;
   }
 
   const productId = req.query.id as string;

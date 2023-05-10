@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, Switch, Button, Avatar, Badge } from "antd";
-import MenuTop from "@/components/menu/MenuTop";
 import { useTheme, useUser } from "@/hooks";
 import { useRouter } from "next/router";
 import { PATH, ROLE } from "@/const/app-const";
@@ -52,7 +51,7 @@ export default function AppHeader(): JSX.Element {
             >
               <Col style={{ height: "64px" }}>
                 <Image
-                  src="/favicon.svg"
+                  src="/Logo.png"
                   alt="Tshop Mini PC"
                   width={64}
                   height={64}
@@ -65,9 +64,7 @@ export default function AppHeader(): JSX.Element {
                     fontSize: "16px",
                     marginLeft: "10px",
                   }}
-                >
-                  TRƯƠNG ĐẸP TRAI NHƯNG MINI
-                </p>
+                ></p>
               </Col>
             </Row>
           </Col>
@@ -111,7 +108,7 @@ export default function AppHeader(): JSX.Element {
                   )}
                 </Row>
               </Col>
-              <Col>
+              {/* <Col>
                 <Switch
                   checked={activeSwitch}
                   onChange={(checked: Boolean) =>
@@ -120,7 +117,7 @@ export default function AppHeader(): JSX.Element {
                   checkedChildren="Sáng"
                   unCheckedChildren="Tối"
                 />
-              </Col>
+              </Col> */}
             </Row>
           </Col>
         </Row>

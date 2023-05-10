@@ -1,12 +1,25 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Card } from "antd";
-import { ShoppingCartOutlined } from "@ant-design/icons";
-import styles from "../../styles/Home.module.css";
-import { Product } from "@prisma/client";
+// import { ShoppingCartOutlined } from "@ant-design/icons";
+import { ProductWithClassifyProps } from "@/contexts/CartContext";
 
-export function ProductCard(product: Product): JSX.Element {
-  console.log(product);
+export function ProductCard(product: ProductWithClassifyProps): JSX.Element {
   const avatar = product.images[0];
+
+  const price = useMemo(() => {
+    const sort = product.classifications?.sort((a, b) => a.price - b.price);
+    console.log(sort);
+    let result: string = "";
+    if (sort !== undefined && sort.length === 1) {
+      result = `${sort[0].price.toLocaleString()} đ`;
+    } else if (sort !== undefined && sort.length > 1) {
+      result = `${sort[0].price.toLocaleString()}-${sort[
+        sort.length - 1
+      ].price.toLocaleString()}  đ`;
+    }
+    return result;
+  }, [product]);
+
   return (
     <Card
       bordered={false}
@@ -98,16 +111,7 @@ export function ProductCard(product: Product): JSX.Element {
         >
           {product.name}
         </blockquote>
-        <del
-          style={{
-            fontSize: "14px",
-            padding: 0,
-            margin: 0,
-            lineHeight: "14px",
-          }}
-        >
-          $100
-        </del>
+
         <div
           style={{
             display: "flex",
@@ -119,15 +123,15 @@ export function ProductCard(product: Product): JSX.Element {
           <p
             style={{
               color: "red",
-              fontSize: "20px",
+              fontSize: "16px",
               padding: 0,
               margin: 0,
               lineHeight: "20px",
             }}
           >
-            $10
+            {price}
           </p>
-          <ShoppingCartOutlined
+          {/* <ShoppingCartOutlined
             className={styles.iconCart}
             style={{
               fontSize: "20px",
@@ -135,7 +139,7 @@ export function ProductCard(product: Product): JSX.Element {
               color: "red",
               margin: "0 8px",
             }}
-          />
+          /> */}
         </div>
       </div>
     </Card>

@@ -1,8 +1,8 @@
-import { Row, Skeleton, Space } from "antd";
+import { Skeleton, Space } from "antd";
 
 export function CardLoading() {
   return (
-    <div className="roundedBox boxShadow">
+    <div style={{ background: "white" }} className="roundedBox boxShadow">
       <Space direction="vertical" style={{ width: "100%" }}>
         <Skeleton.Input active={true} />
 

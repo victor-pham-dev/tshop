@@ -1,11 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient, Product } from "@prisma/client";
+import { Product } from "@prisma/client";
 import { METHOD, STATUS_CODE } from "@/const/app-const";
 import {
   PagingResponseProps,
   ResponseProps,
 } from "@/network/services/api-handler";
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 
 export default async function handler(
   req: NextApiRequest,

@@ -3,7 +3,10 @@ import React from "react";
 
 export const ContentLoading: React.FC = () => {
   return (
-    <Space style={{ padding: "1rem" }} direction="vertical">
+    <Space
+      style={{ padding: "1rem", background: "#bdbdbd" }}
+      direction="vertical"
+    >
       <Row gutter={[8, 8]}>
         <Col lg={24}>
           <Skeleton.Input block active={true} size="default" />

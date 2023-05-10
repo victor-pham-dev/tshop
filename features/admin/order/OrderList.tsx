@@ -1,40 +1,51 @@
-import { ProductCard } from "@/components/card/ProductCard";
-import {
-  SearchProductApi,
-  SearchProductParamsProps,
-} from "@/pages/api/product.api";
-import { Button, Col, Input, Pagination, Row } from "antd";
+import { ORDER_STATUS, OrderStatusOptions } from "@/const/app-const";
+import { CartDataProps } from "@/contexts/CartContext";
+import { SearchOrderParamsProps, SearchOrdertApi } from "@/pages/api/order.api";
+import { Order } from "@prisma/client";
+import { Button, Col, Pagination, Row, Select } from "antd";
 import queryString from "query-string";
-import React, { useMemo, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useQuery } from "react-query";
-
-export function OrderList() {
-  const [filter, setFilter] = useState<SearchProductParamsProps>({
+interface Props {
+  setOrder: Dispatch<SetStateAction<Order | undefined>>;
+}
+export function OrderList({ setOrder }: Props) {
+  const [filter, setFilter] = useState<SearchOrderParamsProps>({
     pageSize: 6,
   });
-  const [params, setParams] = useState<string>("page=1&pageSize=9");
+  const [params, setParams] = useState<string>(`page=1&pageSize=6`);
 
-  const getProducts = useQuery(["searchProduct", params], () =>
-    SearchProductApi(params)
+  const getOrders = useQuery(["searchOrders", params], () =>
+    SearchOrdertApi(params)
   );
 
-  const productsResult = useMemo(
-    () => getProducts.data?.data,
-    [getProducts.data?.data]
-  );
+  const ordersMemo = useMemo(() => {
+    if (getOrders.data?.data?.dataTable !== undefined) {
+      return getOrders.data?.data?.dataTable;
+    }
+    return [];
+  }, [getOrders.data?.data]);
+
+  useEffect(() => setOrder(undefined), [ordersMemo]);
 
   //handle filter change
   function handleFilterChange(
-    name: keyof SearchProductParamsProps,
+    name: keyof SearchOrderParamsProps,
     value: string | number
   ) {
     setFilter((prev) => ({ ...prev, [name]: value }));
   }
 
-  function onSearch(type: "name" | "newPage", newPage?: number) {
+  function onSearch(type: "status" | "newPage", newPage?: number) {
     let cloneFilter = { ...filter };
 
-    if (type === "name") {
+    if (type === "status") {
       cloneFilter.page = 1;
     } else if (type === "newPage") {
       cloneFilter.page = newPage ?? 1;
@@ -44,30 +55,59 @@ export function OrderList() {
   }
 
   return (
-    <Row style={{ minHeight: "80vh" }} gutter={[16, 16]}>
+    <Row style={{ minHeight: "90vh" }} gutter={[16, 16]}>
       <Col span={24}>
-        <Row justify="center" className="roundedBox" gutter={[16, 0]}>
-          <Col span={16}>
-            <Input
-              onChange={(e) => handleFilterChange("name", e.target.value)}
-              placeholder="Nhập tên sản phẩm hoặc từ khoá để tìm kiếm"
+        <Row gutter={[16, 0]}>
+          <Col>
+            <Select
+              allowClear
+              style={{ width: 200 }}
+              defaultValue={ORDER_STATUS.WAITING_FOR_CONFIRM}
+              onChange={(value) => handleFilterChange("status", value)}
+              placeholder="Trạng thái đơn hàng"
+              options={OrderStatusOptions}
             />
           </Col>
           <Col span={4}>
-            <Button onClick={() => onSearch("name")} type="primary">
+            <Button onClick={() => onSearch("status")} type="primary">
               Tìm kiếm
             </Button>
           </Col>
         </Row>
-      </Col>
-      <Col span={24}>
-        <Row gutter={[16, 16]}>
-          {productsResult?.dataTable !== undefined &&
-            productsResult?.dataTable.map((item) => (
-              <Col key={`product so ${item.id}`} xxl={12}>
-                <ProductCard {...item} />
+
+        <Row gutter={[0, 16]}>
+          {getOrders.isLoading && <>Loading....</>}
+          {ordersMemo.map((item) => {
+            const items = JSON.parse(item.items) as CartDataProps[];
+            return (
+              <Col
+                onClick={() => setOrder(item)}
+                style={{ marginTop: 20, cursor: "pointer" }}
+                key={`order ${item.id}`}
+                span={24}
+              >
+                <Row
+                  align="middle"
+                  gutter={[16, 0]}
+                  className="roundedBox boxShadow hoverEffect textTheme"
+                >
+                  <Col xxl={4}>{items.length} Sản phẩm</Col>
+                  <Col xxl={3}>{item.total.toLocaleString()}đ</Col>
+                  <Col xxl={6}>{item.paymentMethod}</Col>
+                  <Col xxl={5}>{item.paymentStatus}</Col>
+                  <Col xxl={4}>{item.status}</Col>
+                </Row>
               </Col>
-            ))}
+            );
+          })}
+          {ordersMemo.length === 0 && (
+            <p
+              className="textTheme"
+              style={{ textAlign: "center", width: "100%" }}
+            >
+              Bạn chưa có đơn hàng nào cả
+            </p>
+          )}
         </Row>
       </Col>
       <Col span={24}>
@@ -77,11 +117,11 @@ export function OrderList() {
             style={{ background: "#fff" }}
             pageSize={filter.pageSize}
             showQuickJumper={
-              productsResult?.totalCount !== undefined &&
-              productsResult?.totalCount > 100
+              getOrders?.data?.data?.totalCount !== undefined &&
+              getOrders?.data?.data?.totalCount > 100
             }
             defaultCurrent={1}
-            total={productsResult?.totalCount}
+            total={getOrders?.data?.data?.totalCount}
             onChange={(page) => onSearch("newPage", page)}
           />
         </Row>

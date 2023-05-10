@@ -1,15 +1,16 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient, Product } from "@prisma/client";
+import { Order } from "@prisma/client";
 import { METHOD, STATUS_CODE } from "@/const/app-const";
 import {
   PagingResponseProps,
   ResponseProps,
 } from "@/network/services/api-handler";
-const prisma = new PrismaClient();
+import { AuthToken } from "@/middleware/server/auth";
+import { prisma } from "@/lib/prisma";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<ResponseProps<PagingResponseProps<Product> | null>>
+  res: NextApiResponse<ResponseProps<PagingResponseProps<Order> | null>>
 ) {
   if (req.method !== METHOD.GET) {
     return res.status(STATUS_CODE.INVALID_METHOD).json({
@@ -18,34 +19,38 @@ export default async function handler(
       msg: "Invalid method",
     });
   }
-  const { name, page = 1, pageSize = 10 } = req.query;
-  const lowercaseName = name ? name.toString().toLowerCase() : "";
+  const tokenValid = AuthToken(req, res, "ADMIN");
+  if (!tokenValid.pass) {
+    return;
+  }
+
+  const { status, page = 1, pageSize = 10 } = req.query;
 
   try {
-    const products: Product[] = await prisma.product.findMany({
-      include: {
-        classifications: true,
-      },
-    });
-
-    const filteredProducts = products.filter((product) => {
-      const lowercaseProductName = product.name.toLowerCase();
-      return lowercaseProductName.includes(lowercaseName);
-    });
-
-    const startIndex = (Number(page) - 1) * Number(pageSize);
-    const endIndex = Number(page) * Number(pageSize);
-    const result = filteredProducts.slice(startIndex, endIndex);
+    const [orders, total] = await Promise.all([
+      await prisma.order.findMany({
+        where: {
+          status: status?.toString(),
+        },
+        skip: (Number(page) - 1) * Number(pageSize),
+        take: Number(pageSize),
+      }),
+      prisma.order.count({
+        where: {
+          status: status?.toString(),
+        },
+      }),
+    ]);
 
     return res.status(STATUS_CODE.OK).json({
       code: STATUS_CODE.OK,
       data: {
-        dataTable: result,
+        dataTable: orders,
         paging: {
           page: Number(page),
           pageSize: Number(pageSize),
         },
-        totalCount: filteredProducts.length,
+        totalCount: total,
       },
       msg: "OK",
     });

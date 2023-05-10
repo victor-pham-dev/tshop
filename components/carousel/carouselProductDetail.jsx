@@ -19,7 +19,7 @@ export default class CarouselProduct extends Component {
 
   render() {
     return (
-      <div>
+      <div className="roundedBox" style={{background: '#bdbdbd'}}>
         
         <Slider
           asNavFor={this.state.nav2}
@@ -28,7 +28,7 @@ export default class CarouselProduct extends Component {
         >
          {this.props.images.map((item,i)=>(
           <div key={`to ${i}`}>
-            <img src={item} alt={item} style={{width: '100%', borderRadius: '0.5rem'}} />
+            <img src={item} alt={item} style={{width: '100%', maxHeight: 460, borderRadius: '0.5rem'}} />
           </div>
          ))}
         </Slider>
@@ -44,7 +44,7 @@ export default class CarouselProduct extends Component {
         >
        {this.props.images.map((item,i)=>(
           <div id={`navSlide ${i}`} style={{padding: 8}} key={`nho ${i}`}>
-            <img src={item} alt={item} style={{width: '95%', borderRadius: '0.5rem'}} />
+            <img src={item} alt={item} style={{width: 66,height: 66, borderRadius: '0.5rem'}} />
           </div>
          ))}
         </Slider>

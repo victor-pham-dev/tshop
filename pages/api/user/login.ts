@@ -1,10 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient } from "@prisma/client";
 import { METHOD, STATUS_CODE, TOKEN_KEY } from "@/const/app-const";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { ResponseProps } from "@/network/services/api-handler";
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 
 interface ResProps {
   accessToken: string;

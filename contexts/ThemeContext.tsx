@@ -1,45 +1,45 @@
-import React, { createContext, ReactNode, useCallback, useState } from 'react'
-import { STORAGE, STORAGE_KEY } from '../const/app-const'
-import { useStorage } from '../hooks'
+import React, { createContext, ReactNode, useCallback, useState } from "react";
+import { STORAGE, STORAGE_KEY } from "../const/app-const";
+import { useStorage } from "../hooks";
 
 interface ThemeProps {
-  content: 'lightTheme' | 'darkTheme'
-  section: 'lightSection' | 'darkSection'
-  bgfull: 'lightbg' | 'darkbg'
+  content: "lightTheme" | "darkTheme";
+  section: "lightSection" | "darkSection";
+  bgfull: "lightbg" | "darkbg";
 }
 
 export const lightTheme: ThemeProps = {
-  content: 'lightTheme',
-  section: 'lightSection',
-  bgfull: 'lightbg'
-}
+  content: "lightTheme",
+  section: "lightSection",
+  bgfull: "lightbg",
+};
 
 export const darkTheme: ThemeProps = {
-  content: 'darkTheme',
-  section: 'darkSection',
-  bgfull: 'darkbg'
-}
+  content: "darkTheme",
+  section: "darkSection",
+  bgfull: "darkbg",
+};
 export interface themeContextType {
-  theme: ThemeProps
-  changeTheme: (newTheme: 'light' | 'dark') => void
+  theme: ThemeProps;
+  changeTheme: (newTheme: "light" | "dark") => void;
 }
 
 const ThemeContext = createContext<themeContextType>({
   theme: lightTheme,
-  changeTheme: () => {}
-})
+  changeTheme: () => {},
+});
 
 type Props = {
-  children: ReactNode
-}
+  children: ReactNode;
+};
 
 function ThemeContextProvider({ children }: Props) {
-  const [theme, setTheme] = useStorage(STORAGE.LOCAL, 'theme', lightTheme)
-  function changeTheme(newTheme: 'light' | 'dark') {
-    if (newTheme === 'light') {
-      setTheme(lightTheme)
+  const [theme, setTheme] = useStorage(STORAGE.LOCAL, "theme", lightTheme);
+  function changeTheme(newTheme: "light" | "dark") {
+    if (newTheme === "light") {
+      setTheme(lightTheme);
     } else {
-      setTheme(darkTheme)
+      setTheme(darkTheme);
     }
   }
 
@@ -47,7 +47,7 @@ function ThemeContextProvider({ children }: Props) {
     <ThemeContext.Provider value={{ theme, changeTheme }}>
       {children}
     </ThemeContext.Provider>
-  )
+  );
 }
 
-export { ThemeContext, ThemeContextProvider }
+export { ThemeContext, ThemeContextProvider };

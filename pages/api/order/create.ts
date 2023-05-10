@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { Cart, Classification, Order, PrismaClient } from "@prisma/client";
+import { Cart, Order } from "@prisma/client";
 import { METHOD, STATUS_CODE } from "@/const/app-const";
 import { ResponseProps } from "@/network/services/api-handler";
 import { AuthToken } from "@/middleware/server/auth";
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,7 +18,7 @@ export default async function handler(
   }
   const tokenValid = AuthToken(req, res, "USER");
   if (!tokenValid.pass) {
-    return null;
+    return;
   }
 
   const payload = req.body as Order;

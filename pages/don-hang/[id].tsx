@@ -9,7 +9,11 @@ import { useRouter } from "next/router";
 import { ContentLoading } from "@/components";
 import { CartItemCard } from "@/components/card/CartItemCard";
 import { CartDataProps } from "@/contexts/CartContext";
-import { PAYMENT_METHOD } from "@/const/app-const";
+import {
+  ORDER_STATUS,
+  PAYMENT_METHOD,
+  PAYMENT_STATUS,
+} from "@/const/app-const";
 import { useUser } from "@/hooks";
 const { Text } = Typography;
 
@@ -36,8 +40,26 @@ export default function Order() {
       ) : dataMemo !== undefined && dataMemo !== null ? (
         <Row gutter={[16, 16]} style={{ padding: "1rem" }}>
           <Divider className="textTheme">
-            Cảm ơn Quý khách đã đặt hàng - Thông tin đơn hàng {id}
+            Cảm ơn Quý khách đã đặt hàng - Thông tin đơn hàng {id} -{" "}
+            <span
+              style={
+                dataMemo.status === ORDER_STATUS.CANCELED
+                  ? { color: "red" }
+                  : dataMemo.status === ORDER_STATUS.WAITING_FOR_CONFIRM
+                  ? { color: "yellow" }
+                  : dataMemo.status === ORDER_STATUS.SHIPPING
+                  ? { color: "brown" }
+                  : dataMemo.status === ORDER_STATUS.DONE
+                  ? { color: "green" }
+                  : { color: "brown" }
+              }
+            >
+              {dataMemo.status}
+            </span>
           </Divider>
+          {dataMemo.status === ORDER_STATUS.CANCELED && (
+            <Text code>{`Lý do: ${dataMemo.cancelReason}`}</Text>
+          )}
           <Col xxl={16} xs={24}>
             <Divider className="textTheme">Sản phẩm mua</Divider>
             <Row
@@ -119,14 +141,14 @@ export default function Order() {
                 <Text
                   code
                   type={
-                    dataMemo?.paymentStatus === "Chưa thanh toán"
+                    dataMemo?.paymentStatus === PAYMENT_STATUS.NOT_YET
                       ? "warning"
                       : "success"
                   }
                 >{`Trạng thái thanh toán : ${dataMemo?.paymentStatus}`}</Text>
               )}
               {dataMemo?.paymentMethod !== PAYMENT_METHOD.COD &&
-                dataMemo?.paymentStatus === "Chưa thanh toán" && (
+                dataMemo?.paymentStatus === PAYMENT_STATUS.NOT_YET && (
                   <React.Fragment>
                     <Text className="textTheme">
                       Vui lòng chuyển khoản tới tài khoản sau để thanh toán

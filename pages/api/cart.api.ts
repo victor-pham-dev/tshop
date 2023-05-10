@@ -1,6 +1,5 @@
 import { ResponseProps } from "@/network/services/api-handler";
 import { METHOD } from "../../const/app-const";
-import { Cart } from "@prisma/client";
 import { localToken } from "@/ultis/useActor";
 import { CartDataProps } from "@/contexts/CartContext";
 

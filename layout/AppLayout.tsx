@@ -13,7 +13,6 @@ const { Header, Content, Footer } = Layout;
 export const AppLayout: React.FC<Props> = ({ children }) => {
   const { isLoading } = useLoading();
   const { theme } = useTheme();
-  const { user } = useUser();
 
   useEffect(() => {
     const content = document.getElementById("content-shop");
@@ -72,8 +71,22 @@ export const AppLayout: React.FC<Props> = ({ children }) => {
           <Content
             className="lightTheme"
             id="content-shop"
-            style={{ width: "100%", height: "auto", padding: 0, margin: 0 }}
+            style={{
+              width: "100%",
+              height: "auto",
+              position: "relative",
+            }}
           >
+            <div
+              style={{
+                width: "100%",
+                height: "100%",
+                backgroundImage: `url(${`/bg.jpeg`})`,
+                backgroundSize: "100% auto",
+                backgroundRepeat: "repeat-y",
+                position: "absolute",
+              }}
+            ></div>
             {children}
           </Content>
 

@@ -26,7 +26,17 @@ export default function MyOrders() {
         <ContentLoading />
       ) : (
         <Row justify="center">
-          <Col xxl={16} xs={24}>
+          <Col
+            xxl={16}
+            xs={24}
+            style={{
+              background: "#bdbdbd",
+              marginTop: 30,
+              marginBottom: 30,
+              opacity: 0.9,
+            }}
+            className="roundedBox"
+          >
             <Row gutter={[0, 16]}>
               <Divider className="textTheme">
                 Danh sách đơn hàng của bạn

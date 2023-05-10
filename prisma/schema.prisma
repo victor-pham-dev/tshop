@@ -7,16 +7,17 @@ generator client {
 
 datasource db {
   provider = "mongodb"
-  url      = env("DATABASE_URL")
+  url      = "mongodb+srv://truongpham2412dev:67eObtKnz8Qyr0My@tshop.108e3fv.mongodb.net/tshop?retryWrites=true&w=majority"
 }
 
 model User {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now())
-  email     String   @unique
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime   @default(now())
+  email     String     @unique
   name      String
-  role      Role     @default(USER)
+  role      Role       @default(USER)
   password  String
+  Warranty  Warranty[]
 }
 
 enum Role {
@@ -25,9 +26,9 @@ enum Role {
 }
 
 model Product {
-  id              String           @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @default(now())
+  id              String            @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @default(now())
   status          String
   category        String
   name            String
@@ -35,16 +36,23 @@ model Product {
   description     String
   classifications Classification[]
   Cart            Cart[]
+  Warranty        Warranty[]
+  WarehouseImport WarehouseImport[]
+  Sellstatistic   Sellstatistic[]
 }
 
 model Classification {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  image     String
-  price     Int
-  quantity  Int      @default(0)
-  Product   Product? @relation(fields: [productId], references: [id])
-  productId String?  @db.ObjectId
+  id              String            @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  image           String
+  price           Int
+  quantity        Int               @default(0)
+  Product         Product?          @relation(fields: [productId], references: [id])
+  productId       String?           @db.ObjectId
+  warranty        Int               @default(0)
+  Warranty        Warranty[]
+  WarehouseImport WarehouseImport[]
+  Sellstatistic   Sellstatistic[]
 }
 
 model Cart {
@@ -65,13 +73,14 @@ model Shipping {
 }
 
 model Order {
-  id              String @id @default(auto()) @map("_id") @db.ObjectId
-  userId          String @db.ObjectId
+  id              String     @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt       DateTime   @default(now())
+  userId          String     @db.ObjectId
   items           String
   paymentMethod   String
-  paymentStatus   String @default("Chưa thanh toán")
-  note            String @default("")
-  status          String @default("Chờ xác nhận")
+  paymentStatus   String     @default("Chưa thanh toán")
+  note            String     @default("")
+  status          String     @default("Chờ xác nhận")
   total           Int
   receiver        String
   email           String
@@ -80,4 +89,48 @@ model Order {
   district        String
   ward            String
   specificAddress String
+  paymentInfo     String     @default("")
+  shippingInfo    String     @default("")
+  cancelReason    String     @default("")
+  Warranty        Warranty[]
+}
+
+model Warranty {
+  id               String          @id @default(auto()) @map("_id") @db.ObjectId
+  Order            Order?          @relation(fields: [orderId], references: [id])
+  orderId          String?         @db.ObjectId
+  productId        String?         @db.ObjectId
+  Product          Product?        @relation(fields: [productId], references: [id])
+  classificationId String?         @db.ObjectId
+  Classification   Classification? @relation(fields: [classificationId], references: [id])
+  startedAt        DateTime        @default(now())
+  dueAt            DateTime
+  userId           String?         @db.ObjectId
+  User             User?           @relation(fields: [userId], references: [id])
+  phone            String
+}
+
+model WarehouseImport {
+  id               String          @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt        DateTime        @default(now())
+  quantity         Int
+  productId        String?         @db.ObjectId
+  Product          Product?        @relation(fields: [productId], references: [id])
+  classificationId String          @db.ObjectId
+  Classification   Classification? @relation(fields: [classificationId], references: [id])
+  importPrice      Int
+  note             String          @default("")
+}
+
+model Sellstatistic {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  productId          String?         @db.ObjectId
+  Product            Product?        @relation(fields: [productId], references: [id])
+  classificationId   String          @db.ObjectId
+  Classification     Classification? @relation(fields: [classificationId], references: [id])
+  importQuantity     Int
+  importAveragePrice Int
+  sellQuantity       Int
+  sellAveragePrice   Int
 }

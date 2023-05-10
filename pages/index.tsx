@@ -5,11 +5,10 @@ import { useMemo, useState } from "react";
 import queryString from "query-string";
 import { SearchProductApi, SearchProductParamsProps } from "./api/product.api";
 import { useQuery } from "react-query";
-import { ProductCard } from "@/components/card/ProductCard";
 import Link from "next/link";
 import { PATH } from "@/const/app-const";
 import { removeMark } from "@/ultis/dataConvert";
-import { CardLoading } from "@/components";
+import { CardLoading, ProductCard } from "@/components";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -59,12 +58,28 @@ function Home() {
       <main>
         <Row style={{ position: "relative" }}>
           <Col span={24}>
-            <img
+            <Row gutter={[8, 8]}>
+              <Col xxl={6}>
+                <img width={"100%"} src="/bn4.png" alt="mix tech" />
+              </Col>
+              <Col xxl={6}>
+                <img width={"100%"} src="/bn2.png" alt="mix tech" />
+              </Col>
+              <Col xxl={6}>
+                <img width={"100%"} src="/bn1.png" alt="mix tech" />
+              </Col>
+
+              <Col xxl={6}>
+                <img width={"100%"} src="/bn3.png" alt="mix tech" />
+              </Col>
+            </Row>
+            {/* <img
               src="/banner.jpg"
               alt="Mini PC-Shop Nghiện nhưng không dở"
               width="100%"
               height="360px"
-            />
+            /> */}
+            {/* <p>Chỗ này dành cho banner nè</p> */}
           </Col>
         </Row>
 
@@ -93,25 +108,31 @@ function Home() {
 
         {getProducts.isLoading && (
           <Row style={{ padding: "0.5rem" }} gutter={[16, 16]}>
-            <Col xxl={6}>
+            <Col xxl={4}>
               <CardLoading />
             </Col>
-            <Col xxl={6}>
+            <Col xxl={4}>
               <CardLoading />
             </Col>
-            <Col xxl={6}>
+            <Col xxl={4}>
               <CardLoading />
             </Col>
-            <Col xxl={6}>
+            <Col xxl={4}>
               <CardLoading />
             </Col>
-            <Col xxl={6}>
+            <Col xxl={4}>
               <CardLoading />
             </Col>
-            <Col xxl={6}>
+            <Col xxl={4}>
               <CardLoading />
             </Col>
-            <Col xxl={6}>
+            <Col xxl={4}>
+              <CardLoading />
+            </Col>
+            <Col xxl={4}>
+              <CardLoading />
+            </Col>
+            <Col xxl={4}>
               <CardLoading />
             </Col>
           </Row>
@@ -132,7 +153,11 @@ function Home() {
             ))}
         </Row>
 
-        <Row style={{ padding: "1rem" }} justify="center">
+        <Row
+          className="boxShadow"
+          style={{ padding: "1rem", borderRadius: "0.5rem" }}
+          justify="center"
+        >
           <Pagination
             style={{
               background: "#fff",

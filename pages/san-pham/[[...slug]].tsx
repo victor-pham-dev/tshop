@@ -8,10 +8,16 @@ import {
   Result,
   Row,
   Space,
+  Typography,
   message,
 } from "antd";
 import React, { useEffect, useMemo, useState } from "react";
-import { BreadCrumb, CarouselProduct, ContentLoading } from "@/components";
+import {
+  BreadCrumb,
+  CarouselProduct,
+  ContentLoading,
+  ProductCard,
+} from "@/components";
 import { CrumbProps } from "@/components/breadCrumb/BreadCrumb";
 import NumberInput from "@/components/ipNumber/ipNumber";
 import { ShoppingCartOutlined, SmileOutlined } from "@ant-design/icons";
@@ -27,10 +33,9 @@ import { useLoading, useUser } from "@/hooks";
 import Link from "next/link";
 import { PATH, STATUS_CODE } from "@/const/app-const";
 import { AddCartDataProps, AddCartItemApi } from "../api/cart.api";
-import { ProductCard } from "@/components/card/ProductCard";
 import { removeMark } from "@/ultis/dataConvert";
 import { useCart } from "@/hooks/useAppContext";
-
+const { Text } = Typography;
 export default function ProductDetails() {
   const { setIsLoading } = useLoading();
   const { add } = useCart();
@@ -148,10 +153,9 @@ export default function ProductDetails() {
       return addCart.mutate(payload);
     }
   }
-  console.log(selectedItem);
 
   return (
-    <>
+    <div>
       <BreadCrumb list={breads} />
       {getInfo.isLoading && <ContentLoading />}
       {data.product !== undefined && (
@@ -162,7 +166,16 @@ export default function ProductDetails() {
                 <Col span={12} style={{ padding: "30px 30px 0 30px" }}>
                   <CarouselProduct images={data.arrImg} />
                 </Col>
-                <Col span={12} style={{ padding: "30px 30px 0 30px" }}>
+                <Col
+                  span={12}
+                  style={{
+                    padding: "30px 30px 0 30px",
+                    background: "#dbdbdb",
+                    marginTop: 30,
+                    opacity: 0.95,
+                  }}
+                  className="roundedBox"
+                >
                   <Row gutter={[0, 14]}>
                     <Col span={24}>
                       <p
@@ -204,105 +217,116 @@ export default function ProductDetails() {
                         </Col>
                       </Row>
                     </Col>
-                  </Row>
-                  <Divider style={{ backgroundColor: "#bfbfbf" }} />
-                  <Row style={{ padding: "0 20px", marginBottom: "30px" }}>
-                    <Col
-                      style={{
-                        backgroundColor: "#fafafa",
-                        padding: "6px 20px",
-                        borderRadius: "8px",
-                      }}
-                    >
-                      <p style={{ fontSize: "1.875rem", color: "red" }}>
-                        {price}
-                      </p>
-                    </Col>
-                  </Row>
-                  <Row
-                    style={{ padding: "0 20px", marginBottom: "30px" }}
-                    gutter={[0, 10]}
-                  >
                     <Col span={24}>
-                      <p>Phân loại:</p>
-                    </Col>
-                    <Col span={24}>
-                      <Radio.Group buttonStyle="solid">
-                        <Space>
-                          {data.classifications.map((item, i) => (
-                            <Radio.Button
-                              className="boxShadow"
-                              id="buttonPhanLoai"
-                              style={{ borderRadius: 4 }}
-                              value={i}
-                              key={i}
-                              onClick={() => handleClickClassify(i)}
-                            >
-                              {item.name}
-                            </Radio.Button>
-                          ))}
-                        </Space>
-                      </Radio.Group>
-                    </Col>
-                  </Row>
-                  <Row
-                    style={{ padding: "0 20px", marginBottom: "30px" }}
-                    gutter={[0, 10]}
-                    align="middle"
-                  >
-                    <Col span={24}>
-                      <p>Số lượng:</p>
-                    </Col>
-                    <Col
-                      span={24}
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
-                      }}
-                    >
-                      <NumberInput
-                        disabled={
-                          ableQuantity === undefined || ableQuantity === 0
-                        }
-                        value={1}
-                        max={ableQuantity ?? 0}
-                      />
-                      {ableQuantity && (
-                        <p>
-                          &nbsp;&nbsp;&nbsp;{ableQuantity}&nbsp;sản phẩm có sẵn
-                        </p>
-                      )}
-                    </Col>
-                  </Row>
-                  <Row
-                    style={{ padding: "0 20px", marginBottom: "30px" }}
-                    gutter={[20, 0]}
-                    align="middle"
-                  >
-                    <Col>
-                      {user.id === undefined ? (
-                        <Link href={`/${PATH.LOGIN}`}>
-                          Đăng nhập để mua hàng
-                        </Link>
-                      ) : (
-                        <button
-                          className="buttonAddCart"
-                          onClick={handleAddCart}
+                      <Divider style={{ backgroundColor: "#bfbfbf" }} />
+                      <Row style={{ padding: "0 20px", marginBottom: "30px" }}>
+                        <Col
+                          style={{
+                            backgroundColor: "#fafafa",
+                            padding: "6px 20px",
+                            borderRadius: "8px",
+                          }}
                         >
-                          <ShoppingCartOutlined />
-                          &nbsp;Thêm Vào Giỏ Hàng
-                        </button>
-                      )}
+                          <p style={{ fontSize: "1.875rem", color: "red" }}>
+                            {price}
+                          </p>
+                        </Col>
+                      </Row>
+                      <Row
+                        style={{ padding: "0 20px", marginBottom: "30px" }}
+                        gutter={[0, 10]}
+                      >
+                        <Col span={24}>
+                          <p>Phân loại:</p>
+                        </Col>
+                        <Col span={24}>
+                          <Radio.Group buttonStyle="solid">
+                            <Space>
+                              {data.classifications.map((item, i) => (
+                                <Radio.Button
+                                  className="boxShadow"
+                                  id="buttonPhanLoai"
+                                  style={{ borderRadius: 4 }}
+                                  value={i}
+                                  key={i}
+                                  onClick={() => handleClickClassify(i)}
+                                >
+                                  {item.name}
+                                </Radio.Button>
+                              ))}
+                            </Space>
+                          </Radio.Group>
+                        </Col>
+                      </Row>
+                      <Row
+                        style={{ padding: "0 20px", marginBottom: "30px" }}
+                        gutter={[0, 10]}
+                        align="middle"
+                      >
+                        <Col span={24}>
+                          <p>Số lượng:</p>
+                        </Col>
+                        <Col
+                          span={24}
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}
+                        >
+                          <NumberInput
+                            disabled={
+                              ableQuantity === undefined || ableQuantity === 0
+                            }
+                            value={1}
+                            max={ableQuantity ?? 0}
+                          />
+                          {ableQuantity !== undefined && (
+                            <p className="textTheme">
+                              &nbsp;&nbsp;&nbsp;{ableQuantity}&nbsp;sản phẩm có
+                              sẵn
+                            </p>
+                          )}
+                        </Col>
+                      </Row>
+                      <Row
+                        style={{ padding: "0 20px", marginBottom: "30px" }}
+                        gutter={[20, 0]}
+                        align="middle"
+                      >
+                        <Col>
+                          {user.id === undefined ? (
+                            <Link href={`/${PATH.LOGIN}`}>
+                              Đăng nhập để mua hàng
+                            </Link>
+                          ) : user.id !== undefined &&
+                            selectedItem !== undefined &&
+                            selectedItem?.quantity <= 0 ? (
+                            <Text type="danger">Phân loại tạm hết hàng</Text>
+                          ) : (
+                            <button
+                              disabled={
+                                selectedItem !== undefined &&
+                                selectedItem?.quantity <= 0
+                              }
+                              className="buttonAddCart"
+                              onClick={handleAddCart}
+                            >
+                              <ShoppingCartOutlined />
+                              &nbsp;Thêm Vào Giỏ Hàng
+                            </button>
+                          )}
+                        </Col>
+                      </Row>
                     </Col>
                   </Row>
                 </Col>
               </Row>
-              <Row style={{ padding: 16 }}>
+              <Row style={{ padding: "30px 0 30px 30px" }}>
                 <Col
-                  className="roundedBox boxShadow textTheme"
+                  className="roundedBox boxShadow"
                   span={24}
-                  style={{ padding: "1rem 0 1rem 1rem" }}
+                  style={{ padding: "1rem 0 1rem 1rem", background: "#bdbdbd" }}
                 >
                   <Divider className="textTheme" orientation="left">
                     Thông tin sản phẩm
@@ -344,7 +368,7 @@ export default function ProductDetails() {
           ]}
         />
       </Modal>
-    </>
+    </div>
   );
 }
 
@@ -352,7 +376,6 @@ interface RelatedProductProps {
   id: string;
 }
 function RelatedProduct({ id }: RelatedProductProps) {
-  console.log(id);
   const getRelated = useQuery(`getRelated ${id}`, () =>
     GetRelatedProductByIdApi(id)
   );
@@ -364,10 +387,10 @@ function RelatedProduct({ id }: RelatedProductProps) {
     return list;
   }, [getRelated.data?.data]);
   return (
-    <Row gutter={[0, 16]} style={{ padding: "1rem" }}>
-      <Divider className="textTheme">Có thể bạn quan tâm</Divider>
+    <Row gutter={[0, 16]} justify="center">
+      <Divider style={{ color: "white" }}>Có thể bạn quan tâm</Divider>
       {products.map((item, i) => (
-        <Col key={`related ${item.id} ${i}`} span={24}>
+        <Col key={`related ${item.id} ${i}`} span={22}>
           <Link
             href={`/${PATH.PRODUCT}/${removeMark(item.name)}?pid=${item.id}`}
           >

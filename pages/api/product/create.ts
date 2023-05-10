@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { Classification, PrismaClient } from "@prisma/client";
+import { Classification } from "@prisma/client";
 import { METHOD, STATUS_CODE } from "@/const/app-const";
 import { ResponseProps } from "@/network/services/api-handler";
 import { AuthToken } from "@/middleware/server/auth";
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 
 interface BodyProps {
   name: string;
@@ -26,7 +26,7 @@ export default async function handler(
   }
   const tokenValid = AuthToken(req, res, "ADMIN");
   if (!tokenValid.pass) {
-    return null;
+    return;
   }
 
   const { name, category, status, images, description, classifications } =

@@ -1,13 +1,13 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient, Product } from "@prisma/client";
 import { METHOD, STATUS_CODE } from "@/const/app-const";
 import { ResponseProps } from "@/network/services/api-handler";
 
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
+import { ProductWithClassifyProps } from "@/contexts/CartContext";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<ResponseProps<Product[] | null>>
+  res: NextApiResponse<ResponseProps<ProductWithClassifyProps[] | null>>
 ) {
   if (req.method !== METHOD.GET) {
     return res.status(STATUS_CODE.INVALID_METHOD).json({
@@ -25,6 +25,9 @@ export default async function handler(
 
     const products = await prisma.product.findMany({
       where: { id: { not: id?.toString() }, category: product?.category },
+      include: {
+        classifications: true,
+      },
       take: 4,
       orderBy: { id: "asc" }, // sắp xếp sản phẩm theo id tăng dần
     });
