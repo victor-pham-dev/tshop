@@ -323,6 +323,18 @@ input[type="number"]::-webkit-outer-spin-button {
   height: 86px;
 }
 @media only screen and (max-width: 575px){
+body {
+      overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    padding-right: 0; /* loại bỏ khoảng trống bên phải */
+    box-sizing: border-box; /* tính cả padding và border vào kích thước của phần tử */
+  }
+  
+  /* Ẩn thanh cuộn trên thiết bị di động của trình duyệt Safari */
+  body::-webkit-scrollbar {
+    display: none;
+  }
 .imageCard {
   height: 140px;
 }

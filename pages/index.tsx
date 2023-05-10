@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { Inter } from "next/font/google";
+// import { Inter } from "next/font/google";
 import { Button, Col, Input, Pagination, Row } from "antd";
 import { useMemo, useState } from "react";
 import queryString from "query-string";
@@ -10,7 +10,7 @@ import { PATH } from "@/const/app-const";
 import { removeMark } from "@/ultis/dataConvert";
 import { Background, CardLoading, ProductCard } from "@/components";
 
-const inter = Inter({ subsets: ["latin"] });
+// const inter = Inter({ subsets: ["latin"] });
 
 function Home() {
   const [filter, setFilter] = useState<SearchProductParamsProps>({
@@ -132,7 +132,7 @@ function Home() {
                 <Col xs={12} xxl={6}>
                   <CardLoading />
                 </Col>
-                <Col xxl={4}>
+                <Col xs={12} xxl={6}>
                   <CardLoading />
                 </Col>
                 <Col xs={12} xxl={6}>
