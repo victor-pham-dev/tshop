@@ -20,13 +20,10 @@ const { Text } = Typography;
 export default function Order() {
   const router = useRouter();
   const { id } = router.query;
-  const { user } = useUser();
-  console.log(id);
   const getOrder = useQuery(`order ${id}`, () => {
     return GetInfoOrderByIdApi(id?.toString() ?? "");
   });
   const dataMemo = useMemo(() => getOrder.data?.data, [getOrder.data?.data]);
-  // console.log(dataMemo);
   const itemsMemo: CartDataProps[] = useMemo(() => {
     if (dataMemo?.items !== undefined) {
       return JSON.parse(dataMemo.items);

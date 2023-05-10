@@ -87,7 +87,6 @@ export function Overview() {
       totalMoney,
     });
   }, [orders]);
-  console.log(orders);
   return (
     <Row style={{ height: "90vh" }}>
       <Col xxl={6}>
