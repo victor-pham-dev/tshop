@@ -27,7 +27,7 @@ export default function Register(): JSX.Element {
           case STATUS_CODE.CONFLICT:
             message.warning(response.msg);
             break;
-          case STATUS_CODE.OK:
+          case STATUS_CODE.CREATED:
             message.success("Đăng ký thành công!");
             router.push(`/${PATH.LOGIN}`);
             break;
@@ -129,16 +129,26 @@ export default function Register(): JSX.Element {
             </Button>
           </Form.Item>
         </Form>
-        <Row>
+        <Row justify="space-between">
           <Col span={12}>
-            <Link href={`/${PATH.LOGIN}`}>
-              <p style={{ float: "left" }}> Đăng nhập</p>
-            </Link>
+            {/* <Link href={`/${PATH.FORGOT_PASSWORD}`}>
+              <Button type="primary" style={{ float: "right" }}>
+                {" "}
+                Quên mật khẩu
+              </Button>
+            </Link> */}
           </Col>
           <Col span={12}>
-            <Link href={`/${PATH.FORGOT_PASSWORD}`}>
-              <p style={{ float: "right" }}> Quên mật khẩu</p>
-            </Link>
+            <Row justify="end" gutter={[8, 8]}>
+              <Col>Đã có tài khoản?</Col>
+              <Col>
+                <Link href={`/${PATH.LOGIN}`}>
+                  <Button type="primary" style={{ float: "left" }}>
+                    Đăng nhập
+                  </Button>
+                </Link>
+              </Col>
+            </Row>
           </Col>
         </Row>
       </Col>

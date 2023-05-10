@@ -8,7 +8,7 @@ import { useQuery } from "react-query";
 import Link from "next/link";
 import { PATH } from "@/const/app-const";
 import { removeMark } from "@/ultis/dataConvert";
-import { CardLoading, ProductCard } from "@/components";
+import { Background, CardLoading, ProductCard } from "@/components";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -56,20 +56,34 @@ function Home() {
         <link rel="icon" href="/favicon.svg" />
       </Head>
       <main>
-        <Row style={{ position: "relative" }}>
+        <Background />
+        <Row>
           <Col span={24}>
-            <Row gutter={[8, 8]}>
-              <Col xxl={6}>
+            <Row justify="center" gutter={[8, 8]}>
+              <Col span={6}>
                 <img width={"100%"} src="/bn4.png" alt="mix tech" />
               </Col>
-              <Col xxl={6}>
-                <img width={"100%"} src="/bn2.png" alt="mix tech" />
+
+              <Col span={6}>
+                <img width={"100%"} src="/bn6.png" alt="mix tech" />
               </Col>
-              <Col xxl={6}>
+              <Col span={6}>
+                <img width={"100%"} src="/bn7.png" alt="mix tech" />
+              </Col>
+              <Col span={6}>
+                <img width={"100%"} src="/bn5.png" alt="mix tech" />
+              </Col>
+              <Col xxl={0} xs={6}>
+                <img width={"100%"} src="/bn8.png" alt="mix tech" />
+              </Col>
+              <Col xxl={0} xs={6}>
                 <img width={"100%"} src="/bn1.png" alt="mix tech" />
               </Col>
+              <Col xxl={0} xs={6}>
+                <img width={"100%"} src="/bn2.png" alt="mix tech" />
+              </Col>
 
-              <Col xxl={6}>
+              <Col xxl={0} xs={6}>
                 <img width={"100%"} src="/bn3.png" alt="mix tech" />
               </Col>
             </Row>
@@ -87,7 +101,7 @@ function Home() {
           <Col
             xs={24}
             lg={14}
-            xl={12}
+            xxl={12}
             style={{
               display: "flex",
               flexDirection: "row",
@@ -105,74 +119,83 @@ function Home() {
             </Button>
           </Col>
         </Row>
+        <Row justify="center">
+          <Col xxl={16} xs={24}>
+            {getProducts.isLoading && (
+              <Row style={{ padding: "0.5rem" }} gutter={[16, 16]}>
+                <Col xs={12} xxl={6}>
+                  <CardLoading />
+                </Col>
+                <Col xs={12} xxl={6}>
+                  <CardLoading />
+                </Col>
+                <Col xs={12} xxl={6}>
+                  <CardLoading />
+                </Col>
+                <Col xxl={4}>
+                  <CardLoading />
+                </Col>
+                <Col xs={12} xxl={6}>
+                  <CardLoading />
+                </Col>
+                <Col xs={12} xxl={6}>
+                  <CardLoading />
+                </Col>
+                <Col xs={12} xxl={6}>
+                  <CardLoading />
+                </Col>
+                <Col xs={12} xxl={6}>
+                  <CardLoading />
+                </Col>
+                <Col xs={12} xxl={6}>
+                  <CardLoading />
+                </Col>
+              </Row>
+            )}
 
-        {getProducts.isLoading && (
-          <Row style={{ padding: "0.5rem" }} gutter={[16, 16]}>
-            <Col xxl={4}>
-              <CardLoading />
-            </Col>
-            <Col xxl={4}>
-              <CardLoading />
-            </Col>
-            <Col xxl={4}>
-              <CardLoading />
-            </Col>
-            <Col xxl={4}>
-              <CardLoading />
-            </Col>
-            <Col xxl={4}>
-              <CardLoading />
-            </Col>
-            <Col xxl={4}>
-              <CardLoading />
-            </Col>
-            <Col xxl={4}>
-              <CardLoading />
-            </Col>
-            <Col xxl={4}>
-              <CardLoading />
-            </Col>
-            <Col xxl={4}>
-              <CardLoading />
-            </Col>
-          </Row>
-        )}
+            <Row style={{ padding: "0.5rem" }} gutter={[16, 16]}>
+              {productsResult?.dataTable !== undefined &&
+                productsResult?.dataTable.map((item) => (
+                  <Col
+                    key={`product so ${item.id}`}
+                    sm={8}
+                    md={6}
+                    xs={12}
+                    xxl={6}
+                  >
+                    <Link
+                      href={`/${PATH.PRODUCT}/${removeMark(item.name)}?pid=${
+                        item.id
+                      }`}
+                    >
+                      <ProductCard {...item} />
+                    </Link>
+                  </Col>
+                ))}
+            </Row>
 
-        <Row style={{ padding: "0.5rem" }} gutter={[16, 16]}>
-          {productsResult?.dataTable !== undefined &&
-            productsResult?.dataTable.map((item) => (
-              <Col key={`product so ${item.id}`} xs={12} sm={8} md={6} xl={4}>
-                <Link
-                  href={`/${PATH.PRODUCT}/${removeMark(item.name)}?pid=${
-                    item.id
-                  }`}
-                >
-                  <ProductCard {...item} />
-                </Link>
-              </Col>
-            ))}
-        </Row>
-
-        <Row
-          className="boxShadow"
-          style={{ padding: "1rem", borderRadius: "0.5rem" }}
-          justify="center"
-        >
-          <Pagination
-            style={{
-              background: "#fff",
-              padding: "6px 0",
-              borderRadius: "8px",
-            }}
-            pageSize={filter.pageSize}
-            showQuickJumper={
-              productsResult?.totalCount !== undefined &&
-              productsResult?.totalCount > 100
-            }
-            defaultCurrent={1}
-            total={productsResult?.totalCount}
-            onChange={(page) => onSearch("newPage", page)}
-          />
+            <Row
+              className="boxShadow"
+              style={{ padding: "1rem", borderRadius: "0.5rem" }}
+              justify="center"
+            >
+              <Pagination
+                style={{
+                  background: "#fff",
+                  padding: "6px 0",
+                  borderRadius: "8px",
+                }}
+                pageSize={filter.pageSize}
+                showQuickJumper={
+                  productsResult?.totalCount !== undefined &&
+                  productsResult?.totalCount > 100
+                }
+                defaultCurrent={1}
+                total={productsResult?.totalCount}
+                onChange={(page) => onSearch("newPage", page)}
+              />
+            </Row>
+          </Col>
         </Row>
       </main>
     </>

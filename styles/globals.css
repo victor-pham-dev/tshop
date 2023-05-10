@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poltawski+Nowy:ital@1&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,400;1,100&display=swap');
 
 * {
   margin: 0;
@@ -202,7 +202,8 @@ main {
 
 /* chinh theme */
 .darkTheme .textTheme {
-  color: #fff;
+  color: #000;
+  /* color: #fff; */
 }
 .lightTheme .textTheme {
   color: #000;
@@ -305,4 +306,33 @@ input[type="number"]::-webkit-outer-spin-button {
 .buttonBuy:hover {
   background-color: #1677ff;
   border-color: #1677ff;
+}
+.logoText {
+  background-image: linear-gradient(to right, #07ba99, #84a0fa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 1.8rem;
+}
+.imageCard {
+  height: 180px;
+}
+.imgSlide{
+  height:   440px;
+}
+.cartImage {
+  height: 86px;
+}
+@media only screen and (max-width: 575px){
+.imageCard {
+  height: 140px;
+}
+.imgSlide{
+  height:   300px;
+}
+.cartImage {
+  height: 66px;
+}
+.logoText {
+  font-size: 1.3rem;
+}
 }

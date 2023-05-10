@@ -16,7 +16,10 @@ export const AppFooter: React.FC = () => {
         <Image src="/favicon.svg" alt="shop" width={80} height={80}></Image>
       </Col>
       <Col>
-        <p>&#169;&nbsp; Copyright by Mini PC - Nhỏ nhưng có võ - {thisYear}</p>
+        <p>
+          &#169;&nbsp; Copyright by Mix tech - {thisYear} - Cảm ơn quý khách
+          hàng đã ghé thăm {"<3"}
+        </p>
       </Col>
     </Row>
   );

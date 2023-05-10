@@ -1,5 +1,5 @@
-import React, { createContext, ReactNode, useCallback, useState } from "react";
-import { STORAGE, STORAGE_KEY } from "../const/app-const";
+import React, { createContext, ReactNode } from "react";
+import { STORAGE } from "../const/app-const";
 import { useStorage } from "../hooks";
 
 interface ThemeProps {
@@ -34,7 +34,7 @@ type Props = {
 };
 
 function ThemeContextProvider({ children }: Props) {
-  const [theme, setTheme] = useStorage(STORAGE.LOCAL, "theme", lightTheme);
+  const [theme, setTheme] = useStorage(STORAGE.LOCAL, "theme", darkTheme);
   function changeTheme(newTheme: "light" | "dark") {
     if (newTheme === "light") {
       setTheme(lightTheme);

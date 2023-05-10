@@ -6,6 +6,7 @@ import { CardLoading } from "./loading/CardLoading";
 import { BreadCrumb } from "./breadCrumb/BreadCrumb";
 import CarouselProduct from "./carousel/carouselProductDetail";
 import { ProductCard } from "./card/ProductCard";
+import { Background } from "./background/Background";
 export {
   FullPageLoading,
   TagsLoading,
@@ -15,4 +16,5 @@ export {
   ProductCard,
   BreadCrumb,
   CarouselProduct,
+  Background,
 };

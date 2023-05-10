@@ -93,16 +93,26 @@ export default function Login(): JSX.Element {
             </Button>
           </Form.Item>
         </Form>
-        <Row>
+        <Row justify="space-between">
           <Col span={12}>
-            <Link href={`/${PATH.REGISTER}`}>
-              <p style={{ float: "left" }}> Đăng ký</p>
-            </Link>
+            {/* <Link href={`/${PATH.FORGOT_PASSWORD}`}>
+              <Button type="primary" style={{ float: "right" }}>
+                {" "}
+                Quên mật khẩu
+              </Button>
+            </Link> */}
           </Col>
           <Col span={12}>
-            <Link href={`/${PATH.FORGOT_PASSWORD}`}>
-              <p style={{ float: "right" }}> Quên mật khẩu</p>
-            </Link>
+            <Row justify="end" gutter={[8, 8]}>
+              <Col>Chưa có tài khoản?</Col>
+              <Col>
+                <Link href={`/${PATH.REGISTER}`}>
+                  <Button type="primary" style={{ float: "left" }}>
+                    Đăng ký
+                  </Button>
+                </Link>
+              </Col>
+            </Row>
           </Col>
         </Row>
       </Col>

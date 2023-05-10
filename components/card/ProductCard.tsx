@@ -75,8 +75,8 @@ export function ProductCard(product: ProductWithClassifyProps): JSX.Element {
             <img
               src={avatar}
               alt={product.name}
+              className="imageCard"
               width="100%"
-              height="180"
               style={{ borderRadius: "8px" }}
             />
           </div>

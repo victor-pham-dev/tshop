@@ -67,7 +67,20 @@ export default function UserCart() {
   );
 
   function CheckAll(checked: Boolean) {
-    const checkAllCart = cart.map((item) => ({ ...item, checked }));
+    const checkAllCart = cart.map((item) => {
+      if (checked === true) {
+        const classifi = item.Product.classifications.find(
+          (cls) => cls.id === item.classificationId
+        );
+        if (classifi !== undefined && item.quantity <= classifi?.quantity) {
+          return { ...item, checked };
+        } else {
+          return item;
+        }
+      } else {
+        return { ...item, checked };
+      }
+    });
     return updateAll(checkAllCart);
   }
 
@@ -152,7 +165,7 @@ export default function UserCart() {
           background: "#bdbdbd",
           marginTop: 30,
           marginBottom: 30,
-          opacity: 0.9,
+          opacity: 0.95,
         }}
         className="roundedBox"
       >
@@ -180,15 +193,27 @@ export default function UserCart() {
           gutter={[8, 0]}
         >
           <Col xxl={1}></Col>
-          <Col xxl={23}>
+          <Col xxl={23} xs={24}>
             <Row align="middle" style={{ padding: "0.5rem" }} gutter={[8, 0]}>
-              <Col xxl={3}>Ảnh</Col>
-              <Col xxl={5}>Tên sản phẩm</Col>
-              <Col xxl={4}>Phân loại</Col>
-              <Col xxl={3}>Giá</Col>
-              <Col xxl={3}>Số lượng</Col>
-              <Col xxl={3}>Thành tiền</Col>
-              <Col xxl={1}></Col>
+              <Col xxl={3} xs={6}>
+                Ảnh
+              </Col>
+              <Col xxl={5} xs={0}>
+                Tên sản phẩm
+              </Col>
+              <Col xxl={4} xs={6}>
+                Phân loại
+              </Col>
+              <Col xxl={3} xs={6}>
+                Giá
+              </Col>
+              <Col xxl={3} xs={5}>
+                Số lượng
+              </Col>
+              <Col xxl={3} xs={0}>
+                Thành tiền
+              </Col>
+              <Col xxl={1} xs={0}></Col>
             </Row>
           </Col>
         </Row>

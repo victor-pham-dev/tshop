@@ -77,16 +77,6 @@ export const AppLayout: React.FC<Props> = ({ children }) => {
               position: "relative",
             }}
           >
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                backgroundImage: `url(${`/bg.jpeg`})`,
-                backgroundSize: "100% auto",
-                backgroundRepeat: "repeat-y",
-                position: "absolute",
-              }}
-            ></div>
             {children}
           </Content>
 

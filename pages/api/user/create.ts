@@ -25,8 +25,8 @@ export default async function handler(
       },
     });
     if (findExisted !== null) {
-      return res.status(STATUS_CODE.INVALID_METHOD).json({
-        code: STATUS_CODE.INVALID_METHOD,
+      return res.status(STATUS_CODE.CONFLICT).json({
+        code: STATUS_CODE.CONFLICT,
         data: null,
         msg: "Email đã được sử dụng",
       });

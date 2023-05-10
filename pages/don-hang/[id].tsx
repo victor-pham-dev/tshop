@@ -19,9 +19,10 @@ const { Text } = Typography;
 
 export default function Order() {
   const router = useRouter();
+  const { token } = useUser();
   const { id } = router.query;
-  const getOrder = useQuery(`order ${id}`, () => {
-    return GetInfoOrderByIdApi(id?.toString() ?? "");
+  const getOrder = useQuery([`order ${id}`, token], () => {
+    return GetInfoOrderByIdApi(id?.toString() ?? "", token ?? "");
   });
   const dataMemo = useMemo(() => getOrder.data?.data, [getOrder.data?.data]);
   const itemsMemo: CartDataProps[] = useMemo(() => {
@@ -36,7 +37,7 @@ export default function Order() {
         <ContentLoading />
       ) : dataMemo !== undefined && dataMemo !== null ? (
         <Row gutter={[16, 16]} style={{ padding: "1rem" }}>
-          <Divider className="textTheme">
+          <h4>
             Cảm ơn Quý khách đã đặt hàng - Thông tin đơn hàng {id} -{" "}
             <span
               style={
@@ -53,12 +54,19 @@ export default function Order() {
             >
               {dataMemo.status}
             </span>
-          </Divider>
+          </h4>
           {dataMemo.status === ORDER_STATUS.CANCELED && (
             <Text code>{`Lý do: ${dataMemo.cancelReason}`}</Text>
           )}
-          <Col xxl={16} xs={24}>
-            <Divider className="textTheme">Sản phẩm mua</Divider>
+          {dataMemo.paymentMethod === PAYMENT_METHOD.ONLINE &&
+            dataMemo.paymentStatus === PAYMENT_STATUS.NOT_YET && (
+              <Text type="danger">
+                Đơn hàng của quý khách đã chọn thanh toán Online, quý khách vui
+                lòng thanh toán tới tài khoản sau
+              </Text>
+            )}
+          <Col xxl={16} xs={{ span: 24, order: 1 }}>
+            <Divider style={{ color: "white" }}>Sản phẩm mua</Divider>
             <Row
               style={{
                 background: "#fff",
@@ -72,18 +80,30 @@ export default function Order() {
               align="middle"
               gutter={[8, 0]}
             >
-              <Col xxl={23}>
+              <Col xxl={23} xs={24}>
                 <Row
                   align="middle"
                   style={{ padding: "0.5rem" }}
                   gutter={[8, 0]}
                 >
-                  <Col xxl={3}>Ảnh</Col>
-                  <Col xxl={5}>Tên sản phẩm</Col>
-                  <Col xxl={4}>Phân loại</Col>
-                  <Col xxl={3}>Giá</Col>
-                  <Col xxl={3}>Số lượng</Col>
-                  <Col xxl={3}>Thành tiền</Col>
+                  <Col xxl={3} xs={6}>
+                    Ảnh
+                  </Col>
+                  <Col xxl={5} xs={0}>
+                    Tên sản phẩm
+                  </Col>
+                  <Col xxl={4} xs={6}>
+                    Phân loại
+                  </Col>
+                  <Col xxl={3} xs={5}>
+                    Giá
+                  </Col>
+                  <Col xxl={3} xs={5}>
+                    Số lượng
+                  </Col>
+                  <Col xxl={3} xs={0}>
+                    Thành tiền
+                  </Col>
                   <Col xxl={1}></Col>
                 </Row>
               </Col>
@@ -106,11 +126,11 @@ export default function Order() {
               </Col>
               <Col>Tổng tiền: {dataMemo?.total.toLocaleString()} đ </Col>
             </Row>
-            <Divider className="textTheme">Thông tin nhận hàng</Divider>
+            <Divider style={{ color: "white" }}>Thông tin nhận hàng</Divider>
             <Space
-              style={{ width: "100%" }}
+              style={{ width: "100%", color: "white" }}
               direction="vertical"
-              className="roundedBox boxShadow textTheme"
+              className="roundedBox boxShadow"
             >
               <h4>{`Người nhận : ${dataMemo?.receiver}`}</h4>
               <h4>{`Số điện thoại : ${dataMemo?.phone}`}</h4>
@@ -119,24 +139,27 @@ export default function Order() {
               <h4>{`Ghi chú : ${dataMemo?.note}`}</h4>
             </Space>
 
-            <Divider className="textTheme">Thông tin vận chuyển</Divider>
-            <p>Sẽ được thông báo qua EMAIL</p>
+            <Divider style={{ color: "white" }}>Thông tin vận chuyển</Divider>
+            <p style={{ color: "white" }}>
+              {" "}
+              {dataMemo.shippingInfo.trim().length > 0
+                ? dataMemo.shippingInfo.trim().length
+                : "Chưa có thông tin vận chuyển"}
+            </p>
           </Col>
 
-          <Col xxl={8} xs={24}>
-            <Divider className="textTheme">Thông tin thanh toán</Divider>
+          <Col xxl={8} xs={{ span: 24, order: 0 }}>
+            <Divider style={{ color: "white" }}>Thông tin thanh toán</Divider>
             <Space
               style={{ width: "100%" }}
               direction="vertical"
               className="roundedBox boxShadow textTheme"
             >
               <Text
-                code
-                className="textTheme"
+                style={{ color: "white" }}
               >{`Phương thức : ${dataMemo?.paymentMethod}`}</Text>
               {dataMemo?.paymentMethod !== PAYMENT_METHOD.COD && (
                 <Text
-                  code
                   type={
                     dataMemo?.paymentStatus === PAYMENT_STATUS.NOT_YET
                       ? "warning"
@@ -147,23 +170,27 @@ export default function Order() {
               {dataMemo?.paymentMethod !== PAYMENT_METHOD.COD &&
                 dataMemo?.paymentStatus === PAYMENT_STATUS.NOT_YET && (
                   <React.Fragment>
-                    <Text className="textTheme">
+                    <Text style={{ color: "white" }}>
                       Vui lòng chuyển khoản tới tài khoản sau để thanh toán
                     </Text>
-                    <Text code className="textTheme">
+                    <Text style={{ color: "white" }}>
                       Nội dung:
-                      <Text className="textTheme" code copyable>
+                      <Text code copyable type="success">
                         {dataMemo.email}
                       </Text>
                     </Text>
 
-                    <Text code className="textTheme">
+                    <Text style={{ color: "white" }}>
                       Số tiền: {dataMemo.total.toLocaleString()} đ{" "}
                     </Text>
-                    <Text code className="textTheme">
-                      CTK: PHAM VAN TRUONG - 03960870688 - TP
+                    <Text style={{ color: "white" }}>
+                      CTK: PHAM VAN TRUONG -
+                      <Text code copyable type="success">
+                        03960870688
+                      </Text>{" "}
+                      - TP
                     </Text>
-                    <Text code type="danger">
+                    <Text type="warning">
                       Đơn hàng của bạn sẽ được xử lý nhanh hơn vào giờ hành
                       chính - LH:{" "}
                       <Text code copyable type="success">
@@ -176,7 +203,7 @@ export default function Order() {
                       src="https://img.vietqr.io/image/TPB-03960870688-compact.png"
                     />
 
-                    <Divider className="textTheme">
+                    <Divider style={{ color: "white" }}>
                       Xin chân thành cảm ơn quý khách !
                     </Divider>
                   </React.Fragment>

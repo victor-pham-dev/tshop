@@ -15,8 +15,12 @@ export interface BreadCrumbProps {
 export function BreadCrumb({ list }: BreadCrumbProps) {
   return (
     <Row
-      className="textTheme"
-      style={{ padding: "0.5rem", marginTop: "0.5rem", background: "white" }}
+      style={{
+        padding: "0.3rem",
+        marginTop: "0.3rem",
+        backgroundColor: "white",
+        zIndex: 99,
+      }}
     >
       <Link href={"/"} style={{ fontWeight: 400 }}>
         Trang chủ {`> `}

@@ -2,11 +2,11 @@ import { useQuery } from "react-query";
 import { GetMyOrdersApi } from "../api/order.api";
 import React, { useMemo } from "react";
 import { ContentLoading } from "@/components";
-import { Button, Col, Divider, Row } from "antd";
+import { Button, Col, Divider, Row, Typography } from "antd";
 import { CartDataProps } from "@/contexts/CartContext";
 import Link from "next/link";
 import { PATH } from "@/const/app-const";
-
+const { Text } = Typography;
 export default function MyOrders() {
   const getMyOrders = useQuery("getMyOrders", () => GetMyOrdersApi());
 
@@ -30,9 +30,10 @@ export default function MyOrders() {
             xs={24}
             style={{
               background: "#bdbdbd",
-              marginTop: 30,
+              marginTop: 24,
               marginBottom: 30,
-              opacity: 0.9,
+
+              padding: "1rem",
             }}
             className="roundedBox"
           >
@@ -51,17 +52,40 @@ export default function MyOrders() {
                   >
                     <Row
                       align="middle"
-                      gutter={[16, 0]}
+                      gutter={[16, 16]}
                       className="roundedBox boxShadow hoverEffect textTheme"
                     >
-                      <Col xxl={3}>{items.length} Sản phẩm</Col>
-                      <Col xxl={4}>{item.total.toLocaleString()}đ</Col>
-                      <Col xxl={6}>{item.paymentMethod}</Col>
-                      <Col xxl={4}>{item.paymentStatus}</Col>
-                      <Col xxl={4}>{item.status}</Col>
-                      <Col xxl={2}>
+                      <Col span={24}>
+                        Ngày tạo:{" "}
+                        {new Date(item.createdAt).toLocaleDateString()}-
+                        <Text code type="danger" copyable>
+                          {item.id}
+                        </Text>
+                      </Col>
+                      <Col xxl={3} xs={24}>
+                        <Text>{items.length}</Text> Sản phẩm
+                      </Col>
+                      <Col xxl={4} xs={24}>
+                        <p>Tổng tiền:</p>
+                        <Text code> {item.total.toLocaleString()}</Text>đ
+                      </Col>
+                      <Col xxl={6} xs={24}>
+                        <p>Phương thức:</p>{" "}
+                        <Text code>{item.paymentMethod}</Text>
+                      </Col>
+                      <Col xxl={4} xs={24}>
+                        <p>Thanh toán:</p>
+                        <Text code> {item.paymentStatus}</Text>
+                      </Col>
+                      <Col xxl={4} xs={24}>
+                        <p>Trạng thái :</p>
+                        <Text code>{item.status}</Text>
+                      </Col>
+                      <Col xxl={3} xs={24}>
                         <Link href={`/${PATH.ORDER}/${item.id}`}>
-                          <Button type="primary">Chi tiết</Button>
+                          <Button block type="primary">
+                            Chi tiết
+                          </Button>
                         </Link>
                       </Col>
                     </Row>

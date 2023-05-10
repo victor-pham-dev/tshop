@@ -11,7 +11,7 @@ export const useLoading = () => {
 
 export const useUser = () => {
   const { user, update, reset, login } = useContext(UserContext);
-  return { user, update, reset, login };
+  return { user, update, reset, login, token: user.token };
 };
 
 export const useTheme = () => {

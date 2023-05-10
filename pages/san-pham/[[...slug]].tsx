@@ -13,6 +13,7 @@ import {
 } from "antd";
 import React, { useEffect, useMemo, useState } from "react";
 import {
+  Background,
   BreadCrumb,
   CarouselProduct,
   ContentLoading,
@@ -46,9 +47,7 @@ export default function ProductDetails() {
     GetInfoProductByIdApi(pid?.toString() ?? "")
   );
   if (getInfo.data === undefined && !getInfo.isLoading) {
-    return (
-      <Divider className="textTheme">Lấy thông tin sản phẩm thất bại </Divider>
-    );
+    return <Divider>Lấy thông tin sản phẩm thất bại </Divider>;
   }
 
   const data = useMemo(() => {
@@ -156,40 +155,47 @@ export default function ProductDetails() {
 
   return (
     <div>
-      <BreadCrumb list={breads} />
+      {/* <BreadCrumb list={breads} /> */}
       {getInfo.isLoading && <ContentLoading />}
       {data.product !== undefined && (
         <React.Fragment>
+          <Background />
           <Row gutter={[16, 16]}>
             <Col xxl={19}>
-              <Row>
-                <Col span={12} style={{ padding: "30px 30px 0 30px" }}>
+              <Row
+                justify={"center"}
+                style={{ padding: "0.5rem" }}
+                gutter={[16, 6]}
+              >
+                <Col xxl={{ span: 12 }} xs={{ span: 24 }}>
                   <CarouselProduct images={data.arrImg} />
                 </Col>
                 <Col
-                  span={12}
                   style={{
-                    padding: "30px 30px 0 30px",
                     background: "#dbdbdb",
-                    marginTop: 30,
+                    borderRadius: "0.5rem",
                     opacity: 0.95,
+                    padding: "1rem",
                   }}
-                  className="roundedBox"
+                  xxl={{ span: 12 }}
+                  xs={{ span: 23 }}
                 >
-                  <Row gutter={[0, 14]}>
+                  <Row gutter={[0, 8]}>
                     <Col span={24}>
                       <p
                         style={{
                           fontSize: "1.4rem",
                           lineHeight: "1.6rem",
+                          marginTop: "1.5rem",
                           fontWeight: 500,
                           textTransform: "capitalize",
+                          color: "black",
                         }}
                       >
                         {data.product?.name}
                       </p>
                     </Col>
-                    <Col span={24}>
+                    {/* <Col span={24}>
                       <Row gutter={[16, 0]}>
                         <Col
                           style={{
@@ -216,7 +222,7 @@ export default function ProductDetails() {
                           <p>Tình trạng: {data.product?.status}</p>
                         </Col>
                       </Row>
-                    </Col>
+                    </Col> */}
                     <Col span={24}>
                       <Divider style={{ backgroundColor: "#bfbfbf" }} />
                       <Row style={{ padding: "0 20px", marginBottom: "30px" }}>
@@ -237,24 +243,26 @@ export default function ProductDetails() {
                         gutter={[0, 10]}
                       >
                         <Col span={24}>
-                          <p>Phân loại:</p>
+                          <p className="textTheme">Phân loại:</p>
                         </Col>
                         <Col span={24}>
                           <Radio.Group buttonStyle="solid">
-                            <Space>
+                            <Row gutter={[12, 12]}>
                               {data.classifications.map((item, i) => (
-                                <Radio.Button
-                                  className="boxShadow"
-                                  id="buttonPhanLoai"
-                                  style={{ borderRadius: 4 }}
-                                  value={i}
-                                  key={i}
-                                  onClick={() => handleClickClassify(i)}
-                                >
-                                  {item.name}
-                                </Radio.Button>
+                                <Col>
+                                  <Radio.Button
+                                    className="boxShadow"
+                                    id="buttonPhanLoai"
+                                    style={{ borderRadius: 4 }}
+                                    value={i}
+                                    key={i}
+                                    onClick={() => handleClickClassify(i)}
+                                  >
+                                    {item.name}
+                                  </Radio.Button>
+                                </Col>
                               ))}
-                            </Space>
+                            </Row>
                           </Radio.Group>
                         </Col>
                       </Row>
@@ -264,7 +272,7 @@ export default function ProductDetails() {
                         align="middle"
                       >
                         <Col span={24}>
-                          <p>Số lượng:</p>
+                          <p className="textTheme">Số lượng:</p>
                         </Col>
                         <Col
                           span={24}
@@ -321,25 +329,31 @@ export default function ProductDetails() {
                     </Col>
                   </Row>
                 </Col>
-              </Row>
-              <Row style={{ padding: "30px 0 30px 30px" }}>
-                <Col
-                  className="roundedBox boxShadow"
-                  span={24}
-                  style={{ padding: "1rem 0 1rem 1rem", background: "#bdbdbd" }}
-                >
-                  <Divider className="textTheme" orientation="left">
-                    Thông tin sản phẩm
-                  </Divider>
-                  <Row
-                    dangerouslySetInnerHTML={{
-                      __html: data.product?.description,
-                    }}
-                  />
+                <Col span={24}>
+                  <Row>
+                    <Col
+                      className="roundedBox boxShadow"
+                      span={24}
+                      style={{
+                        background: "#bdbdbd",
+                        padding: "1rem",
+                        opacity: 0.95,
+                      }}
+                    >
+                      <Divider className="textTheme" orientation="left">
+                        Thông tin sản phẩm
+                      </Divider>
+                      <Row
+                        dangerouslySetInnerHTML={{
+                          __html: data.product?.description,
+                        }}
+                      />
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
             </Col>
-            <Col xxl={5}>
+            <Col xxl={5} xs={24}>
               {pid === undefined ? (
                 <ContentLoading />
               ) : (
@@ -387,10 +401,10 @@ function RelatedProduct({ id }: RelatedProductProps) {
     return list;
   }, [getRelated.data?.data]);
   return (
-    <Row gutter={[0, 16]} justify="center">
+    <Row gutter={[12, 16]} justify="center">
       <Divider style={{ color: "white" }}>Có thể bạn quan tâm</Divider>
       {products.map((item, i) => (
-        <Col key={`related ${item.id} ${i}`} span={22}>
+        <Col key={`related ${item.id} ${i}`} xxl={22} xs={12}>
           <Link
             href={`/${PATH.PRODUCT}/${removeMark(item.name)}?pid=${item.id}`}
           >

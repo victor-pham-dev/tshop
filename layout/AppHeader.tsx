@@ -53,18 +53,21 @@ export default function AppHeader(): JSX.Element {
                 <Image
                   src="/Logo.png"
                   alt="Tshop Mini PC"
-                  width={64}
-                  height={64}
+                  width={60}
+                  height={60}
                 />
               </Col>
               <Col>
                 <p
+                  className="logoText"
                   style={{
-                    fontFamily: "Poltawski Nowy, serif",
-                    fontSize: "16px",
+                    fontFamily: `'Josefin Sans', sans-serif`,
+
                     marginLeft: "10px",
                   }}
-                ></p>
+                >
+                  Mix tech
+                </p>
               </Col>
             </Row>
           </Col>

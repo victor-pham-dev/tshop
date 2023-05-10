@@ -28,7 +28,7 @@ export default class CarouselProduct extends Component {
         >
          {this.props.images.map((item,i)=>(
           <div key={`to ${i}`}>
-            <img src={item} alt={item} style={{width: '100%', maxHeight: 460, borderRadius: '0.5rem'}} />
+            <img src={item} alt={item} className="imgSlide" style={{width: '100%', borderRadius: '0.5rem'}} />
           </div>
          ))}
         </Slider>
@@ -38,9 +38,21 @@ export default class CarouselProduct extends Component {
           asNavFor={this.state.nav1}
           ref={(slider) => (this.slider2 = slider)}
           slidesToShow={5}
+              responsive= { [
+        
+      
+        {
+          breakpoint: 480,
+          settings: {
+            slidesToShow: 4,
+            
+          }
+        }
+      ]}
           swipeToSlide={true}
           focusOnSelect={true}
           infinite={false}
+          arrows={false}
         >
        {this.props.images.map((item,i)=>(
           <div id={`navSlide ${i}`} style={{padding: 8}} key={`nho ${i}`}>
