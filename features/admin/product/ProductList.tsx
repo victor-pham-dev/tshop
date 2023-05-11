@@ -151,7 +151,7 @@ export function ProductList() {
             {
               key: "product",
               label: "Sửa thông tin sản phẩm",
-              children: <EditProduct product={product} />,
+              children: <EditProduct product={product} setOpenEditModal={setOpenEditModal} />,
             },
             {
               key: "classfy",
@@ -173,8 +173,9 @@ export function ProductList() {
 
 interface EditProductProps {
   product: Product | undefined;
+  setOpenEditModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
-function EditProduct({ product }: EditProductProps) {
+function EditProduct({ product,setOpenEditModal }: EditProductProps) {
   const { setIsLoading } = useLoading();
   const queryClient = useQueryClient();
 
@@ -189,6 +190,7 @@ function EditProduct({ product }: EditProductProps) {
         if (data.code === STATUS_CODE.OK) {
           message.success("Cập nhật thành công");
           queryClient.invalidateQueries("searchProduct");
+          setOpenEditModal(false)
         } else {
           message.error("Đã có lỗi xảy ra");
         }
@@ -273,9 +275,10 @@ function EditProduct({ product }: EditProductProps) {
               },
             ]}
           >
-            <Input
+            <Input.TextArea
+              allowClear
               style={{ width: "100%" }}
-              min={1}
+            
               placeholder="Link, phân cách bởi dấu , "
             />
           </Form.Item>
@@ -327,6 +330,7 @@ function EditClassify({
         if (data.code === STATUS_CODE.OK) {
           message.success("Cập nhật thành công");
           queryClient.invalidateQueries("searchProduct");
+          setOpenEditModal(false)
         } else {
           message.error("Đã có lỗi xảy ra");
         }
@@ -385,7 +389,7 @@ function EditClassify({
               label="Link ảnh"
               rules={[{ required: true, message: "Link ảnh đâu ?" }]}
             >
-              <Input style={{ width: "100%" }} placeholder="Link ảnh" />
+              <Input.TextArea style={{ width: "100%" }} placeholder="Link ảnh" />
             </Form.Item>
             <img alt="vuo nhe" src={item.image} width={120} height={120} />
             <Form.Item
@@ -450,7 +454,7 @@ function EditClassify({
             label="Link ảnh"
             rules={[{ required: true, message: "Link ảnh đâu ?" }]}
           >
-            <Input style={{ width: "100%" }} placeholder="Link ảnh" />
+            <Input.TextArea style={{ width: "100%" }} placeholder="Link ảnh" />
           </Form.Item>
           <Form.Item
             name={"name"}
