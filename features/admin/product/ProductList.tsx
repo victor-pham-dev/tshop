@@ -29,7 +29,7 @@ import {
   message,
 } from "antd";
 import queryString from "query-string";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
 export function ProductList() {
@@ -151,13 +151,19 @@ export function ProductList() {
             {
               key: "product",
               label: "Sửa thông tin sản phẩm",
-              children: <EditProduct  setProduct={setProduct} product={product} setOpenEditModal={setOpenEditModal} />,
+              children: (
+                <EditProduct
+                  setProduct={setProduct}
+                  product={product}
+                  setOpenEditModal={setOpenEditModal}
+                />
+              ),
             },
             {
               key: "classfy",
               label: "Sửa thông tin phân loại",
               children: (
-                <EditClassify
+                <EditClassifies
                   productId={product?.id}
                   setOpenEditModal={setOpenEditModal}
                   classifies={product?.classifications ?? []}
@@ -175,12 +181,25 @@ export function ProductList() {
 interface EditProductProps {
   product: Product | undefined;
   setOpenEditModal: React.Dispatch<React.SetStateAction<boolean>>;
-  setProduct: React.Dispatch<React.SetStateAction<ProductWithClassifyProps | undefined>>
+  setProduct: React.Dispatch<
+    React.SetStateAction<ProductWithClassifyProps | undefined>
+  >;
 }
-function EditProduct({ product,setOpenEditModal, setProduct }: EditProductProps) {
+function EditProduct({
+  product,
+  setOpenEditModal,
+  setProduct,
+}: EditProductProps) {
   const { setIsLoading } = useLoading();
   const queryClient = useQueryClient();
-
+  const [form] = Form.useForm();
+  useEffect(() => {
+    if (product !== undefined) {
+      return form.setFieldsValue({ ...product });
+    } else {
+      return form.resetFields();
+    }
+  }, [product]);
   const editProduct = useMutation(
     "createProduct",
     (data: Product) => EditProductApi(data),
@@ -192,16 +211,16 @@ function EditProduct({ product,setOpenEditModal, setProduct }: EditProductProps)
         if (data.code === STATUS_CODE.OK) {
           message.success("Cập nhật thành công");
           queryClient.invalidateQueries("searchProduct");
-          setOpenEditModal(false)
+          setOpenEditModal(false);
         } else {
           message.error("Đã có lỗi xảy ra");
         }
         setIsLoading(false);
-        setProduct(undefined)
+        setProduct(undefined);
       },
       onError: () => {
         setIsLoading(false);
-        setProduct(undefined)
+        setProduct(undefined);
         message.error("Đã có lỗi xảy ra");
       },
     }
@@ -212,6 +231,7 @@ function EditProduct({ product,setOpenEditModal, setProduct }: EditProductProps)
         <>Không lấy được thông tin</>
       ) : (
         <Form
+          form={form}
           name="editProduct"
           labelCol={{ span: 24 }}
           wrapperCol={{ span: 24 }}
@@ -282,7 +302,6 @@ function EditProduct({ product,setOpenEditModal, setProduct }: EditProductProps)
             <Input.TextArea
               allowClear
               style={{ width: "100%" }}
-            
               placeholder="Link, phân cách bởi dấu , "
             />
           </Form.Item>
@@ -313,18 +332,19 @@ function EditProduct({ product,setOpenEditModal, setProduct }: EditProductProps)
 interface EditClassifiesProps {
   classifies: Classification[];
   productId: string | undefined;
-  setOpenEditModal: React.Dispatch<React.SetStateAction<ProductWithClassifyProps | undefined>>;
-  setProduct: React.Dispatch<React.SetStateAction<ProductWithClassifyProps | undefined>>
+  setOpenEditModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setProduct: React.Dispatch<
+    React.SetStateAction<ProductWithClassifyProps | undefined>
+  >;
 }
-function EditClassify({
+function EditClassifies({
   classifies,
   setOpenEditModal,
   productId,
-  setProduct
+  setProduct,
 }: EditClassifiesProps) {
   const { setIsLoading } = useLoading();
   const queryClient = useQueryClient();
-
   const editClassifyProduct = useMutation(
     "editClassifyProduct",
     (data: Classification) => EditClassifyProductApi(data),
@@ -336,18 +356,17 @@ function EditClassify({
         if (data.code === STATUS_CODE.OK) {
           message.success("Cập nhật thành công");
           queryClient.invalidateQueries("searchProduct");
-          setOpenEditModal(false)
-         
+          setOpenEditModal(false);
         } else {
           message.error("Đã có lỗi xảy ra");
         }
         setIsLoading(false);
-        setProduct(undefined)
+        setProduct(undefined);
       },
       onError: () => {
         setIsLoading(false);
         message.error("Đã có lỗi xảy ra");
-        setProduct(undefined)
+        setProduct(undefined);
       },
     }
   );
@@ -378,70 +397,13 @@ function EditClassify({
   return (
     <Row gutter={[0, 24]}>
       {classifies.map((item) => (
-        <Col
-          className="roundedBox boxShadow"
-          key={`ahsdkfja ${item}`}
-          span={24}
-        >
-          <Form
-            name={`edit ${item.id}`}
-            labelCol={{ span: 24 }}
-            wrapperCol={{ span: 24 }}
-            initialValues={{ ...item }}
-            onFinish={(values) =>
-              editClassifyProduct.mutate({ ...values, id: item.id })
-            }
-            autoComplete="off"
-          >
-            <Form.Item
-              name={"image"}
-              label="Link ảnh"
-              rules={[{ required: true, message: "Link ảnh đâu ?" }]}
-            >
-              <Input.TextArea style={{ width: "100%" }} placeholder="Link ảnh" />
-            </Form.Item>
-            <img alt="vuo nhe" src={item.image} width={120} height={120} />
-            <Form.Item
-              name={"name"}
-              label="Tên phân loại"
-              rules={[{ required: true, message: "Tên phân loại đâu ?" }]}
-            >
-              <Input style={{ width: "100%" }} placeholder="Tên phân loại" />
-            </Form.Item>
-            <Form.Item
-              name={"price"}
-              label="Giá phân loại"
-              rules={[{ required: true, message: "Giá đâu" }]}
-            >
-              <InputNumber
-                style={{ width: "100%" }}
-                placeholder="Giá"
-                formatter={(value) =>
-                  `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                }
-              />
-            </Form.Item>
-            <Form.Item
-              name={"warranty"}
-              label="Thời gian bảo hành"
-              rules={[{ required: true, message: "Thời gian bảo hành đâu" }]}
-            >
-              <InputNumber
-                style={{ width: "100%" }}
-                placeholder="Số ngày bảo hành"
-                min={0}
-                formatter={(value) =>
-                  `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                }
-              />
-            </Form.Item>
-            <Form.Item wrapperCol={{ span: 24 }}>
-              <Button block type="primary" htmlType="submit">
-                Cập nhật phân loại
-              </Button>
-            </Form.Item>
-          </Form>
-        </Col>
+        <EditClassify
+          key={`eidt jadj ${item.id} ${productId}`}
+          classify={item}
+          productId={productId}
+          setOpenEditModal={setOpenEditModal}
+          setProduct={setProduct}
+        />
       ))}
       <Divider>Thêm mới</Divider>
       <Col className="roundedBox boxShadow" span={24}>
@@ -507,5 +469,117 @@ function EditClassify({
         </Form>
       </Col>
     </Row>
+  );
+}
+
+interface EditClassifyProps {
+  classify: Classification;
+  productId: string | undefined;
+  setOpenEditModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setProduct: React.Dispatch<
+    React.SetStateAction<ProductWithClassifyProps | undefined>
+  >;
+}
+function EditClassify({
+  classify,
+  setOpenEditModal,
+  productId,
+  setProduct,
+}: EditClassifyProps) {
+  const { setIsLoading } = useLoading();
+  const queryClient = useQueryClient();
+  const [form] = Form.useForm();
+  useEffect(() => form.setFieldsValue({ ...classify }), [classify]);
+  const editClassifyProduct = useMutation(
+    "editClassifyProduct",
+    (data: Classification) => EditClassifyProductApi(data),
+    {
+      onMutate: () => {
+        setIsLoading(true);
+      },
+      onSuccess: (data) => {
+        if (data.code === STATUS_CODE.OK) {
+          message.success("Cập nhật thành công");
+          queryClient.invalidateQueries("searchProduct");
+          setOpenEditModal(false);
+        } else {
+          message.error("Đã có lỗi xảy ra");
+        }
+        setIsLoading(false);
+        setProduct(undefined);
+      },
+      onError: () => {
+        setIsLoading(false);
+        message.error("Đã có lỗi xảy ra");
+        setProduct(undefined);
+      },
+    }
+  );
+
+  return (
+    <Col
+      className="roundedBox boxShadow"
+      key={`classify ${productId} ${classify.id}`}
+      span={24}
+    >
+      <Form
+        form={form}
+        name={`edit ${classify.id}`}
+        labelCol={{ span: 24 }}
+        wrapperCol={{ span: 24 }}
+        onFinish={(values) =>
+          editClassifyProduct.mutate({ ...values, id: classify.id })
+        }
+        autoComplete="off"
+      >
+        <Form.Item
+          name={"image"}
+          label="Link ảnh"
+          rules={[{ required: true, message: "Link ảnh đâu ?" }]}
+        >
+          <Input.TextArea style={{ width: "100%" }} placeholder="Link ảnh" />
+        </Form.Item>
+        <img alt="vuo nhe" src={classify.image} width={120} height={120} />
+        <Form.Item
+          name={"name"}
+          label="Tên phân loại"
+          rules={[{ required: true, message: "Tên phân loại đâu ?" }]}
+        >
+          <Input style={{ width: "100%" }} placeholder="Tên phân loại" />
+        </Form.Item>
+        <Form.Item
+          name={"price"}
+          label="Giá phân loại"
+          rules={[{ required: true, message: "Giá đâu" }]}
+        >
+          <InputNumber
+            style={{ width: "100%" }}
+            placeholder="Giá"
+            formatter={(value) =>
+              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            }
+          />
+        </Form.Item>
+        <Form.Item
+          name={"warranty"}
+          label="Thời gian bảo hành"
+          rules={[{ required: true, message: "Thời gian bảo hành đâu" }]}
+        >
+          <InputNumber
+            style={{ width: "100%" }}
+            placeholder="Số ngày bảo hành"
+            min={0}
+            formatter={(value) =>
+              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            }
+          />
+        </Form.Item>
+        <Form.Item wrapperCol={{ span: 24 }}>
+          <Button block type="primary" htmlType="submit">
+            Cập nhật phân loại
+          </Button>
+        </Form.Item>
+      </Form>
+    </Col>
   );
 }

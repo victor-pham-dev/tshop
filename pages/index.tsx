@@ -163,7 +163,11 @@ function Home() {
                     xs={12}
                     xxl={6}
                   >
-                    <Link href={`/${PATH.PRODUCT}/${item.name}?pid=${item.id}`}>
+                    <Link
+                      href={`/${PATH.PRODUCT}/${removeMark(item.name)}?pid=${
+                        item.id
+                      }`}
+                    >
                       <ProductCard {...item} />
                     </Link>
                   </Col>

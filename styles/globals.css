@@ -358,10 +358,10 @@ input[type="number"]::-webkit-outer-spin-button {
 
 
 .imageCard {
-  height: 180px;
+  height: 192px;
 }
 .imgSlide{
-  height:   440px;
+  height:   480px;
 }
 .cartImage {
   height: 86px;
@@ -380,10 +380,10 @@ body {
     display: none;
   }
 .imageCard {
-  height: 140px;
+  height: 160px;
 }
 .imgSlide{
-  height:   300px;
+  height:   360px;
 }
 .cartImage {
   height: 66px;

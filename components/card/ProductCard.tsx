@@ -12,9 +12,13 @@ export function ProductCard(product: ProductWithClassifyProps): JSX.Element {
     if (sort !== undefined && sort.length === 1) {
       result = `${sort[0].price.toLocaleString()} đ`;
     } else if (sort !== undefined && sort.length > 1) {
-      result = `${sort[0].price.toLocaleString()}-${sort[
-        sort.length - 1
-      ].price.toLocaleString()}  đ`;
+      if (sort[0].price === sort[sort.length - 1].price) {
+        result = `${sort[0].price.toLocaleString()} đ`;
+      } else {
+        result = `${sort[0].price.toLocaleString()}-${sort[
+          sort.length - 1
+        ].price.toLocaleString()}  đ`;
+      }
     }
     return result;
   }, [product]);

@@ -4,22 +4,20 @@ import {
   Divider,
   Modal,
   Radio,
-  Rate,
   Result,
   Row,
-  Space,
   Typography,
   message,
 } from "antd";
 import React, { useEffect, useMemo, useState } from "react";
 import {
   Background,
-  BreadCrumb,
+  // BreadCrumb,
   CarouselProduct,
   ContentLoading,
   ProductCard,
 } from "@/components";
-import { CrumbProps } from "@/components/breadCrumb/BreadCrumb";
+// import { CrumbProps } from "@/components/breadCrumb/BreadCrumb";
 import NumberInput from "@/components/ipNumber/ipNumber";
 import { ShoppingCartOutlined, SmileOutlined } from "@ant-design/icons";
 import {
@@ -32,17 +30,25 @@ import { useRouter } from "next/router";
 import { useMutation, useQuery } from "react-query";
 import { useLoading, useUser } from "@/hooks";
 import Link from "next/link";
-import { PATH, STATUS_CODE } from "@/const/app-const";
+import { METHOD, PATH, STATUS_CODE } from "@/const/app-const";
 import { AddCartDataProps, AddCartItemApi } from "../api/cart.api";
 import { useCart } from "@/hooks/useAppContext";
 import Head from "next/head";
+import { ResponseProps } from "@/network/services/api-handler";
+import { ProductWithClassifyProps } from "@/contexts/CartContext";
 const { Text } = Typography;
-export default function ProductDetails() {
+
+interface Props {
+  productName: string;
+  avatar: string;
+}
+export default function ProductDetails({ productName, avatar }: Props) {
+  console.log(productName, avatar);
   const { setIsLoading } = useLoading();
   const { add } = useCart();
   const router = useRouter();
   const { user } = useUser();
-  const { pid, slug } = router.query;
+  const { pid } = router.query;
   const getInfo = useQuery(["getProductInfo", pid], () =>
     GetInfoProductByIdApi(pid?.toString() ?? "")
   );
@@ -57,9 +63,17 @@ export default function ProductDetails() {
     if (getInfo.data?.data !== undefined && getInfo.data?.data !== null) {
       const product = getInfo.data?.data;
       const sort = product.classifications.sort((a, b) => a.price - b.price);
-      const min = sort[0].price.toLocaleString();
-      const max = sort[sort.length - 1].price.toLocaleString();
-      initPrice = `${min}-${max} đ`;
+      if (sort.length > 1) {
+        if (sort[0].price === sort[sort.length - 1].price) {
+          initPrice = `${sort[0].price.toLocaleString()} đ`;
+        } else {
+          initPrice = `${sort[0].price.toLocaleString()}-${sort[
+            sort.length - 1
+          ].price.toLocaleString()}  đ`;
+        }
+      } else {
+        initPrice = `${sort[0].price.toLocaleString()} đ`;
+      }
 
       arrImg.push(...product.images);
       product.classifications.forEach((item) => {
@@ -76,15 +90,15 @@ export default function ProductDetails() {
     };
   }, [getInfo.data?.data]);
 
-  const breads: CrumbProps[] = [
-    {
-      label: "Sản phẩm",
-      link: `/`,
-    },
-    {
-      label: data.product?.name,
-    },
-  ];
+  // const breads: CrumbProps[] = [
+  //   {
+  //     label: "Sản phẩm",
+  //     link: `/`,
+  //   },
+  //   {
+  //     label: data.product?.name,
+  //   },
+  // ];
 
   const [price, setPrice] = useState<string>(data.initPrice);
   const [ableQuantity, setAbleQuantity] = useState<number | undefined>(
@@ -156,10 +170,10 @@ export default function ProductDetails() {
   return (
     <>
       <Head>
-        <title>{`${slug?.toString()} - Mix Tech`}</title>
+        <title>{`${productName} - Mix Tech`}</title>
         <meta name="description" content="Mix tech - ITX PC & More" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href={data.arrImg[0]} />
+        <link rel="icon" href={avatar ?? "/favicon.svg"} />
       </Head>
       <main>
         {getInfo.isLoading && <ContentLoading />}
@@ -420,4 +434,34 @@ function RelatedProduct({ id }: RelatedProductProps) {
       ))}
     </Row>
   );
+}
+
+export async function getServerSideProps(context: any) {
+  const { pid } = context.query;
+  const { req } = context;
+  const baseUrl = "https://" + req.headers.host;
+  // console.log(baseUrl);
+  let productName: string = "";
+  let avatar: string = "";
+  try {
+    const response = await fetch(`${baseUrl}/api/product/info?id=${pid}`, {
+      method: METHOD.GET,
+    });
+
+    const result: ResponseProps<ProductWithClassifyProps> =
+      await response.json();
+
+    if (result) {
+      productName = result.data.name;
+      avatar = result.data.images[0];
+    }
+  } catch (error) {
+    console.log(error);
+  }
+  return {
+    props: {
+      productName,
+      avatar,
+    },
+  };
 }
