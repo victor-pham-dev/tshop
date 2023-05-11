@@ -9,7 +9,7 @@ interface BodyProps {
   name: string;
   status: string;
   category: string;
-  images: string[];
+  images: string;
   description: string;
   classifications: Classification[];
 }
@@ -37,7 +37,7 @@ export default async function handler(
         name,
         status,
         category,
-        images,
+        images: images.split(','),
         description,
         classifications: {
           create: classifications.map((item) => item),

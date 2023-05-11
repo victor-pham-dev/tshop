@@ -27,9 +27,9 @@ export default async function handler(
       where: { id: payload.id },
       data: {
         name: payload.name,
-        status: payload.name,
+        status: payload.status,
         category: payload.category,
-        images: payload.images,
+        images: payload.images.toString().split(','),
         description: payload.description,
       },
     });
