@@ -45,7 +45,6 @@ interface Props {
   avatar: string;
 }
 export default function ProductDetails({ productName, avatar }: Props) {
-  console.log(productName, avatar);
   const { setIsLoading } = useLoading();
   const { add } = useCart();
   const router = useRouter();
@@ -180,15 +179,16 @@ export default function ProductDetails({ productName, avatar }: Props) {
             description: "Mix tech - ITX PC & More",
             images: [
               {
-                url: avatar,
-                width: 380,
-                height: 460,
-                alt: productName,
+                url: `${avatar}`,
+                width: 400,
+                height: 470,
+                alt: `${productName}`,
               },
             ],
           }}
         />
-        <link rel="icon" href={avatar ?? "/favicon.svg"} />
+
+        <link rel="icon" href={avatar} />
       </Head>
       <main>
         {getInfo.isLoading && <ContentLoading />}
@@ -471,7 +471,7 @@ export async function getServerSideProps(context: any) {
       avatar = result.data.images[0];
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
   return {
     props: {
