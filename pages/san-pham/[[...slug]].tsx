@@ -175,12 +175,11 @@ export default function ProductDetails() {
                     background: "#dbdbdb",
                     borderRadius: "0.5rem",
                     opacity: 0.95,
-                    padding: "1rem",
                   }}
                   xxl={{ span: 12 }}
                   xs={{ span: 23 }}
                 >
-                  <Row gutter={[0, 8]}>
+                  <Row style={{ padding: "1rem" }} gutter={[0, 8]}>
                     <Col span={24}>
                       <p
                         style={{
@@ -249,13 +248,12 @@ export default function ProductDetails() {
                           <Radio.Group buttonStyle="solid">
                             <Row gutter={[12, 12]}>
                               {data.classifications.map((item, i) => (
-                                <Col>
+                                <Col key={`option ${item.id}`}>
                                   <Radio.Button
                                     className="boxShadow"
                                     id="buttonPhanLoai"
                                     style={{ borderRadius: 4 }}
                                     value={i}
-                                    key={i}
                                     onClick={() => handleClickClassify(i)}
                                   >
                                     {item.name}
@@ -344,6 +342,7 @@ export default function ProductDetails() {
                         Thông tin sản phẩm
                       </Divider>
                       <Row
+                        style={{ color: "#000" }}
                         dangerouslySetInnerHTML={{
                           __html: data.product?.description,
                         }}

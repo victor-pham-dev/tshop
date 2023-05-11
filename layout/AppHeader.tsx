@@ -51,8 +51,8 @@ export default function AppHeader(): JSX.Element {
             >
               <Col style={{ height: "64px" }}>
                 <Image
-                  src="/Logo.png"
-                  alt="Tshop Mini PC"
+                  src="/favicon.svg"
+                  alt="Mix-tech"
                   width={60}
                   height={60}
                 />
@@ -71,7 +71,7 @@ export default function AppHeader(): JSX.Element {
               </Col>
             </Row>
           </Col>
-          <Col span={12}>
+          <Col span={11}>
             <Row align="middle" gutter={[16, 0]} justify="end">
               <Col>
                 <Row gutter={[4, 0]} justify="end" align="middle">
@@ -97,7 +97,11 @@ export default function AppHeader(): JSX.Element {
                           <Link href={`/${PATH.CART}`}>
                             <Badge count={cart.length ?? 0}>
                               <ShoppingCartOutlined
-                                style={{ fontSize: 32, color: "white" }}
+                                style={{
+                                  fontSize: 32,
+                                  color: "white",
+                                  marginTop: 12,
+                                }}
                               />
                             </Badge>
                           </Link>

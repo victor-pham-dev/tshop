@@ -307,11 +307,21 @@ input[type="number"]::-webkit-outer-spin-button {
   background-color: #1677ff;
   border-color: #1677ff;
 }
+@keyframes gradient-animation {
+  0% {
+    background-position: left;
+  }
+  
+  100% {
+    background-position: right;
+  }
+}
 .logoText {
   background-image: linear-gradient(to right, #07ba99, #84a0fa);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-size: 1.8rem;
+   animation: gradient-animation 1s linear infinite;
 }
 .imageCard {
   height: 180px;
