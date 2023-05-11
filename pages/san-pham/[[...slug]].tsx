@@ -36,6 +36,8 @@ import { useCart } from "@/hooks/useAppContext";
 import Head from "next/head";
 import { ResponseProps } from "@/network/services/api-handler";
 import { ProductWithClassifyProps } from "@/contexts/CartContext";
+import { NextSeo } from "next-seo";
+
 const { Text } = Typography;
 
 interface Props {
@@ -170,9 +172,22 @@ export default function ProductDetails({ productName, avatar }: Props) {
   return (
     <>
       <Head>
-        <title>{`${productName} - Mix Tech`}</title>
-        <meta name="description" content="Mix tech - ITX PC & More" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <NextSeo
+          title={`${productName} - Mix Tech`}
+          description="Mix tech - ITX PC & More"
+          openGraph={{
+            title: `${productName} - Mix Tech`,
+            description: "Mix tech - ITX PC & More",
+            images: [
+              {
+                url: avatar,
+                width: 380,
+                height: 460,
+                alt: productName,
+              },
+            ],
+          }}
+        />
         <link rel="icon" href={avatar ?? "/favicon.svg"} />
       </Head>
       <main>
