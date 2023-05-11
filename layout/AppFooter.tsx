@@ -15,13 +15,17 @@ export const AppFooter: React.FC = () => {
       <Col xxl={2}>
         <Image src="/favicon.svg" alt="shop" width={80} height={80}></Image>
       </Col>
-      <Col xxl={12}>
-        <Row align="middle"></Row>
-        <Col xxl={24}> &#169;&nbsp; Copyright by Mix tech - {thisYear}</Col>
-        <Col xxl={24}>
-          Cảm ơn quý khách hàng đã ghé thăm{" "}
-          <span style={{ color: "red" }}>&#10084;</span>
-        </Col>
+      <Col xxl={6} xs={20}>
+        <Row align="middle" justify="center">
+          <Col span={24}>
+            <p style={{ textAlign: "center" }}></p> &#169;&nbsp; Copyright by
+            Mix tech - {thisYear}
+          </Col>
+          <Col span={24}>
+            Cảm ơn quý khách hàng đã ghé thăm{" "}
+            <span style={{ color: "red" }}>&#10084;</span>
+          </Col>
+        </Row>
       </Col>
     </Row>
   );

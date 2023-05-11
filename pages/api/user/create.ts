@@ -4,6 +4,11 @@ import bcrypt from "bcrypt";
 import { ResponseProps } from "@/network/services/api-handler";
 import { prisma } from "@/lib/prisma";
 
+interface PayloadProps {
+  name: string;
+  email: string;
+  password: string;
+}
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseProps<null>>
@@ -16,7 +21,7 @@ export default async function handler(
     });
   }
 
-  const { name, email, password } = req.body;
+  const { name, email, password } = req.body as PayloadProps;
 
   try {
     const findExisted = await prisma.user.findUnique({
@@ -35,7 +40,7 @@ export default async function handler(
     await prisma.user.create({
       data: {
         name,
-        email,
+        email: email.toLowerCase(),
         role: "USER",
         password: encryptedPassword,
       },

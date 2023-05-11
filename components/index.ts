@@ -7,6 +7,7 @@ import { BreadCrumb } from "./breadCrumb/BreadCrumb";
 import CarouselProduct from "./carousel/carouselProductDetail";
 import { ProductCard } from "./card/ProductCard";
 import { Background } from "./background/Background";
+import Messenger from "./contact/Messenger";
 export {
   FullPageLoading,
   TagsLoading,
@@ -17,4 +18,5 @@ export {
   BreadCrumb,
   CarouselProduct,
   Background,
+  Messenger,
 };

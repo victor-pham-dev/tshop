@@ -34,15 +34,15 @@ import { useLoading, useUser } from "@/hooks";
 import Link from "next/link";
 import { PATH, STATUS_CODE } from "@/const/app-const";
 import { AddCartDataProps, AddCartItemApi } from "../api/cart.api";
-import { removeMark } from "@/ultis/dataConvert";
 import { useCart } from "@/hooks/useAppContext";
+import Head from "next/head";
 const { Text } = Typography;
 export default function ProductDetails() {
   const { setIsLoading } = useLoading();
   const { add } = useCart();
   const router = useRouter();
   const { user } = useUser();
-  const { pid } = router.query;
+  const { pid, slug } = router.query;
   const getInfo = useQuery(["getProductInfo", pid], () =>
     GetInfoProductByIdApi(pid?.toString() ?? "")
   );
@@ -108,7 +108,7 @@ export default function ProductDetails() {
 
   const addCart = useMutation(
     "addcart",
-    (data: AddCartDataProps) => AddCartItemApi(data),
+    (data: AddCartDataProps) => AddCartItemApi(data, user.token ?? ""),
     {
       onMutate: () => setIsLoading(true),
       onSuccess: (result, payload) => {
@@ -154,47 +154,53 @@ export default function ProductDetails() {
   }
 
   return (
-    <div>
-      {/* <BreadCrumb list={breads} /> */}
-      {getInfo.isLoading && <ContentLoading />}
-      {data.product !== undefined && (
-        <React.Fragment>
-          <Background />
-          <Row gutter={[16, 16]}>
-            <Col xxl={19}>
-              <Row
-                justify={"center"}
-                style={{ padding: "0.5rem" }}
-                gutter={[16, 6]}
-              >
-                <Col xxl={{ span: 12 }} xs={{ span: 24 }}>
-                  <CarouselProduct images={data.arrImg} />
-                </Col>
-                <Col
-                  style={{
-                    background: "#dbdbdb",
-                    borderRadius: "0.5rem",
-                    opacity: 0.95,
-                  }}
-                  xxl={{ span: 12 }}
-                  xs={{ span: 23 }}
+    <>
+      <Head>
+        <title>{`${slug?.toString()} - Mix Tech`}</title>
+        <meta name="description" content="Mix tech - ITX PC & More" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href={data.arrImg[0]} />
+      </Head>
+      <main>
+        {getInfo.isLoading && <ContentLoading />}
+        {data.product !== undefined && (
+          <React.Fragment>
+            <Background />
+            <Row gutter={[16, 16]}>
+              <Col xxl={19}>
+                <Row
+                  justify={"center"}
+                  style={{ padding: "0.5rem" }}
+                  gutter={[16, 6]}
                 >
-                  <Row style={{ padding: "1rem" }} gutter={[0, 8]}>
-                    <Col span={24}>
-                      <p
-                        style={{
-                          fontSize: "1.4rem",
-                          lineHeight: "1.6rem",
-                          marginTop: "1.5rem",
-                          fontWeight: 500,
-                          textTransform: "capitalize",
-                          color: "black",
-                        }}
-                      >
-                        {data.product?.name}
-                      </p>
-                    </Col>
-                    {/* <Col span={24}>
+                  <Col xxl={{ span: 12 }} xs={{ span: 24 }}>
+                    <CarouselProduct images={data.arrImg} />
+                  </Col>
+                  <Col
+                    style={{
+                      background: "#dbdbdb",
+                      borderRadius: "0.5rem",
+                      opacity: 0.95,
+                    }}
+                    xxl={{ span: 12 }}
+                    xs={{ span: 23 }}
+                  >
+                    <Row style={{ padding: "1rem" }} gutter={[0, 8]}>
+                      <Col span={24}>
+                        <p
+                          style={{
+                            fontSize: "1.4rem",
+                            lineHeight: "1.6rem",
+                            marginTop: "1.5rem",
+                            fontWeight: 500,
+                            textTransform: "capitalize",
+                            color: "black",
+                          }}
+                        >
+                          {data.product?.name}
+                        </p>
+                      </Col>
+                      {/* <Col span={24}>
                       <Row gutter={[16, 0]}>
                         <Col
                           style={{
@@ -222,166 +228,169 @@ export default function ProductDetails() {
                         </Col>
                       </Row>
                     </Col> */}
-                    <Col span={24}>
-                      <Divider style={{ backgroundColor: "#bfbfbf" }} />
-                      <Row style={{ padding: "0 20px", marginBottom: "30px" }}>
-                        <Col
-                          style={{
-                            backgroundColor: "#fafafa",
-                            padding: "6px 20px",
-                            borderRadius: "8px",
-                          }}
+                      <Col span={24}>
+                        <Divider style={{ backgroundColor: "#bfbfbf" }} />
+                        <Row
+                          style={{ padding: "0 20px", marginBottom: "30px" }}
                         >
-                          <p style={{ fontSize: "1.875rem", color: "red" }}>
-                            {price}
-                          </p>
-                        </Col>
-                      </Row>
-                      <Row
-                        style={{ padding: "0 20px", marginBottom: "30px" }}
-                        gutter={[0, 10]}
-                      >
-                        <Col span={24}>
-                          <p className="textTheme">Phân loại:</p>
-                        </Col>
-                        <Col span={24}>
-                          <Radio.Group buttonStyle="solid">
-                            <Row gutter={[12, 12]}>
-                              {data.classifications.map((item, i) => (
-                                <Col key={`option ${item.id}`}>
-                                  <Radio.Button
-                                    className="boxShadow"
-                                    id="buttonPhanLoai"
-                                    style={{ borderRadius: 4 }}
-                                    value={i}
-                                    onClick={() => handleClickClassify(i)}
-                                  >
-                                    {item.name}
-                                  </Radio.Button>
-                                </Col>
-                              ))}
-                            </Row>
-                          </Radio.Group>
-                        </Col>
-                      </Row>
-                      <Row
-                        style={{ padding: "0 20px", marginBottom: "30px" }}
-                        gutter={[0, 10]}
-                        align="middle"
-                      >
-                        <Col span={24}>
-                          <p className="textTheme">Số lượng:</p>
-                        </Col>
-                        <Col
-                          span={24}
-                          style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            alignItems: "center",
-                          }}
-                        >
-                          <NumberInput
-                            disabled={
-                              ableQuantity === undefined || ableQuantity === 0
-                            }
-                            value={1}
-                            max={ableQuantity ?? 0}
-                          />
-                          {ableQuantity !== undefined && (
-                            <p className="textTheme">
-                              &nbsp;&nbsp;&nbsp;{ableQuantity}&nbsp;sản phẩm có
-                              sẵn
+                          <Col
+                            style={{
+                              backgroundColor: "#fafafa",
+                              padding: "6px 20px",
+                              borderRadius: "8px",
+                            }}
+                          >
+                            <p style={{ fontSize: "1.875rem", color: "red" }}>
+                              {price}
                             </p>
-                          )}
-                        </Col>
-                      </Row>
-                      <Row
-                        style={{ padding: "0 20px", marginBottom: "30px" }}
-                        gutter={[20, 0]}
-                        align="middle"
-                      >
-                        <Col>
-                          {user.id === undefined ? (
-                            <Link href={`/${PATH.LOGIN}`}>
-                              Đăng nhập để mua hàng
-                            </Link>
-                          ) : user.id !== undefined &&
-                            selectedItem !== undefined &&
-                            selectedItem?.quantity <= 0 ? (
-                            <Text type="danger">Phân loại tạm hết hàng</Text>
-                          ) : (
-                            <button
+                          </Col>
+                        </Row>
+                        <Row
+                          style={{ padding: "0 20px", marginBottom: "30px" }}
+                          gutter={[0, 10]}
+                        >
+                          <Col span={24}>
+                            <p className="textTheme">Phân loại:</p>
+                          </Col>
+                          <Col span={24}>
+                            <Radio.Group buttonStyle="solid">
+                              <Row gutter={[12, 12]}>
+                                {data.classifications.map((item, i) => (
+                                  <Col key={`option ${item.id}`}>
+                                    <Radio.Button
+                                      className="boxShadow"
+                                      id="buttonPhanLoai"
+                                      style={{ borderRadius: 4 }}
+                                      value={i}
+                                      onClick={() => handleClickClassify(i)}
+                                    >
+                                      {item.name}
+                                    </Radio.Button>
+                                  </Col>
+                                ))}
+                              </Row>
+                            </Radio.Group>
+                          </Col>
+                        </Row>
+                        <Row
+                          style={{ padding: "0 20px", marginBottom: "30px" }}
+                          gutter={[0, 10]}
+                          align="middle"
+                        >
+                          <Col span={24}>
+                            <p className="textTheme">Số lượng:</p>
+                          </Col>
+                          <Col
+                            span={24}
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              alignItems: "center",
+                            }}
+                          >
+                            <NumberInput
                               disabled={
-                                selectedItem !== undefined &&
-                                selectedItem?.quantity <= 0
+                                ableQuantity === undefined || ableQuantity === 0
                               }
-                              className="buttonAddCart"
-                              onClick={handleAddCart}
-                            >
-                              <ShoppingCartOutlined />
-                              &nbsp;Thêm Vào Giỏ Hàng
-                            </button>
-                          )}
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
-                </Col>
-                <Col span={24}>
-                  <Row>
-                    <Col
-                      className="roundedBox boxShadow"
-                      span={24}
-                      style={{
-                        background: "#bdbdbd",
-                        padding: "1rem",
-                        opacity: 0.95,
-                      }}
-                    >
-                      <Divider className="textTheme" orientation="left">
-                        Thông tin sản phẩm
-                      </Divider>
-                      <Row
-                        style={{ color: "#000" }}
-                        dangerouslySetInnerHTML={{
-                          __html: data.product?.description,
+                              value={1}
+                              max={ableQuantity ?? 0}
+                            />
+                            {ableQuantity !== undefined && (
+                              <p className="textTheme">
+                                &nbsp;&nbsp;&nbsp;{ableQuantity}&nbsp;sản phẩm
+                                có sẵn
+                              </p>
+                            )}
+                          </Col>
+                        </Row>
+                        <Row
+                          style={{ padding: "0 20px", marginBottom: "30px" }}
+                          gutter={[20, 0]}
+                          align="middle"
+                        >
+                          <Col>
+                            {user.id === undefined ? (
+                              <Link href={`/${PATH.LOGIN}`}>
+                                Đăng nhập để mua hàng
+                              </Link>
+                            ) : user.id !== undefined &&
+                              selectedItem !== undefined &&
+                              selectedItem?.quantity <= 0 ? (
+                              <Text type="danger">Phân loại tạm hết hàng</Text>
+                            ) : (
+                              <button
+                                disabled={
+                                  selectedItem !== undefined &&
+                                  selectedItem?.quantity <= 0
+                                }
+                                className="buttonAddCart"
+                                onClick={handleAddCart}
+                              >
+                                <ShoppingCartOutlined />
+                                &nbsp;Thêm Vào Giỏ Hàng
+                              </button>
+                            )}
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
+                  </Col>
+                  <Col span={24}>
+                    <Row>
+                      <Col
+                        className="roundedBox boxShadow"
+                        span={24}
+                        style={{
+                          background: "#bdbdbd",
+                          padding: "1rem",
+                          opacity: 0.95,
                         }}
-                      />
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
-            </Col>
-            <Col xxl={5} xs={24}>
-              {pid === undefined ? (
-                <ContentLoading />
-              ) : (
-                <RelatedProduct id={pid.toString()} />
-              )}
-            </Col>
-          </Row>
-        </React.Fragment>
-      )}
-      <Modal
-        open={openModal}
-        onCancel={() => setOpenModal(false)}
-        footer={null}
-        title={null}
-        style={{ maxWidth: 360 }}
-      >
-        <Result
-          title="Đã thêm vào giỏ hàng!"
-          icon={<SmileOutlined />}
-          extra={[
-            <Link href={`/${PATH.CART}`}>
-              <Button type="primary">Đến giỏ hàng</Button>
-            </Link>,
+                      >
+                        <Divider className="textTheme" orientation="left">
+                          Thông tin sản phẩm
+                        </Divider>
+                        <Row
+                          style={{ color: "#000" }}
+                          dangerouslySetInnerHTML={{
+                            __html: data.product?.description,
+                          }}
+                        />
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+              </Col>
+              <Col xxl={5} xs={24}>
+                {pid === undefined ? (
+                  <ContentLoading />
+                ) : (
+                  <RelatedProduct id={pid.toString()} />
+                )}
+              </Col>
+            </Row>
+          </React.Fragment>
+        )}
+        <Modal
+          open={openModal}
+          onCancel={() => setOpenModal(false)}
+          footer={null}
+          title={null}
+          style={{ maxWidth: 360 }}
+        >
+          <Result
+            title="Đã thêm vào giỏ hàng!"
+            icon={<SmileOutlined />}
+            extra={[
+              <Link href={`/${PATH.CART}`}>
+                <Button type="primary">Đến giỏ hàng</Button>
+              </Link>,
 
-            <Button onClick={() => setOpenModal(false)}>Tiếp tục mua</Button>,
-          ]}
-        />
-      </Modal>
-    </div>
+              <Button onClick={() => setOpenModal(false)}>Tiếp tục mua</Button>,
+            ]}
+          />
+        </Modal>
+      </main>
+    </>
   );
 }
 
@@ -404,9 +413,7 @@ function RelatedProduct({ id }: RelatedProductProps) {
       <Divider style={{ color: "white" }}>Có thể bạn quan tâm</Divider>
       {products.map((item, i) => (
         <Col key={`related ${item.id} ${i}`} xxl={22} xs={12}>
-          <Link
-            href={`/${PATH.PRODUCT}/${removeMark(item.name)}?pid=${item.id}`}
-          >
+          <Link href={`/${PATH.PRODUCT}/${item.name}?pid=${item.id}`}>
             <ProductCard {...item} />
           </Link>
         </Col>

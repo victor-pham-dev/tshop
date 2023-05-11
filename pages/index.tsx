@@ -8,7 +8,7 @@ import { useQuery } from "react-query";
 import Link from "next/link";
 import { PATH } from "@/const/app-const";
 import { removeMark } from "@/ultis/dataConvert";
-import { Background, CardLoading, ProductCard } from "@/components";
+import { Background, CardLoading, Messenger, ProductCard } from "@/components";
 
 // const inter = Inter({ subsets: ["latin"] });
 
@@ -50,12 +50,13 @@ function Home() {
   return (
     <>
       <Head>
-        <title>Mini PC - Nghiện nhưng không dở</title>
-        <meta name="description" content="Cửa hàng mini PC" />
+        <title>Mix tech - Tối giản tạo nên sự khác biệt</title>
+        <meta name="description" content="Mix tech - ITX PC" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.svg" />
       </Head>
       <main>
+        <Messenger />
         <Background />
         <Row>
           <Col span={24}>
@@ -96,7 +97,6 @@ function Home() {
             {/* <p>Chỗ này dành cho banner nè</p> */}
           </Col>
         </Row>
-
         <Row style={{ padding: "1rem" }} justify="center">
           <Col
             xs={24}
@@ -163,11 +163,7 @@ function Home() {
                     xs={12}
                     xxl={6}
                   >
-                    <Link
-                      href={`/${PATH.PRODUCT}/${removeMark(item.name)}?pid=${
-                        item.id
-                      }`}
-                    >
+                    <Link href={`/${PATH.PRODUCT}/${item.name}?pid=${item.id}`}>
                       <ProductCard {...item} />
                     </Link>
                   </Col>

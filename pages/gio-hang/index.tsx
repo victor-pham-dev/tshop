@@ -28,6 +28,10 @@ import { REGEX } from "@/const/regexp";
 import { CreateOrderApi } from "../api/order.api";
 import { useRouter } from "next/router";
 
+interface DeleteProps {
+  id: string;
+  token: string;
+}
 interface OrderDataProps {
   checkedItems: Cart[];
   total: number;
@@ -40,17 +44,17 @@ export default function UserCart() {
 
   const updateQuantity = useMutation(
     "updateQuantity",
-    (data: UpdateCartItemProps) => UpdateCartItemApi(data)
+    (data: UpdateCartItemProps) => UpdateCartItemApi(data, user.token ?? "")
   );
 
   const deleteCartItem = useMutation(
-    "updateQuantity",
-    (id: string) => DeleteCartItemApi(id),
+    "deleteCart",
+    ({ id, token }: DeleteProps) => DeleteCartItemApi(id, token),
     {
       onMutate: () => {
         setIsLoading(true);
       },
-      onSuccess: (data, id) => {
+      onSuccess: (data, { id }) => {
         if (data.code === STATUS_CODE.OK) {
           remove(id);
           setIsLoading(false);
@@ -122,7 +126,7 @@ export default function UserCart() {
 
   const createOrder = useMutation(
     "createOrder",
-    (values: Order) => CreateOrderApi(values),
+    (values: Order) => CreateOrderApi(values, user.token ?? ""),
     {
       onMutate: () => {
         setIsLoading(true);
@@ -228,7 +232,13 @@ export default function UserCart() {
             key={`${item.id}`}
             data={item}
             updateQuantity={(data) => updateQuantity.mutate(data)}
-            deleteCartItem={(id) => deleteCartItem.mutate(id)}
+            deleteCartItem={(id) => {
+              if (user.token !== undefined) {
+                return deleteCartItem.mutate({ id, token: user.token });
+              } else {
+                return message.warning("Đã có lỗi xảy ra vui lòng thử  lại");
+              }
+            }}
           />
         ))}
         <Row

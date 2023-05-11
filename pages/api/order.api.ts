@@ -11,14 +11,15 @@ import { MarkDoneOrderProps } from "./order/markdone";
 import { MarkCancelOrderProps } from "./order/cancel";
 
 async function CreateOrderApi(
-  data: Order
+  data: Order,
+  token: string
 ): Promise<ResponseProps<string | null>> {
   const url = `/api/order/create`;
   const response = await fetch(url, {
     method: METHOD.POST,
     headers: {
       "Content-Type": "application/json",
-      "x-access-token": localToken ?? "",
+      "x-access-token": token,
     },
     body: JSON.stringify(data),
   });

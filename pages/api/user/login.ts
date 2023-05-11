@@ -8,6 +8,11 @@ import { prisma } from "@/lib/prisma";
 interface ResProps {
   accessToken: string;
 }
+
+interface PayloadProps {
+  email: string;
+  password: string;
+}
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseProps<ResProps | null>>
@@ -20,12 +25,12 @@ export default async function handler(
     });
   }
 
-  const { email, password } = req.body;
+  const { email, password } = req.body as PayloadProps;
 
   try {
     const user = await prisma.user.findUnique({
       where: {
-        email,
+        email: email.toLowerCase(),
       },
     });
     if (!user) {
@@ -45,7 +50,7 @@ export default async function handler(
     }
 
     const accessToken = jwt.sign(
-      { email: email, role: user.role, id: user.id },
+      { email: email.toLowerCase(), role: user.role, id: user.id },
       TOKEN_KEY,
       {
         expiresIn: "7d",

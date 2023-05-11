@@ -4,13 +4,13 @@ import React from "react";
 import { LoginApiProps, LoginWithAccountApi } from "../api/user.api";
 import { useLoading, useUser } from "../../hooks";
 import { LockTwoTone, MailTwoTone } from "@ant-design/icons";
-import { PATH, ROLE } from "../../const/app-const";
+import { PATH } from "../../const/app-const";
 import { REGEX } from "../../const/regexp";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { checkRes } from "@/network/services/api-handler";
 import { useMutation } from "react-query";
 import Image from "next/image";
+import Facebook from "@/components/facebookLogin/FacebookLogin";
 
 export default function Login(): JSX.Element {
   const router = useRouter();
@@ -93,27 +93,19 @@ export default function Login(): JSX.Element {
             </Button>
           </Form.Item>
         </Form>
-        <Row justify="space-between">
-          <Col span={12}>
-            {/* <Link href={`/${PATH.FORGOT_PASSWORD}`}>
-              <Button type="primary" style={{ float: "right" }}>
-                {" "}
-                Quên mật khẩu
+        <Row justify="space-between" gutter={[10, 10]}>
+          {`Bạn chưa có tài khoản ?`}
+          <Col span={24}>
+            <Link href={`/${PATH.REGISTER}`}>
+              <Button type="primary" style={{ float: "left" }}>
+                Đăng ký
               </Button>
-            </Link> */}
+            </Link>
           </Col>
-          <Col span={12}>
-            <Row justify="end" gutter={[8, 8]}>
-              <Col>Chưa có tài khoản?</Col>
-              <Col>
-                <Link href={`/${PATH.REGISTER}`}>
-                  <Button type="primary" style={{ float: "left" }}>
-                    Đăng ký
-                  </Button>
-                </Link>
-              </Col>
-            </Row>
-          </Col>
+          {/* <Col span={16}>
+            <p>Hoặc đăng nhập với</p>
+            <Facebook />
+          </Col> */}
         </Row>
       </Col>
     </Row>

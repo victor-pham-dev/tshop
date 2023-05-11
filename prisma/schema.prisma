@@ -7,17 +7,21 @@ generator client {
 
 datasource db {
   provider = "mongodb"
-  url      = env("DATABASE_URL")
+  url      = "mongodb+srv://truongpham2412dev:67eObtKnz8Qyr0My@tshop.108e3fv.mongodb.net/tshop?retryWrites=true&w=majority"
 }
 
+// url= env("DATABASE_URL")
+
 model User {
-  id        String     @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime   @default(now())
-  email     String     @unique
-  name      String
-  role      Role       @default(USER)
-  password  String
-  Warranty  Warranty[]
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt  DateTime   @default(now())
+  email      String     @unique
+  name       String
+  facebookId String     @unique @default("")
+  avatar     String     @default("")
+  role       Role       @default(USER)
+  password   String
+  Warranty   Warranty[]
 }
 
 enum Role {
@@ -130,7 +134,7 @@ model Sellstatistic {
   classificationId   String          @db.ObjectId
   Classification     Classification? @relation(fields: [classificationId], references: [id])
   importQuantity     Int
-  importAveragePrice Int
+  importAveragePrice Float
   sellQuantity       Int
-  sellAveragePrice   Int
+  sellAveragePrice   Float
 }

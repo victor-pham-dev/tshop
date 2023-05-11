@@ -40,6 +40,7 @@ export function ImportWarehouse({ product, setProduct }: Props): JSX.Element {
         if (data.code === STATUS_CODE.CREATED) {
           message.success("Tạo đơn nhập sản phẩm thành công");
           setProduct(undefined);
+          form.resetFields();
           queryClient.invalidateQueries("wareHouseBills");
         } else {
           message.error("Đã có lỗi xảy ra");

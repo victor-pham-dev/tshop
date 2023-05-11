@@ -323,6 +323,40 @@ input[type="number"]::-webkit-outer-spin-button {
   font-size: 1.8rem;
    animation: gradient-animation 1s linear infinite;
 }
+.messenger-icon {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+ 
+  color: white;
+  cursor: pointer;
+  animation: messenger-bounce 1s infinite;
+}
+
+.messenger-icon:hover {
+  animation: none;
+}
+
+@keyframes messenger-bounce {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+
+
 .imageCard {
   height: 180px;
 }

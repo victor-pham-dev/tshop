@@ -67,6 +67,7 @@ export default async function handler(
       msg: "Thêm thành công",
     });
   } catch (error) {
+    console.log(error);
     return res
       .status(STATUS_CODE.INTERNAL)
       .json({ code: STATUS_CODE.INTERNAL, data: null, msg: "internal" });

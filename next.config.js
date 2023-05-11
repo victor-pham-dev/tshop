@@ -19,5 +19,6 @@ module.exports = {
   },
   env: {
     TOKEN_KEY:"alsdhfkl4jas23djkfhqwqoewi241rqtqwmahsdfkjasdqwieurasdfahj4ksdgioq2weuaaa2784",
+    FACEBOOK_APP_ID: "1040428757362806"
   },
 }

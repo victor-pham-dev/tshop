@@ -11,14 +11,15 @@ export interface AddCartDataProps {
   quantity: number;
 }
 async function AddCartItemApi(
-  data: AddCartDataProps
+  data: AddCartDataProps,
+  token: string
 ): Promise<ResponseProps<string | null>> {
   const url = `/api/cart/add`;
   const response = await fetch(url, {
     method: METHOD.POST,
     headers: {
       "Content-Type": "application/json",
-      "x-access-token": localToken ?? "",
+      "x-access-token": token,
     },
     body: JSON.stringify(data),
   });
@@ -31,14 +32,15 @@ export interface UpdateCartItemProps {
   quantity: number;
 }
 async function UpdateCartItemApi(
-  data: UpdateCartItemProps
+  data: UpdateCartItemProps,
+  token: string
 ): Promise<ResponseProps<null>> {
   const url = `/api/cart/update`;
   const response = await fetch(url, {
     method: METHOD.PATCH,
     headers: {
       "Content-Type": "application/json",
-      "x-access-token": localToken ?? "",
+      "x-access-token": token,
     },
     body: JSON.stringify(data),
   });
@@ -46,12 +48,15 @@ async function UpdateCartItemApi(
   return result;
 }
 
-async function DeleteCartItemApi(id: string): Promise<ResponseProps<null>> {
+async function DeleteCartItemApi(
+  id: string,
+  token: string
+): Promise<ResponseProps<null>> {
   const url = `/api/cart/delete?id=${id}`;
   const response = await fetch(url, {
     method: METHOD.DELETE,
     headers: {
-      "x-access-token": localToken ?? "",
+      "x-access-token": token,
     },
   });
   const result = await response.json();
