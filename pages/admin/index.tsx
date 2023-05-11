@@ -37,7 +37,7 @@ export default function AdminPage() {
         style={{
           minHeight: "80vh",
           padding: "0.5rem",
-          background: "#bdbdbd",
+          background: "white",
 
           opacity: 0.95,
         }}

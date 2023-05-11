@@ -63,12 +63,7 @@ export default async function handler(
                 });
               }
 
-              return await prisma.classification.update({
-                where: { id: item.classificationId },
-                data: {
-                  quantity: { decrement: item.quantity },
-                },
-              });
+              return;
             }
             return;
           })

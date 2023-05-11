@@ -3,6 +3,7 @@ import { METHOD, ORDER_STATUS, STATUS_CODE } from "@/const/app-const";
 import { ResponseProps } from "@/network/services/api-handler";
 import { AuthToken } from "@/middleware/server/auth";
 import { prisma } from "@/lib/prisma";
+import { CartDataProps } from "@/contexts/CartContext";
 
 export interface MarkCancelOrderProps {
   id: string;
@@ -27,15 +28,42 @@ export default async function handler(
 
   const { id, cancelReason } = req.body as MarkCancelOrderProps;
   try {
-    await prisma.order.update({
+    const order = await prisma.order.findUnique({
       where: { id },
-      data: { status: ORDER_STATUS.CANCELED, cancelReason },
     });
-    return res.status(STATUS_CODE.OK).json({
-      code: STATUS_CODE.OK,
-      data: null,
-      msg: "Xác nhận đơn đã huỷ",
-    });
+    if (order) {
+      await prisma.order.update({
+        where: { id },
+        data: { status: ORDER_STATUS.CANCELED, cancelReason },
+      });
+      if (order.status === ORDER_STATUS.SHIPPING) {
+        const items: CartDataProps[] = JSON.parse(order.items);
+        await Promise.all(
+          items.map(async (item) => {
+            if (item.classificationId !== null) {
+              return await prisma.classification.update({
+                where: { id: item.classificationId },
+                data: {
+                  quantity: { increment: item.quantity },
+                },
+              });
+            }
+            return;
+          })
+        );
+        return res.status(STATUS_CODE.OK).json({
+          code: STATUS_CODE.OK,
+          data: null,
+          msg: "Xác nhận đơn thành công",
+        });
+      }
+    } else {
+      return res.status(STATUS_CODE.FAILED).json({
+        code: STATUS_CODE.FAILED,
+        data: null,
+        msg: "Không tìm thấy order",
+      });
+    }
   } catch (error) {
     return res
       .status(STATUS_CODE.INTERNAL)

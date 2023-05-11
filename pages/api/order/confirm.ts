@@ -8,6 +8,7 @@ import {
 import { ResponseProps } from "@/network/services/api-handler";
 import { AuthToken } from "@/middleware/server/auth";
 import { prisma } from "@/lib/prisma";
+import { CartDataProps } from "@/contexts/CartContext";
 
 export interface ConfirmOrderProps {
   id: string;
@@ -46,6 +47,20 @@ export default async function handler(
             paymentStatus: PAYMENT_STATUS.DONE,
           },
         });
+        const items: CartDataProps[] = JSON.parse(order.items);
+        await Promise.all(
+          items.map(async (item) => {
+            if (item.classificationId !== null) {
+              return await prisma.classification.update({
+                where: { id: item.classificationId },
+                data: {
+                  quantity: { decrement: item.quantity },
+                },
+              });
+            }
+            return;
+          })
+        );
         return res.status(STATUS_CODE.OK).json({
           code: STATUS_CODE.OK,
           data: null,
@@ -56,7 +71,7 @@ export default async function handler(
       return res.status(STATUS_CODE.FAILED).json({
         code: STATUS_CODE.FAILED,
         data: null,
-        msg: "Đã có lỗi xảy ra",
+        msg: "Không tìm thấy order",
       });
     }
   } catch (error) {

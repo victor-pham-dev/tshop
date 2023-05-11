@@ -12,10 +12,7 @@ export default function Messenger() {
         margin: "auto",
       }}
     >
-      <Link
-        href="https://www.facebook.com/messages/t/495457770664511"
-        target="_blank"
-      >
+      <Link href="https://www.messenger.com/t/495457770664511" target="_blank">
         <img
           className="messenger-icon"
           src="/messenger.ico"

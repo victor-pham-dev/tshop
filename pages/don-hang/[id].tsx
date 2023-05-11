@@ -37,34 +37,32 @@ export default function Order() {
         <ContentLoading />
       ) : dataMemo !== undefined && dataMemo !== null ? (
         <Row gutter={[16, 16]} style={{ padding: "1rem" }}>
-          <h4>
-            Cảm ơn Quý khách đã đặt hàng - Thông tin đơn hàng {id} -{" "}
-            <span
-              style={
-                dataMemo.status === ORDER_STATUS.CANCELED
-                  ? { color: "red" }
-                  : dataMemo.status === ORDER_STATUS.WAITING_FOR_CONFIRM
-                  ? { color: "yellow" }
-                  : dataMemo.status === ORDER_STATUS.SHIPPING
-                  ? { color: "brown" }
-                  : dataMemo.status === ORDER_STATUS.DONE
-                  ? { color: "green" }
-                  : { color: "brown" }
-              }
-            >
-              {dataMemo.status}
-            </span>
-          </h4>
-          {dataMemo.status === ORDER_STATUS.CANCELED && (
-            <Text code>{`Lý do: ${dataMemo.cancelReason}`}</Text>
-          )}
-          {dataMemo.paymentMethod === PAYMENT_METHOD.ONLINE &&
-            dataMemo.paymentStatus === PAYMENT_STATUS.NOT_YET && (
-              <Text type="danger">
-                Đơn hàng của quý khách đã chọn thanh toán Online, quý khách vui
-                lòng thanh toán tới tài khoản sau
-              </Text>
+          <Col span={24}>
+            {" "}
+            <h4>
+              Cảm ơn Quý khách đã đặt hàng - Thông tin đơn hàng {id} -
+              {" Trạng thái:"}
+              <span
+                style={
+                  dataMemo.status === ORDER_STATUS.CANCELED
+                    ? { color: "red" }
+                    : dataMemo.status === ORDER_STATUS.WAITING_FOR_CONFIRM
+                    ? { color: "yellow" }
+                    : dataMemo.status === ORDER_STATUS.SHIPPING
+                    ? { color: "brown" }
+                    : dataMemo.status === ORDER_STATUS.DONE
+                    ? { color: "green" }
+                    : { color: "brown" }
+                }
+              >
+                {dataMemo.status}
+              </span>
+            </h4>
+            {dataMemo.status === ORDER_STATUS.CANCELED && (
+              <Text code>{`Lý do: ${dataMemo.cancelReason}`}</Text>
             )}
+          </Col>
+
           <Col xxl={16} xs={{ span: 24, order: 1 }}>
             <Divider style={{ color: "white" }}>Sản phẩm mua</Divider>
             <Row
@@ -149,6 +147,14 @@ export default function Order() {
           </Col>
 
           <Col xxl={8} xs={{ span: 24, order: 0 }}>
+            {dataMemo.paymentMethod === PAYMENT_METHOD.ONLINE &&
+              dataMemo.paymentStatus === PAYMENT_STATUS.NOT_YET && (
+                <p style={{ color: "red" }}>
+                  Đơn hàng của quý khách đã chọn thanh toán Online, quý khách
+                  vui lòng thanh toán tới tài khoản sau
+                </p>
+              )}
+
             <Divider style={{ color: "white" }}>Thông tin thanh toán</Divider>
             <Space
               style={{ width: "100%" }}

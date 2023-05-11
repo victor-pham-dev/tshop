@@ -149,6 +149,8 @@ export function Overview() {
               className="textTheme roundedBox boxShadow"
               key={`sdaf ${item.id}`}
               gutter={[16, 16]}
+              style={{ marginTop: 16 }}
+              align="middle"
             >
               <Col xxl={3}>{item.Product?.name}</Col>
               <Col xxl={3}>{item.Classification?.name}</Col>
