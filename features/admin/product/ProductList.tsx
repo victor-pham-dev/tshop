@@ -151,7 +151,7 @@ export function ProductList() {
             {
               key: "product",
               label: "Sửa thông tin sản phẩm",
-              children: <EditProduct product={product} setOpenEditModal={setOpenEditModal} />,
+              children: <EditProduct  setProduct={setProduct} product={product} setOpenEditModal={setOpenEditModal} />,
             },
             {
               key: "classfy",
@@ -161,6 +161,7 @@ export function ProductList() {
                   productId={product?.id}
                   setOpenEditModal={setOpenEditModal}
                   classifies={product?.classifications ?? []}
+                  setProduct={setProduct}
                 />
               ),
             },
@@ -174,8 +175,9 @@ export function ProductList() {
 interface EditProductProps {
   product: Product | undefined;
   setOpenEditModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setProduct: React.Dispatch<React.SetStateAction<ProductWithClassifyProps | undefined>>
 }
-function EditProduct({ product,setOpenEditModal }: EditProductProps) {
+function EditProduct({ product,setOpenEditModal, setProduct }: EditProductProps) {
   const { setIsLoading } = useLoading();
   const queryClient = useQueryClient();
 
@@ -195,9 +197,11 @@ function EditProduct({ product,setOpenEditModal }: EditProductProps) {
           message.error("Đã có lỗi xảy ra");
         }
         setIsLoading(false);
+        setProduct(undefined)
       },
       onError: () => {
         setIsLoading(false);
+        setProduct(undefined)
         message.error("Đã có lỗi xảy ra");
       },
     }
@@ -309,12 +313,14 @@ function EditProduct({ product,setOpenEditModal }: EditProductProps) {
 interface EditClassifiesProps {
   classifies: Classification[];
   productId: string | undefined;
-  setOpenEditModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpenEditModal: React.Dispatch<React.SetStateAction<ProductWithClassifyProps | undefined>>;
+  setProduct: React.Dispatch<React.SetStateAction<ProductWithClassifyProps | undefined>>
 }
 function EditClassify({
   classifies,
   setOpenEditModal,
   productId,
+  setProduct
 }: EditClassifiesProps) {
   const { setIsLoading } = useLoading();
   const queryClient = useQueryClient();
@@ -331,14 +337,17 @@ function EditClassify({
           message.success("Cập nhật thành công");
           queryClient.invalidateQueries("searchProduct");
           setOpenEditModal(false)
+         
         } else {
           message.error("Đã có lỗi xảy ra");
         }
         setIsLoading(false);
+        setProduct(undefined)
       },
       onError: () => {
         setIsLoading(false);
         message.error("Đã có lỗi xảy ra");
+        setProduct(undefined)
       },
     }
   );
