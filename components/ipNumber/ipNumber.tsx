@@ -53,7 +53,15 @@ export default function NumberInput({
       style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
     >
       {!disabled && (
-        <button onClick={decrement} style={{ width: "20px", height: "30px" }}>
+        <button
+          onClick={decrement}
+          style={{
+            width: "20px",
+            height: "30px",
+            border: "1px solid black",
+            borderRadius: "4px",
+          }}
+        >
           -
         </button>
       )}
@@ -67,10 +75,24 @@ export default function NumberInput({
         id="cart-input-number"
         step={step}
         onChange={handleInputChange}
-        style={{ textAlign: "center", height: "30px", width: "80px" }}
+        style={{
+          textAlign: "center",
+          height: "30px",
+          width: "80px",
+          border: "1px solid black",
+          borderRadius: "4px",
+        }}
       />
       {!disabled && (
-        <button onClick={increment} style={{ width: "20px", height: "30px" }}>
+        <button
+          onClick={increment}
+          style={{
+            width: "20px",
+            height: "30px",
+            border: "1px solid black",
+            borderRadius: "4px",
+          }}
+        >
           +
         </button>
       )}

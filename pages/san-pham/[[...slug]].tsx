@@ -379,6 +379,7 @@ export default function ProductDetails({ productName, avatar }: Props) {
                           Thông tin sản phẩm
                         </Divider>
                         <Row
+                          className="product-description"
                           style={{ color: "#000" }}
                           dangerouslySetInnerHTML={{
                             __html: data.product?.description,

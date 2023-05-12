@@ -8,7 +8,10 @@
 main {
   overflow: hidden;
 }
-
+.product-description > * {
+  width: 100%;
+  padding-top: 0.4rem;
+}
 /* carousel */
 .carouselImage {
   width: 100%;
