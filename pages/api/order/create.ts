@@ -30,9 +30,24 @@ export default async function handler(
     if (result) {
       const listCartItems = JSON.parse(result.items) as Cart[];
       const cartIds = listCartItems.map((item) => item.id);
+
       await prisma.cart.deleteMany({
         where: { id: { in: cartIds } },
       });
+
+      await Promise.all(
+        listCartItems.map(async (item) => {
+          if (item.classificationId !== null) {
+            return await prisma.classification.update({
+              where: { id: item.classificationId },
+              data: {
+                quantity: { decrement: item.quantity },
+              },
+            });
+          }
+          return;
+        })
+      );
       return res.status(STATUS_CODE.CREATED).json({
         code: STATUS_CODE.CREATED,
         data: result.id,

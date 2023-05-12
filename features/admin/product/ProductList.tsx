@@ -221,7 +221,7 @@ function EditProduct({
       onError: () => {
         setIsLoading(false);
         setProduct(undefined);
-        message.error("Đã có lỗi xảy ra");
+        message.error("Lỗi server");
       },
     }
   );
@@ -365,7 +365,7 @@ function EditClassifies({
       },
       onError: () => {
         setIsLoading(false);
-        message.error("Đã có lỗi xảy ra");
+        message.error("Lỗi server");
         setProduct(undefined);
       },
     }

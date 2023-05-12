@@ -39,33 +39,46 @@ export default async function handler(
 
     if (order) {
       if (order.status === ORDER_STATUS.WAITING_FOR_CONFIRM) {
-        await prisma.order.update({
-          where: { id },
-          data: {
-            paymentInfo,
-            status: ORDER_STATUS.CONFIRMED,
-            paymentStatus: PAYMENT_STATUS.DONE,
-          },
-        });
         const items: CartDataProps[] = JSON.parse(order.items);
-        await Promise.all(
+
+        const stockCheck = await Promise.all(
           items.map(async (item) => {
             if (item.classificationId !== null) {
-              return await prisma.classification.update({
+              const classification = await prisma.classification.findUnique({
                 where: { id: item.classificationId },
-                data: {
-                  quantity: { decrement: item.quantity },
-                },
               });
+              if (
+                classification?.quantity !== undefined &&
+                classification?.quantity >= item.quantity
+              ) {
+                return true;
+              }
+              return false;
             }
-            return;
+            return false;
           })
         );
-        return res.status(STATUS_CODE.OK).json({
-          code: STATUS_CODE.OK,
-          data: null,
-          msg: "Xác nhận đơn thành công",
-        });
+        if (stockCheck.every((item) => item === true)) {
+          await prisma.order.update({
+            where: { id },
+            data: {
+              paymentInfo,
+              status: ORDER_STATUS.CONFIRMED,
+              paymentStatus: PAYMENT_STATUS.DONE,
+            },
+          });
+          return res.status(STATUS_CODE.OK).json({
+            code: STATUS_CODE.OK,
+            data: null,
+            msg: "Xác nhận đơn thành công",
+          });
+        } else {
+          return res.status(STATUS_CODE.CONFLICT).json({
+            code: STATUS_CODE.CONFLICT,
+            data: null,
+            msg: "Một hoặc vài sản phẩm đã hết hàng",
+          });
+        }
       }
     } else {
       return res.status(STATUS_CODE.FAILED).json({

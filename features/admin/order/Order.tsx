@@ -73,7 +73,7 @@ export function Order({ data }: Props): JSX.Element {
       },
       onError: () => {
         setIsLoading(false);
-        message.error("Đã có lỗi xảy ra");
+        message.error("Lỗi server");
       },
     }
   );
@@ -97,7 +97,7 @@ export function Order({ data }: Props): JSX.Element {
       },
       onError: () => {
         setIsLoading(false);
-        message.error("Đã có lỗi xảy ra");
+        message.error("Lỗi server");
       },
     }
   );
@@ -120,7 +120,7 @@ export function Order({ data }: Props): JSX.Element {
       },
       onError: () => {
         setIsLoading(false);
-        message.error("Đã có lỗi xảy ra");
+        message.error("Lỗi server");
       },
     }
   );
@@ -144,7 +144,7 @@ export function Order({ data }: Props): JSX.Element {
       },
       onError: () => {
         setIsLoading(false);
-        message.error("Đã có lỗi xảy ra");
+        message.error("Lỗi server");
       },
     }
   );
@@ -426,20 +426,18 @@ export function Order({ data }: Props): JSX.Element {
             return markShippingOrder.mutate({ ...values, id: data?.id ?? "" });
           }}
         >
-          {data?.paymentMethod === PAYMENT_METHOD.ONLINE && (
-            <Form.Item
-              label="Thông tin vận chuyển"
-              name="shippingInfo"
-              rules={[
-                {
-                  required: true,
-                  message: "Vui lòng điền thông tin vận chuyển!",
-                },
-              ]}
-            >
-              <Input.TextArea />
-            </Form.Item>
-          )}
+          <Form.Item
+            label="Thông tin vận chuyển"
+            name="shippingInfo"
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng điền thông tin vận chuyển!",
+              },
+            ]}
+          >
+            <Input.TextArea />
+          </Form.Item>
 
           <Form.Item wrapperCol={{ span: 24 }}>
             <Button block type="primary" htmlType="submit">

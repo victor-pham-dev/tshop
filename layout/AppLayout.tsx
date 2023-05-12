@@ -32,23 +32,24 @@ export const AppLayout: React.FC<Props> = ({ children }) => {
   const [messageApi, contextHolder] = message.useMessage();
 
   useEffect(() => {
+    let isMounted = true; // biến cờ đánh dấu component đã được mounted
     if (isLoading) {
       messageApi.open({
         key: "loadingmsg",
         type: "loading",
-        content: "Vui lòng chờ ...",
+        content: "Vui lòng chờ...",
       });
     } else {
-      messageApi.destroy("loadingmsg");
+      setTimeout(() => {
+        if (isMounted) {
+          messageApi.destroy("loadingmsg");
+        }
+      }, 1000); // Đợi 1 giây trước khi ẩn message loading
     }
+    return () => {
+      isMounted = false; // đánh dấu component đã unmount để tránh lỗi memory leak
+    };
   }, [isLoading]);
-
-  const [width, setWidth] = useState(0);
-
-  useEffect(() => {
-    const container = document.getElementById("__next");
-    setWidth(container?.offsetWidth ?? 1000);
-  }, []);
 
   return (
     <Row id="bg-shop" className="lightBg" justify="center">

@@ -1,7 +1,5 @@
-import { Typography } from "antd";
 import Link from "next/link";
 
-const { Text } = Typography;
 export default function Messenger() {
   return (
     <div

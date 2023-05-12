@@ -27,12 +27,14 @@ async function CreateOrderApi(
   return result;
 }
 
-async function GetMyOrdersApi(): Promise<ResponseProps<Order[] | null>> {
+async function GetMyOrdersApi(
+  token: string
+): Promise<ResponseProps<Order[] | null>> {
   const url = `/api/order/myorder`;
   const response = await fetch(url, {
     method: METHOD.GET,
     headers: {
-      "x-access-token": localToken ?? "",
+      "x-access-token": token,
     },
   });
   const result = await response.json();

@@ -48,7 +48,7 @@ export function Product(): JSX.Element {
       },
       onError: () => {
         setIsLoading(false);
-        message.error("Đã có lỗi xảy ra");
+        message.error("Lỗi server");
       },
     }
   );

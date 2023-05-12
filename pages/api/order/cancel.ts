@@ -36,27 +36,26 @@ export default async function handler(
         where: { id },
         data: { status: ORDER_STATUS.CANCELED, cancelReason },
       });
-      if (order.status === ORDER_STATUS.SHIPPING) {
-        const items: CartDataProps[] = JSON.parse(order.items);
-        await Promise.all(
-          items.map(async (item) => {
-            if (item.classificationId !== null) {
-              return await prisma.classification.update({
-                where: { id: item.classificationId },
-                data: {
-                  quantity: { increment: item.quantity },
-                },
-              });
-            }
-            return;
-          })
-        );
-        return res.status(STATUS_CODE.OK).json({
-          code: STATUS_CODE.OK,
-          data: null,
-          msg: "Xác nhận đơn thành công",
-        });
-      }
+
+      const items: CartDataProps[] = JSON.parse(order.items);
+      await Promise.all(
+        items.map(async (item) => {
+          if (item.classificationId !== null) {
+            return await prisma.classification.update({
+              where: { id: item.classificationId },
+              data: {
+                quantity: { increment: item.quantity },
+              },
+            });
+          }
+          return;
+        })
+      );
+      return res.status(STATUS_CODE.OK).json({
+        code: STATUS_CODE.OK,
+        data: null,
+        msg: "Xác nhận đơn thành công",
+      });
     } else {
       return res.status(STATUS_CODE.FAILED).json({
         code: STATUS_CODE.FAILED,

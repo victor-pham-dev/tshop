@@ -130,14 +130,14 @@ export default function UserCart() {
     {
       onMutate: () => {
         setIsLoading(true);
+        setOpenModal(false);
       },
       onSuccess: (data) => {
         if (data.code === STATUS_CODE.CREATED) {
           message.success("Đơn hàng của bạn đã được tạo");
-          orderData.checkedItems.forEach((item) => remove(item.id));
+          updateAll(cart.filter((item) => item.checked === false));
           router.push(`${PATH.ORDER}/${data.data}`);
           setIsLoading(false);
-          setOpenModal(false);
         } else {
           message.error("Đã có lỗi xảy ra");
           setIsLoading(false);
@@ -145,7 +145,7 @@ export default function UserCart() {
       },
       onError: () => {
         setIsLoading(false);
-        message.error("Đã có lỗi xảy ra");
+        message.error("Lỗi server");
       },
     }
   );

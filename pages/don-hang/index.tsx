@@ -6,9 +6,13 @@ import { Button, Col, Divider, Row, Typography } from "antd";
 import { CartDataProps } from "@/contexts/CartContext";
 import Link from "next/link";
 import { PATH } from "@/const/app-const";
+import { useUser } from "@/hooks";
 const { Text } = Typography;
 export default function MyOrders() {
-  const getMyOrders = useQuery("getMyOrders", () => GetMyOrdersApi());
+  const { token } = useUser();
+  const getMyOrders = useQuery("getMyOrders", () =>
+    GetMyOrdersApi(token ?? "")
+  );
 
   const ordersMemo = useMemo(() => {
     if (
