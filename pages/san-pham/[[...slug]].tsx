@@ -441,6 +441,7 @@ function RelatedProduct({ id }: RelatedProductProps) {
   return (
     <Row gutter={[12, 16]} justify="center">
       <Divider style={{ color: "white" }}>Có thể bạn quan tâm</Divider>
+      {getRelated.isLoading && <ContentLoading />}
       {products.map((item, i) => (
         <Col key={`related ${item.id} ${i}`} xxl={22} xs={12}>
           <Link href={`/${PATH.PRODUCT}/${item.name}?pid=${item.id}`}>

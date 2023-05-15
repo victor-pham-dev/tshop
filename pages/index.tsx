@@ -1,6 +1,6 @@
 import Head from "next/head";
 // import { Inter } from "next/font/google";
-import { Button, Col, Input, Pagination, Row } from "antd";
+import { Button, Col, Input, Pagination, Row, message } from "antd";
 import { useMemo, useState } from "react";
 import queryString from "query-string";
 import { SearchProductApi, SearchProductParamsProps } from "./api/product.api";
@@ -167,6 +167,7 @@ function Home() {
                       href={`/${PATH.PRODUCT}/${removeMark(item.name)}?pid=${
                         item.id
                       }`}
+                      onClick={() => message.info(`Chờ một xíu ...`)}
                     >
                       <ProductCard {...item} />
                     </Link>

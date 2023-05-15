@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
- // "mongodb+srv://truongpham2412dev:67eObtKnz8Qyr0My@tshop.108e3fv.mongodb.net/tshop?retryWrites=true&w=majority"
+// "mongodb+srv://truongpham2412dev:67eObtKnz8Qyr0My@tshop.108e3fv.mongodb.net/tshop?retryWrites=true&w=majority"
 
 model User {
   id         String     @id @default(auto()) @map("_id") @db.ObjectId
