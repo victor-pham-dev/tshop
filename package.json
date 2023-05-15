@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "vercel-build": "npx prisma generate  && next build && vercel --prod",
+    "vercel-build": "npx prisma generate  && next build",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
