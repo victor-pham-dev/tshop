@@ -1,4 +1,4 @@
-import { useLoading } from "@/hooks";
+import { useLoading, useUser } from "@/hooks";
 import {
   Button,
   Col,
@@ -24,6 +24,7 @@ interface Props {
   product: ProductWithClassifyProps | undefined;
 }
 export function ImportWarehouse({ product, setProduct }: Props): JSX.Element {
+  const { token } = useUser();
   const data = useMemo(() => product, [product]);
   const [form] = Form.useForm();
   const { setIsLoading } = useLoading();
@@ -31,7 +32,7 @@ export function ImportWarehouse({ product, setProduct }: Props): JSX.Element {
   const [classifyImg, setClassifyImg] = useState<string | undefined>(undefined);
   const createProduct = useMutation(
     "createWarehouseImport",
-    (data: WarehouseImport) => CreateWarehouseImportApi(data),
+    (data: WarehouseImport) => CreateWarehouseImportApi(data, token),
     {
       onMutate: () => {
         setIsLoading(true);

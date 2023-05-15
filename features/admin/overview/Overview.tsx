@@ -1,4 +1,5 @@
 import { ProductWithClassifyProps } from "@/contexts/CartContext";
+import { useUser } from "@/hooks";
 import { GetAllOrderApi } from "@/pages/api/order.api";
 import { GetAllProductApi } from "@/pages/api/product.api";
 import { StatisticProps } from "@/pages/api/sellstatistic/all";
@@ -12,7 +13,8 @@ import { useQuery } from "react-query";
 
 const { Text } = Typography;
 export function Overview() {
-  const getBills = useQuery("allBill", () => GetWarehouseImportBillsApi());
+  const { token } = useUser();
+  const getBills = useQuery("allBill", () => GetWarehouseImportBillsApi(token));
 
   const bills: WarehouseBillProps[] = useMemo(() => {
     if (getBills.data?.data !== null && getBills.data?.data !== undefined) {
@@ -20,7 +22,7 @@ export function Overview() {
     }
     return [];
   }, [getBills.data?.data]);
-  const getProducts = useQuery("allProduct", () => GetAllProductApi());
+  const getProducts = useQuery("allProduct", () => GetAllProductApi(token));
 
   const products: ProductWithClassifyProps[] = useMemo(() => {
     if (
@@ -32,7 +34,7 @@ export function Overview() {
     return [];
   }, [getProducts.data?.data]);
 
-  const getAllOrder = useQuery("allOrder", () => GetAllOrderApi());
+  const getAllOrder = useQuery("allOrder", () => GetAllOrderApi(token));
 
   const orders: Order[] = useMemo(() => {
     if (
@@ -44,7 +46,9 @@ export function Overview() {
     return [];
   }, [getAllOrder.data?.data]);
 
-  const getSellStatistic = useQuery("allStatistic", () => GetAllStatisticApi());
+  const getSellStatistic = useQuery("allStatistic", () =>
+    GetAllStatisticApi(token)
+  );
 
   const statistics = useMemo(() => {
     if (

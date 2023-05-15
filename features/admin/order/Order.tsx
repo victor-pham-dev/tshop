@@ -1,4 +1,4 @@
-import { useLoading } from "@/hooks";
+import { useLoading, useUser } from "@/hooks";
 import {
   Button,
   Col,
@@ -42,6 +42,7 @@ interface Props {
   data: Order | undefined;
 }
 export function Order({ data }: Props): JSX.Element {
+  const { token } = useUser();
   const itemsMemo: CartDataProps[] = useMemo(() => {
     if (data !== undefined && data.items !== undefined) {
       return JSON.parse(data.items);
@@ -56,7 +57,7 @@ export function Order({ data }: Props): JSX.Element {
 
   const confirmOrder = useMutation(
     "confirmOrder",
-    (data: ConfirmOrderProps) => ConfirmOrderApi(data),
+    (data: ConfirmOrderProps) => ConfirmOrderApi(data, token ?? ""),
     {
       onMutate: () => {
         setIsLoading(true);
@@ -80,7 +81,7 @@ export function Order({ data }: Props): JSX.Element {
 
   const markShippingOrder = useMutation(
     "confirmOrder",
-    (data: MarkShippingOrderProps) => MarkShippingOrderApi(data),
+    (data: MarkShippingOrderProps) => MarkShippingOrderApi(data, token),
     {
       onMutate: () => {
         setIsLoading(true);
@@ -104,7 +105,7 @@ export function Order({ data }: Props): JSX.Element {
 
   const markDoneOrder = useMutation(
     "confirmOrder",
-    (data: MarkDoneOrderProps) => MarkDoneOrderApi(data),
+    (data: MarkDoneOrderProps) => MarkDoneOrderApi(data, token),
     {
       onMutate: () => {
         setIsLoading(true);
@@ -127,7 +128,7 @@ export function Order({ data }: Props): JSX.Element {
 
   const markCancelOrder = useMutation(
     "confirmOrder",
-    (data: MarkCancelOrderProps) => CancelOrderApi(data),
+    (data: MarkCancelOrderProps) => CancelOrderApi(data, token),
     {
       onMutate: () => {
         setIsLoading(true);
@@ -463,20 +464,18 @@ export function Order({ data }: Props): JSX.Element {
             return markCancelOrder.mutate({ ...values, id: data?.id ?? "" });
           }}
         >
-          {data?.paymentMethod === PAYMENT_METHOD.ONLINE && (
-            <Form.Item
-              label="Lý do huỷ đơn"
-              name="cancelReason"
-              rules={[
-                {
-                  required: true,
-                  message: "Vui lòng điền lý do huỷ đơn!",
-                },
-              ]}
-            >
-              <Input.TextArea />
-            </Form.Item>
-          )}
+          <Form.Item
+            label="Lý do huỷ đơn"
+            name="cancelReason"
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng điền lý do huỷ đơn!",
+              },
+            ]}
+          >
+            <Input.TextArea />
+          </Form.Item>
 
           <Form.Item wrapperCol={{ span: 24 }}>
             <Button block type="primary" htmlType="submit">

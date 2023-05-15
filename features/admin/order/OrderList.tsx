@@ -1,5 +1,6 @@
 import { ORDER_STATUS, OrderStatusOptions } from "@/const/app-const";
 import { CartDataProps } from "@/contexts/CartContext";
+import { useUser } from "@/hooks";
 import { SearchOrderParamsProps, SearchOrdertApi } from "@/pages/api/order.api";
 import { Order } from "@prisma/client";
 import { Button, Col, Pagination, Row, Select } from "antd";
@@ -16,13 +17,14 @@ interface Props {
   setOrder: Dispatch<SetStateAction<Order | undefined>>;
 }
 export function OrderList({ setOrder }: Props) {
+  const { token } = useUser();
   const [filter, setFilter] = useState<SearchOrderParamsProps>({
     pageSize: 6,
   });
   const [params, setParams] = useState<string>(`page=1&pageSize=6`);
 
   const getOrders = useQuery(["searchOrders", params], () =>
-    SearchOrdertApi(params)
+    SearchOrdertApi(params, token)
   );
 
   const ordersMemo = useMemo(() => {

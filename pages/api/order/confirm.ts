@@ -76,7 +76,7 @@ export default async function handler(
           return res.status(STATUS_CODE.CONFLICT).json({
             code: STATUS_CODE.CONFLICT,
             data: null,
-            msg: "Một hoặc vài sản phẩm đã hết hàng",
+            msg: "Một hoặc vài sản phẩm đã hết hàng, Vui lòng kiểm tra lại",
           });
         }
       }

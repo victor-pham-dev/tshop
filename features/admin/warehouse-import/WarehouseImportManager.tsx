@@ -6,14 +6,16 @@ import { ProductListToImport } from "./ProductListToImport";
 import { useQuery } from "react-query";
 import { GetWarehouseImportBillsApi } from "@/pages/api/warehouse.api";
 import { WarehouseBillProps } from "@/pages/api/warehouse/all";
+import { useUser } from "@/hooks";
 
 export function WarehouseImportManager(): JSX.Element {
+  const { token } = useUser();
   const [product, setProduct] = useState<ProductWithClassifyProps | undefined>(
     undefined
   );
 
   const getBills = useQuery("wareHouseBills", () =>
-    GetWarehouseImportBillsApi()
+    GetWarehouseImportBillsApi(token)
   );
 
   const bills: WarehouseBillProps[] = useMemo(() => {

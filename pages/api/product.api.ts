@@ -4,16 +4,18 @@ import {
 } from "@/network/services/api-handler";
 import { METHOD } from "../../const/app-const";
 import { Classification, Product } from "@prisma/client";
-import { localToken } from "@/ultis/useActor";
 import { ProductWithClassifyProps } from "@/contexts/CartContext";
 
-async function CreateProductApi(data: Product): Promise<ResponseProps<null>> {
+async function CreateProductApi(
+  data: Product,
+  token: string
+): Promise<ResponseProps<null>> {
   const url = `/api/product/create`;
   const response = await fetch(url, {
     method: METHOD.POST,
     headers: {
       "Content-Type": "application/json",
-      "x-access-token": localToken ?? "",
+      "x-access-token": token,
     },
     body: JSON.stringify(data),
   });
@@ -21,13 +23,16 @@ async function CreateProductApi(data: Product): Promise<ResponseProps<null>> {
   return result;
 }
 
-async function EditProductApi(data: Product): Promise<ResponseProps<null>> {
+async function EditProductApi(
+  data: Product,
+  token: string
+): Promise<ResponseProps<null>> {
   const url = `/api/product/edit`;
   const response = await fetch(url, {
     method: METHOD.PATCH,
     headers: {
       "Content-Type": "application/json",
-      "x-access-token": localToken ?? "",
+      "x-access-token": token,
     },
     body: JSON.stringify(data),
   });
@@ -36,14 +41,15 @@ async function EditProductApi(data: Product): Promise<ResponseProps<null>> {
 }
 
 async function CreateClassifyProductApi(
-  data: Classification
+  data: Classification,
+  token: string
 ): Promise<ResponseProps<null>> {
   const url = `/api/product/classify/create`;
   const response = await fetch(url, {
     method: METHOD.POST,
     headers: {
       "Content-Type": "application/json",
-      "x-access-token": localToken ?? "",
+      "x-access-token": token,
     },
     body: JSON.stringify(data),
   });
@@ -52,14 +58,15 @@ async function CreateClassifyProductApi(
 }
 
 async function EditClassifyProductApi(
-  data: Classification
+  data: Classification,
+  token: string
 ): Promise<ResponseProps<null>> {
   const url = `/api/product/classify/edit`;
   const response = await fetch(url, {
     method: METHOD.PATCH,
     headers: {
       "Content-Type": "application/json",
-      "x-access-token": localToken ?? "",
+      "x-access-token": token ?? "",
     },
     body: JSON.stringify(data),
   });
@@ -89,12 +96,15 @@ async function SearchProductApi(
   return result;
 }
 
-async function DeleteProductApi(id: string): Promise<ResponseProps<null>> {
+async function DeleteProductApi(
+  id: string,
+  token: string
+): Promise<ResponseProps<null>> {
   const url = `/api/product/delete?${id}`;
   const response = await fetch(url, {
     method: METHOD.DELETE,
     headers: {
-      "x-access-token": localToken ?? "",
+      "x-access-token": token,
     },
   });
   const result = await response.json();
@@ -126,15 +136,15 @@ async function GetRelatedProductByIdApi(
   return result;
 }
 
-async function GetAllProductApi(): Promise<
-  ResponseProps<ProductWithClassifyProps[] | null>
-> {
+async function GetAllProductApi(
+  token: string
+): Promise<ResponseProps<ProductWithClassifyProps[] | null>> {
   const url = `/api/product/all`;
   const response = await fetch(url, {
     method: METHOD.GET,
     headers: {
       "Content-Type": "application/json",
-      "x-access-token": localToken ?? "",
+      "x-access-token": token,
     },
   });
   const result = await response.json();

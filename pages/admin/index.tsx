@@ -7,6 +7,7 @@ import {
 import { OrderManager } from "@/features/admin/order/OrderManager";
 import { ProtectPage } from "@/middleware/client/ProtectPage";
 import { Row, Tabs, TabsProps } from "antd";
+import { useEffect } from "react";
 
 export default function AdminPage() {
   const items: TabsProps["items"] = [
@@ -31,6 +32,7 @@ export default function AdminPage() {
       children: <Overview />,
     },
   ];
+
   return (
     <ProtectPage role={ROLE.ADMIN}>
       <Row

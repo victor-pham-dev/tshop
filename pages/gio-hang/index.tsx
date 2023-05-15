@@ -379,6 +379,21 @@ export default function UserCart() {
               <Input placeholder="Email nhận thông tin đơn hàng" />
             </Form.Item>
             <Form.Item
+              label="Phương thức thanh toán & Nhận hàng"
+              name="paymentMethod"
+              rules={[
+                {
+                  required: true,
+                  message: "Hãy chọn phương thức thanh toán!",
+                },
+              ]}
+            >
+              <Select
+                options={PaymentMethodOptions}
+                placeholder="Chọn phương thức thanh toán"
+              />
+            </Form.Item>
+            <Form.Item
               label="Số điện thoại người nhận"
               name="phone"
               rules={[
@@ -398,21 +413,7 @@ export default function UserCart() {
             >
               <Input placeholder="Số điện thoại nhận hàng" />
             </Form.Item>
-            <Form.Item
-              label="Phương thức thanh toán & Nhận hàng"
-              name="paymentMethod"
-              rules={[
-                {
-                  required: true,
-                  message: "Hãy chọn phương thức thanh toán!",
-                },
-              ]}
-            >
-              <Select
-                options={PaymentMethodOptions}
-                placeholder="Chọn phương thức thanh toán"
-              />
-            </Form.Item>
+
             <Form.Item label="Ghi chú" name="note">
               <Input.TextArea placeholder="Ghi chú" />
             </Form.Item>

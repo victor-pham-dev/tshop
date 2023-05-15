@@ -5,7 +5,7 @@ import {
   productStatusOptions,
 } from "@/const/app-const";
 import { ProductWithClassifyProps } from "@/contexts/CartContext";
-import { useLoading } from "@/hooks";
+import { useLoading, useUser } from "@/hooks";
 import {
   CreateClassifyProductApi,
   EditClassifyProductApi,
@@ -190,6 +190,7 @@ function EditProduct({
   setOpenEditModal,
   setProduct,
 }: EditProductProps) {
+  const { token } = useUser();
   const { setIsLoading } = useLoading();
   const queryClient = useQueryClient();
   const [form] = Form.useForm();
@@ -202,7 +203,7 @@ function EditProduct({
   }, [product]);
   const editProduct = useMutation(
     "createProduct",
-    (data: Product) => EditProductApi(data),
+    (data: Product) => EditProductApi(data, token),
     {
       onMutate: () => {
         setIsLoading(true);
@@ -343,11 +344,12 @@ function EditClassifies({
   productId,
   setProduct,
 }: EditClassifiesProps) {
+  const { token } = useUser();
   const { setIsLoading } = useLoading();
   const queryClient = useQueryClient();
   const editClassifyProduct = useMutation(
     "editClassifyProduct",
-    (data: Classification) => EditClassifyProductApi(data),
+    (data: Classification) => EditClassifyProductApi(data, token),
     {
       onMutate: () => {
         setIsLoading(true);
@@ -371,8 +373,8 @@ function EditClassifies({
     }
   );
   const createClassifyProduct = useMutation(
-    "editClassifyProduct",
-    (data: Classification) => CreateClassifyProductApi(data),
+    "createClassifyProduct",
+    (data: Classification) => CreateClassifyProductApi(data, token),
     {
       onMutate: () => {
         setIsLoading(true);
@@ -486,13 +488,14 @@ function EditClassify({
   productId,
   setProduct,
 }: EditClassifyProps) {
+  const { token } = useUser();
   const { setIsLoading } = useLoading();
   const queryClient = useQueryClient();
   const [form] = Form.useForm();
   useEffect(() => form.setFieldsValue({ ...classify }), [classify]);
   const editClassifyProduct = useMutation(
     "editClassifyProduct",
-    (data: Classification) => EditClassifyProductApi(data),
+    (data: Classification) => EditClassifyProductApi(data, token),
     {
       onMutate: () => {
         setIsLoading(true);

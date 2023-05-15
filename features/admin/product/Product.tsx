@@ -1,5 +1,5 @@
 import { RichTextEditor } from "@/components/richTexteditor/RichTextEditor";
-import { useLoading } from "@/hooks";
+import { useLoading, useUser } from "@/hooks";
 import {
   Button,
   Col,
@@ -25,13 +25,14 @@ import { Product } from "@prisma/client";
 import { CreateProductApi } from "@/pages/api/product.api";
 
 export function Product(): JSX.Element {
+  const { token } = useUser();
   const [form] = Form.useForm();
   const { setIsLoading } = useLoading();
   const queryClient = useQueryClient();
 
   const createProduct = useMutation(
     "createProduct",
-    (data: Product) => CreateProductApi(data),
+    (data: Product) => CreateProductApi(data, token),
     {
       onMutate: () => {
         setIsLoading(true);

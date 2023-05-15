@@ -1,18 +1,18 @@
 import { ResponseProps } from "@/network/services/api-handler";
 import { METHOD } from "../../const/app-const";
-import { localToken } from "@/ultis/useActor";
 import { WarehouseImport } from "@prisma/client";
 import { WarehouseBillProps } from "./warehouse/all";
 
 async function CreateWarehouseImportApi(
-  data: WarehouseImport
+  data: WarehouseImport,
+  token: string
 ): Promise<ResponseProps<string | null>> {
   const url = `/api/warehouse/create`;
   const response = await fetch(url, {
     method: METHOD.POST,
     headers: {
       "Content-Type": "application/json",
-      "x-access-token": localToken ?? "",
+      "x-access-token": token,
     },
     body: JSON.stringify(data),
   });
@@ -20,15 +20,15 @@ async function CreateWarehouseImportApi(
   return result;
 }
 
-async function GetWarehouseImportBillsApi(): Promise<
-  ResponseProps<WarehouseBillProps[] | null>
-> {
+async function GetWarehouseImportBillsApi(
+  token: string
+): Promise<ResponseProps<WarehouseBillProps[] | null>> {
   const url = `/api/warehouse/all`;
   const response = await fetch(url, {
     method: METHOD.GET,
     headers: {
       "Content-Type": "application/json",
-      "x-access-token": localToken ?? "",
+      "x-access-token": token,
     },
   });
   const result = await response.json();

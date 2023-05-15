@@ -4,7 +4,6 @@ import {
 } from "@/network/services/api-handler";
 import { METHOD } from "../../const/app-const";
 import { Order } from "@prisma/client";
-import { localToken } from "@/ultis/useActor";
 import { ConfirmOrderProps } from "./order/confirm";
 import { MarkShippingOrderProps } from "./order/markshipping";
 import { MarkDoneOrderProps } from "./order/markdone";
@@ -61,14 +60,15 @@ export interface SearchOrderParamsProps {
   status?: string;
 }
 async function SearchOrdertApi(
-  params: string
+  params: string,
+  token: string
 ): Promise<ResponseProps<PagingResponseProps<Order> | null>> {
   const url = `/api/order/search?${params}`;
   const response = await fetch(url, {
     method: METHOD.GET,
     headers: {
       "Content-Type": "application/json",
-      "x-access-token": localToken ?? "",
+      "x-access-token": token,
     },
   });
   const result = await response.json();
@@ -76,14 +76,15 @@ async function SearchOrdertApi(
 }
 
 async function MarkShippingOrderApi(
-  data: MarkShippingOrderProps
+  data: MarkShippingOrderProps,
+  token: string
 ): Promise<ResponseProps<null>> {
   const url = `/api/order/markshipping`;
   const response = await fetch(url, {
     method: METHOD.POST,
     headers: {
       "Content-Type": "application/json",
-      "x-access-token": localToken ?? "",
+      "x-access-token": token,
     },
     body: JSON.stringify(data),
   });
@@ -92,14 +93,15 @@ async function MarkShippingOrderApi(
 }
 
 async function MarkDoneOrderApi(
-  data: MarkDoneOrderProps
+  data: MarkDoneOrderProps,
+  token: string
 ): Promise<ResponseProps<null>> {
   const url = `/api/order/markdone`;
   const response = await fetch(url, {
     method: METHOD.POST,
     headers: {
       "Content-Type": "application/json",
-      "x-access-token": localToken ?? "",
+      "x-access-token": token,
     },
     body: JSON.stringify(data),
   });
@@ -108,14 +110,15 @@ async function MarkDoneOrderApi(
 }
 
 async function CancelOrderApi(
-  data: MarkCancelOrderProps
+  data: MarkCancelOrderProps,
+  token: string
 ): Promise<ResponseProps<null>> {
   const url = `/api/order/cancel`;
   const response = await fetch(url, {
     method: METHOD.POST,
     headers: {
       "Content-Type": "application/json",
-      "x-access-token": localToken ?? "",
+      "x-access-token": token,
     },
     body: JSON.stringify(data),
   });
@@ -124,27 +127,30 @@ async function CancelOrderApi(
 }
 
 async function ConfirmOrderApi(
-  data: ConfirmOrderProps
+  data: ConfirmOrderProps,
+  token: string
 ): Promise<ResponseProps<null>> {
   const url = `/api/order/confirm`;
   const response = await fetch(url, {
     method: METHOD.POST,
     headers: {
       "Content-Type": "application/json",
-      "x-access-token": localToken ?? "",
+      "x-access-token": token,
     },
     body: JSON.stringify(data),
   });
   const result = await response.json();
   return result;
 }
-async function GetAllOrderApi(): Promise<ResponseProps<Order[] | null>> {
+async function GetAllOrderApi(
+  token: string
+): Promise<ResponseProps<Order[] | null>> {
   const url = `/api/order/all`;
   const response = await fetch(url, {
     method: METHOD.GET,
     headers: {
       "Content-Type": "application/json",
-      "x-access-token": localToken ?? "",
+      "x-access-token": token,
     },
   });
   const result = await response.json();
