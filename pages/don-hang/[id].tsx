@@ -139,9 +139,8 @@ export default function Order() {
 
             <Divider style={{ color: "white" }}>Thông tin vận chuyển</Divider>
             <p style={{ color: "white" }}>
-              {" "}
               {dataMemo.shippingInfo.trim().length > 0
-                ? dataMemo.shippingInfo.trim().length
+                ? dataMemo.shippingInfo
                 : "Chưa có thông tin vận chuyển"}
             </p>
           </Col>

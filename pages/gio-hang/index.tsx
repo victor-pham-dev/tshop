@@ -123,7 +123,7 @@ export default function UserCart() {
     }
     form.resetFields(["ward"]);
   }
-
+  console.log(cart);
   const createOrder = useMutation(
     "createOrder",
     (values: Order) => CreateOrderApi(values, user.token ?? ""),
@@ -135,7 +135,11 @@ export default function UserCart() {
       onSuccess: (data) => {
         if (data.code === STATUS_CODE.CREATED) {
           message.success("Đơn hàng của bạn đã được tạo");
-          updateAll(cart.filter((item) => item.checked === false));
+          updateAll(
+            cart.filter(
+              (item) => item.checked === false || item.checked === undefined
+            )
+          );
           router.push(`${PATH.ORDER}/${data.data}`);
           setIsLoading(false);
         } else {

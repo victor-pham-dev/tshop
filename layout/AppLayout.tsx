@@ -32,23 +32,15 @@ export const AppLayout: React.FC<Props> = ({ children }) => {
   const [messageApi, contextHolder] = message.useMessage();
 
   useEffect(() => {
-    let isMounted = true; // biến cờ đánh dấu component đã được mounted
-    if (isLoading) {
-      messageApi.open({
+    if (isLoading === true) {
+      return messageApi.open({
         key: "loadingmsg",
         type: "loading",
         content: "Vui lòng chờ...",
       });
     } else {
-      setTimeout(() => {
-        if (isMounted) {
-          messageApi.destroy("loadingmsg");
-        }
-      }, 1000); // Đợi 1 giây trước khi ẩn message loading
+      return messageApi.destroy("loadingmsg");
     }
-    return () => {
-      isMounted = false; // đánh dấu component đã unmount để tránh lỗi memory leak
-    };
   }, [isLoading]);
 
   return (
