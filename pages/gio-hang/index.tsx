@@ -143,7 +143,7 @@ export default function UserCart() {
           router.push(`${PATH.ORDER}/${data.data}`);
           setIsLoading(false);
         } else {
-          message.error("Đã có lỗi xảy ra");
+          message.error(data.msg);
           setIsLoading(false);
         }
       },

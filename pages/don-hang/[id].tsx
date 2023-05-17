@@ -59,7 +59,10 @@ export default function Order() {
               </span>
             </h4>
             {dataMemo.status === ORDER_STATUS.CANCELED && (
-              <Text code>{`Lý do: ${dataMemo.cancelReason}`}</Text>
+              <Text
+                code
+                style={{ color: "white" }}
+              >{`Lý do: ${dataMemo.cancelReason}`}</Text>
             )}
           </Col>
 
