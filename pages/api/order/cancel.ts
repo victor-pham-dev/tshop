@@ -28,13 +28,18 @@ export default async function handler(
 
   const { id, cancelReason } = req.body as MarkCancelOrderProps;
   try {
+    const today = new Date();
     const order = await prisma.order.findUnique({
       where: { id },
     });
     if (order) {
       await prisma.order.update({
         where: { id },
-        data: { status: ORDER_STATUS.CANCELED, cancelReason },
+        data: {
+          status: ORDER_STATUS.CANCELED,
+          cancelReason,
+          cancelAt: today.toLocaleDateString(),
+        },
       });
       // if (order.status !== ORDER_STATUS.WAITING_FOR_CONFIRM) {
       const items: CartDataProps[] = JSON.parse(order.items);

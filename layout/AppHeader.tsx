@@ -36,13 +36,13 @@ export default function AppHeader(): JSX.Element {
 
   return (
     <Row>
-      <Col
-        id="header"
-        className="lightSection"
-        span={24}
-        style={{ padding: "1rem" }}
-      >
-        <Row align="middle" justify="space-between">
+      <Col className="lightSection" span={24}>
+        <Row
+          id="header"
+          align="middle"
+          justify="space-between"
+          style={{ padding: "1rem" }}
+        >
           <Col span={12}>
             <Row
               style={{ cursor: "pointer" }}
@@ -66,7 +66,7 @@ export default function AppHeader(): JSX.Element {
                     marginLeft: "10px",
                   }}
                 >
-                  Mix tech
+                  ITX Gear
                 </p>
               </Col>
             </Row>
@@ -115,16 +115,6 @@ export default function AppHeader(): JSX.Element {
                   )}
                 </Row>
               </Col>
-              {/* <Col>
-                <Switch
-                  checked={activeSwitch}
-                  onChange={(checked: Boolean) =>
-                    checked ? changeTheme("light") : changeTheme("dark")
-                  }
-                  checkedChildren="Sáng"
-                  unCheckedChildren="Tối"
-                />
-              </Col> */}
             </Row>
           </Col>
         </Row>

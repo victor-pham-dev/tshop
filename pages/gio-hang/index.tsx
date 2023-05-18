@@ -11,6 +11,7 @@ import {
   Row,
   Select,
   Space,
+  Typography,
   message,
 } from "antd";
 import { useMemo, useState } from "react";
@@ -27,7 +28,7 @@ import { provinceList } from "@/const/provincesList";
 import { REGEX } from "@/const/regexp";
 import { CreateOrderApi } from "../api/order.api";
 import { useRouter } from "next/router";
-
+const { Text } = Typography;
 interface DeleteProps {
   id: string;
   token: string;
@@ -264,7 +265,7 @@ export default function UserCart() {
           </Col>
         </Row>
       </Col>
-
+      <PreOrderInfo />
       <Modal
         open={openModal}
         onCancel={() => setOpenModal(false)}
@@ -431,5 +432,29 @@ export default function UserCart() {
         </Row>
       </Modal>
     </Row>
+  );
+}
+
+function PreOrderInfo() {
+  return (
+    <Col xxl={16} xs={24}>
+      <Space direction="vertical">
+        <Text style={{ color: "white" }}> Về đặt hàng và đơn hàng:</Text>
+        <Text keyboard type="warning" style={{ width: "100%" }}>
+          Với phương thức thanh toán là: COD - quý khách vui lòng đặt hàng và
+          chờ xác nhận
+        </Text>
+        <Text keyboard type="warning" style={{ width: "100%" }}>
+          Với phương thức thanh toán là: Online/Banking - quý khách vui lòng đặt
+          hàng và tiến hành thanh toán
+        </Text>
+        <Text keyboard type="success" style={{ width: "100%" }}>
+          Freeship Nội thành Hà Nội với đơn hàng trên 1 triệu
+        </Text>
+        <Text keyboard type="success" style={{ width: "100%" }}>
+          Cảm ơn quý khách !
+        </Text>
+      </Space>
+    </Col>
   );
 }

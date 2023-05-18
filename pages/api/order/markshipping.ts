@@ -33,9 +33,14 @@ export default async function handler(
 
     if (order) {
       if (order.status === ORDER_STATUS.CONFIRMED) {
+        const today = new Date();
         await prisma.order.update({
           where: { id },
-          data: { status: ORDER_STATUS.SHIPPING, shippingInfo },
+          data: {
+            status: ORDER_STATUS.SHIPPING,
+            shippingInfo,
+            shipAt: today.toLocaleDateString(),
+          },
         });
         return res.status(STATUS_CODE.OK).json({
           code: STATUS_CODE.OK,

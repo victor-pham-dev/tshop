@@ -1,5 +1,4 @@
 import Head from "next/head";
-// import { Inter } from "next/font/google";
 import { Button, Col, Input, Pagination, Row, message } from "antd";
 import { useMemo, useState } from "react";
 import queryString from "query-string";
@@ -10,11 +9,9 @@ import { PATH } from "@/const/app-const";
 import { removeMark } from "@/ultis/dataConvert";
 import { Background, CardLoading, Messenger, ProductCard } from "@/components";
 
-// const inter = Inter({ subsets: ["latin"] });
-
 function Home() {
   const [filter, setFilter] = useState<SearchProductParamsProps>({
-    pageSize: 6,
+    pageSize: 12,
   });
   const [params, setParams] = useState<string>("page=1&pageSize=9");
 
@@ -50,8 +47,8 @@ function Home() {
   return (
     <>
       <Head>
-        <title>Mix tech - Tối giản tạo nên sự khác biệt</title>
-        <meta name="description" content="Mix tech - ITX PC" />
+        <title>ITX Gear - itx pc Tối giản tạo nên sự khác biệt</title>
+        <meta name="description" content="Itx Gear - ITX PC" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.svg" />
       </Head>
@@ -59,43 +56,11 @@ function Home() {
         <Messenger />
         <Background />
         <Row>
-          <Col span={24}>
-            <Row justify="center" gutter={[8, 8]}>
-              <Col span={6}>
-                <img width={"100%"} src="/bn4.png" alt="mix tech" />
-              </Col>
-
-              <Col span={6}>
-                <img width={"100%"} src="/bn6.png" alt="mix tech" />
-              </Col>
-              <Col span={6}>
-                <img width={"100%"} src="/bn7.png" alt="mix tech" />
-              </Col>
-              <Col span={6}>
-                <img width={"100%"} src="/bn5.png" alt="mix tech" />
-              </Col>
-              <Col xxl={0} xs={6}>
-                <img width={"100%"} src="/bn8.png" alt="mix tech" />
-              </Col>
-              <Col xxl={0} xs={6}>
-                <img width={"100%"} src="/bn1.png" alt="mix tech" />
-              </Col>
-              <Col xxl={0} xs={6}>
-                <img width={"100%"} src="/bn2.png" alt="mix tech" />
-              </Col>
-
-              <Col xxl={0} xs={6}>
-                <img width={"100%"} src="/bn3.png" alt="mix tech" />
-              </Col>
-            </Row>
-            {/* <img
-              src="/banner.jpg"
-              alt="Mini PC-Shop Nghiện nhưng không dở"
-              width="100%"
-              height="360px"
-            /> */}
-            {/* <p>Chỗ này dành cho banner nè</p> */}
-          </Col>
+          <img
+            src={"/banner.png"}
+            alt="Itx pc"
+            style={{ width: "100%", zIndex: 3, opacity: 0.9 }}
+          />
         </Row>
         <Row style={{ padding: "1rem" }} justify="center">
           <Col

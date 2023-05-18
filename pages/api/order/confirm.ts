@@ -59,12 +59,14 @@ export default async function handler(
           })
         );
         if (stockCheck.every((item) => item === true)) {
+          const today = new Date();
           await prisma.order.update({
             where: { id },
             data: {
               paymentInfo,
               status: ORDER_STATUS.CONFIRMED,
               paymentStatus: PAYMENT_STATUS.DONE,
+              confirmedAt: today.toLocaleDateString(),
             },
           });
           return res.status(STATUS_CODE.OK).json({

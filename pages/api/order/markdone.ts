@@ -33,9 +33,14 @@ export default async function handler(
 
     if (order) {
       if (order.status === ORDER_STATUS.SHIPPING) {
+        const today = new Date();
+
         await prisma.order.update({
           where: { id },
-          data: { status: ORDER_STATUS.DONE },
+          data: {
+            status: ORDER_STATUS.DONE,
+            doneAt: today.toLocaleDateString(),
+          },
         });
 
         const items: CartDataProps[] = JSON.parse(order.items);
@@ -82,6 +87,7 @@ export default async function handler(
               return await prisma.warranty.create({
                 data: {
                   phone: order.phone,
+                  email: order.email,
                   classificationId: item.classificationId,
                   orderId: order.id,
                   dueAt: dueDate.toISOString(),
@@ -94,7 +100,7 @@ export default async function handler(
             }
           })
         );
-
+        console.log("done");
         return res.status(STATUS_CODE.OK).json({
           code: STATUS_CODE.OK,
           data: null,

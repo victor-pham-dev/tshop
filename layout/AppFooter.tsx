@@ -19,7 +19,7 @@ export const AppFooter: React.FC = () => {
         <Row align="middle" justify="center">
           <Col span={24}>
             <p style={{ textAlign: "center" }}></p> &#169;&nbsp; Copyright by
-            Mix tech - {thisYear}
+            ITX Gear - {thisYear}
           </Col>
           <Col span={24}>
             Cảm ơn quý khách hàng đã ghé thăm{" "}

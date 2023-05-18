@@ -14,6 +14,10 @@ export function UserMenu({ userName }: UserMenuProps): JSX.Element {
       label: <Link href={`/${PATH.ORDER}`}>Danh sách đơn hàng</Link>,
     },
     {
+      key: "warranty",
+      label: <Link href={`/${PATH.WARRANTY}`}>Tra cứu bảo hành</Link>,
+    },
+    {
       key: "logout",
       label: <div onClick={reset}>Đăng xuất</div>,
     },

@@ -1,6 +1,5 @@
 import { ResponseProps } from "@/network/services/api-handler";
 import { METHOD } from "../../const/app-const";
-import { localToken } from "@/ultis/useActor";
 import { CartDataProps } from "@/contexts/CartContext";
 
 export interface AddCartDataProps {

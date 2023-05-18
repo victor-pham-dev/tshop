@@ -27,7 +27,6 @@ async function GetWarehouseImportBillsApi(
   const response = await fetch(url, {
     method: METHOD.GET,
     headers: {
-      "Content-Type": "application/json",
       "x-access-token": token,
     },
   });

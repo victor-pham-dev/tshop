@@ -96,6 +96,10 @@ model Order {
   paymentInfo     String     @default("")
   shippingInfo    String     @default("")
   cancelReason    String     @default("")
+  confirmedAt     String     @default("")
+  shipAt          String     @default("")
+  doneAt          String     @default("")
+  cancelAt        String     @default("")
   Warranty        Warranty[]
 }
 
@@ -111,7 +115,8 @@ model Warranty {
   dueAt            DateTime
   userId           String?         @db.ObjectId
   User             User?           @relation(fields: [userId], references: [id])
-  phone            String
+  phone            String          @default("")
+  email            String          @default("")
 }
 
 model WarehouseImport {

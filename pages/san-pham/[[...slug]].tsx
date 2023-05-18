@@ -9,22 +9,16 @@ import {
   Typography,
   message,
 } from "antd";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Background,
-  // BreadCrumb,
   CarouselProduct,
   ContentLoading,
   ProductCard,
 } from "@/components";
-// import { CrumbProps } from "@/components/breadCrumb/BreadCrumb";
 import NumberInput from "@/components/ipNumber/ipNumber";
 import { ShoppingCartOutlined, SmileOutlined } from "@ant-design/icons";
-import {
-  ClassifyProps,
-  GetInfoProductByIdApi,
-  GetRelatedProductByIdApi,
-} from "../api/product.api";
+import { ClassifyProps, GetRelatedProductByIdApi } from "../api/product.api";
 import { Classification, Product } from "@prisma/client";
 import { useRouter } from "next/router";
 import { useMutation, useQuery } from "react-query";
@@ -41,67 +35,43 @@ import { NextSeo } from "next-seo";
 const { Text } = Typography;
 
 interface Props {
-  productName: string;
-  avatar: string;
+  productData: ProductWithClassifyProps | null;
 }
-export default function ProductDetails({ productName, avatar }: Props) {
+export default function ProductDetails({ productData }: Props) {
   const { setIsLoading } = useLoading();
   const { add } = useCart();
   const router = useRouter();
   const { user } = useUser();
   const { pid } = router.query;
-  const getInfo = useQuery(["getProductInfo", pid], () =>
-    GetInfoProductByIdApi(pid?.toString() ?? "")
-  );
-  if (getInfo.data === undefined && !getInfo.isLoading) {
-    return <Divider>Lấy thông tin sản phẩm thất bại </Divider>;
+
+  if (productData === null) {
+    return (
+      <Divider style={{ color: "white" }}>
+        Lấy thông tin sản phẩm thất bại{" "}
+      </Divider>
+    );
+  }
+  let initPrice: string = "";
+  const sort = productData?.classifications?.sort((a, b) => a.price - b.price);
+  if (sort?.length > 1) {
+    if (sort[0]?.price === sort[sort.length - 1]?.price) {
+      initPrice = `${sort[0].price.toLocaleString()} đ`;
+    } else {
+      initPrice = `${sort[0]?.price.toLocaleString()}-${sort[
+        sort.length - 1
+      ]?.price.toLocaleString()}  đ`;
+    }
+  } else {
+    initPrice = `${sort[0].price.toLocaleString()} đ`;
   }
 
-  const data = useMemo(() => {
-    let initPrice: string = "";
-    let arrImg: string[] = [];
-    let classifications: Classification[] = [];
-    if (getInfo.data?.data !== undefined && getInfo.data?.data !== null) {
-      const product = getInfo.data?.data;
-      const sort = product.classifications.sort((a, b) => a.price - b.price);
-      if (sort.length > 1) {
-        if (sort[0].price === sort[sort.length - 1].price) {
-          initPrice = `${sort[0].price.toLocaleString()} đ`;
-        } else {
-          initPrice = `${sort[0].price.toLocaleString()}-${sort[
-            sort.length - 1
-          ].price.toLocaleString()}  đ`;
-        }
-      } else {
-        initPrice = `${sort[0].price.toLocaleString()} đ`;
-      }
+  let arrImg: string[] = [];
+  arrImg.push(...productData.images);
+  productData.classifications.forEach((item) => {
+    arrImg.push(item.image);
+  });
 
-      arrImg.push(...product.images);
-      product.classifications.forEach((item) => {
-        arrImg.push(item.image);
-      });
-
-      classifications = product.classifications;
-    }
-    return {
-      initPrice,
-      arrImg,
-      classifications,
-      product: getInfo.data?.data,
-    };
-  }, [getInfo.data?.data]);
-
-  // const breads: CrumbProps[] = [
-  //   {
-  //     label: "Sản phẩm",
-  //     link: `/`,
-  //   },
-  //   {
-  //     label: data.product?.name,
-  //   },
-  // ];
-
-  const [price, setPrice] = useState<string>(data.initPrice);
+  const [price, setPrice] = useState<string>(initPrice);
   const [ableQuantity, setAbleQuantity] = useState<number | undefined>(
     undefined
   );
@@ -110,12 +80,11 @@ export default function ProductDetails({ productName, avatar }: Props) {
   );
   const [openModal, setOpenModal] = useState(false);
 
-  useEffect(() => setPrice(data.initPrice), [data.initPrice]);
   function handleClickClassify(index: number) {
-    const navIndex = (data.product?.images.length ?? 0) + index;
+    const navIndex = (productData?.images.length ?? 0) + index;
     const navDiv = document.getElementById(`navSlide ${navIndex}`);
     navDiv?.click();
-    const classifi = data.product?.classifications[index];
+    const classifi = productData?.classifications[index];
     setPrice(`${classifi?.price.toLocaleString()} đ`);
     setAbleQuantity(classifi?.quantity ?? 0);
     setSelectedItem(classifi);
@@ -130,8 +99,8 @@ export default function ProductDetails({ productName, avatar }: Props) {
         if (result.code === STATUS_CODE.CREATED) {
           setOpenModal(true);
           setIsLoading(false);
-          if (result.data !== null && data.product !== undefined) {
-            add({ ...payload, id: result?.data, Product: data.product });
+          if (result.data !== null && productData !== null) {
+            add({ ...payload, id: result?.data, Product: productData });
           }
         } else {
           message.error("Đã có lỗi xảy ra!");
@@ -156,11 +125,11 @@ export default function ProductDetails({ productName, avatar }: Props) {
       return message.info("Quý khách vui lòng đăng nhập để mua hàng");
     }
 
-    if (data.product !== undefined && user.id !== undefined) {
+    if (productData !== null && user.id !== undefined) {
       const payload: AddCartDataProps = {
         classificationId: selectedItem.id,
         image: selectedItem.image,
-        productId: data.product?.id,
+        productId: productData.id,
         quantity: Number(inputQuantity.value),
         userId: user.id,
       };
@@ -172,38 +141,33 @@ export default function ProductDetails({ productName, avatar }: Props) {
     <>
       <Head>
         <NextSeo
-          title={`${productName} - Mix Tech`}
+          title={`${productData?.name ?? ""} - Mix Tech`}
           description="Mix tech - ITX PC & More"
           openGraph={{
-            title: `${productName} - Mix Tech`,
+            title: `${productData?.name ?? ""} - Mix Tech`,
             description: "Mix tech - ITX PC & More",
             images: [
               {
-                url: `${avatar}`,
+                url: `${productData?.images[0]}`,
                 width: 400,
                 height: 470,
-                alt: `${productName}`,
+                alt: `${productData?.name}`,
               },
             ],
           }}
         />
 
-        <link rel="icon" href={avatar} />
+        <link rel="icon" href={productData?.images[0]} />
       </Head>
       <main>
-        {getInfo.isLoading && <ContentLoading />}
-        {data.product !== undefined && (
+        {productData !== null && (
           <React.Fragment>
             <Background />
-            <Row gutter={[16, 16]}>
-              <Col xxl={19}>
-                <Row
-                  justify={"center"}
-                  style={{ padding: "0.5rem" }}
-                  gutter={[16, 6]}
-                >
+            <Row gutter={[16, 16]} style={{ marginTop: "1rem" }}>
+              <Col xxl={19} style={{ padding: "1rem" }}>
+                <Row justify={"center"} gutter={[16, 6]}>
                   <Col xxl={{ span: 12 }} xs={{ span: 24 }}>
-                    <CarouselProduct images={data.arrImg} />
+                    <CarouselProduct images={arrImg} />
                   </Col>
                   <Col
                     style={{
@@ -226,7 +190,7 @@ export default function ProductDetails({ productName, avatar }: Props) {
                             color: "black",
                           }}
                         >
-                          {data.product?.name}
+                          {productData?.name}
                         </p>
                       </Col>
                       {/* <Col span={24}>
@@ -284,8 +248,8 @@ export default function ProductDetails({ productName, avatar }: Props) {
                           <Col span={24}>
                             <Radio.Group buttonStyle="solid">
                               <Row gutter={[12, 12]}>
-                                {data.classifications.map((item, i) => (
-                                  <Col key={`option ${item.id}`}>
+                                {productData?.classifications.map((item, i) => (
+                                  <Col key={`option ${item.id} ${i}`}>
                                     <Radio.Button
                                       className="boxShadow"
                                       id="buttonPhanLoai"
@@ -364,30 +328,27 @@ export default function ProductDetails({ productName, avatar }: Props) {
                       </Col>
                     </Row>
                   </Col>
-                  <Col span={24}>
-                    <Row>
-                      <Col
-                        className="roundedBox boxShadow"
-                        span={24}
-                        style={{
-                          background: "#bdbdbd",
-                          padding: "1rem",
-                          opacity: 0.95,
-                        }}
-                      >
-                        <Divider className="textTheme" orientation="left">
-                          Thông tin sản phẩm
-                        </Divider>
-                        <Row
-                          className="product-description"
-                          style={{ color: "#000" }}
-                          dangerouslySetInnerHTML={{
-                            __html: data.product?.description,
-                          }}
-                        />
-                      </Col>
-                    </Row>
-                  </Col>
+                </Row>
+                <Row
+                  className="roundedBox boxShadow"
+                  style={{
+                    background: "#bdbdbd",
+                    padding: "1rem",
+                    opacity: 0.95,
+                    marginTop: "0.5rem",
+                    marginBottom: "0.5rem",
+                  }}
+                >
+                  <Divider className="textTheme" orientation="left">
+                    Thông tin sản phẩm
+                  </Divider>
+                  <Row
+                    className="product-description"
+                    style={{ color: "#000" }}
+                    dangerouslySetInnerHTML={{
+                      __html: productData?.description,
+                    }}
+                  />
                 </Row>
               </Col>
               <Col xxl={5} xs={24}>
@@ -456,10 +417,8 @@ function RelatedProduct({ id }: RelatedProductProps) {
 export async function getServerSideProps(context: any) {
   const { pid } = context.query;
   const { req } = context;
-  const baseUrl = "https://" + req.headers.host;
-  // console.log(baseUrl);
-  let productName: string = "";
-  let avatar: string = "";
+  const baseUrl = "http://" + req.headers.host;
+  let productData: ProductWithClassifyProps | null = null;
   try {
     const response = await fetch(`${baseUrl}/api/product/info?id=${pid}`, {
       method: METHOD.GET,
@@ -467,18 +426,15 @@ export async function getServerSideProps(context: any) {
 
     const result: ResponseProps<ProductWithClassifyProps> =
       await response.json();
-
     if (result) {
-      productName = result.data.name;
-      avatar = result.data.images[0];
+      productData = result.data;
     }
   } catch (error) {
-    // console.log(error);
+    productData = null;
   }
   return {
     props: {
-      productName,
-      avatar,
+      productData,
     },
   };
 }

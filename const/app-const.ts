@@ -15,6 +15,7 @@ export const PATH = {
   PRODUCT: "san-pham",
   CART: "gio-hang",
   ORDER: "don-hang",
+  WARRANTY: "bao-hanh",
 };
 
 export const STORAGE_KEY = {
