@@ -50,7 +50,7 @@ export default async function handler(
       msg: "OK",
     });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return res.status(STATUS_CODE.INTERNAL).json({
       code: STATUS_CODE.INTERNAL,
       data: null,

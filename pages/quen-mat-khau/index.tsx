@@ -20,7 +20,7 @@ export default function Login(): JSX.Element {
 
   async function SendEmail(email: string) {
     let result = await supabase.auth.resetPasswordForEmail(email);
-    console.log(result.data);
+    // console.log(result.data);
   }
 
   return (

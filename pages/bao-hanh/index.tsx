@@ -21,7 +21,7 @@ export default function Warranty() {
         : [],
     [getWarranty.data?.data]
   );
-  console.log(data);
+  // console.log(data);
 
   return (
     <Row justify={"center"}>

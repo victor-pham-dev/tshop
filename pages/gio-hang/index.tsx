@@ -124,7 +124,7 @@ export default function UserCart() {
     }
     form.resetFields(["ward"]);
   }
-  console.log(cart);
+  // console.log(cart);
   const createOrder = useMutation(
     "createOrder",
     (values: Order) => CreateOrderApi(values, user.token ?? ""),

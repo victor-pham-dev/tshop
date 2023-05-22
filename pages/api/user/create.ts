@@ -37,11 +37,11 @@ export default async function handler(
         msg: "Email đã được sử dụng",
       });
     }
-    const a = await supabase.auth.signUp({
+    await supabase.auth.signUp({
       email,
       password,
     });
-    console.log(a);
+    // console.log(a);
 
     const encryptedPassword = await bcrypt.hash(password, 10);
     await prisma.user.create({
