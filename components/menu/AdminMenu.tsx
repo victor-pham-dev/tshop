@@ -22,7 +22,16 @@ export function AdminMenu({ userName }: AminMenuProps): JSX.Element {
 
   return (
     <Dropdown menu={{ items }} trigger={["click"]} placement="bottom" arrow>
-      <div className="hovername">{userName}</div>
+      <div
+        className="hovername"
+        style={{
+          maxWidth: "100%",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+        }}
+      >
+        {userName}
+      </div>
     </Dropdown>
   );
 }

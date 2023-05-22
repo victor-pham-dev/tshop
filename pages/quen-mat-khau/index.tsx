@@ -11,34 +11,16 @@ import Link from "next/link";
 import { useMutation } from "react-query";
 import Image from "next/image";
 import Facebook from "@/components/facebookLogin/FacebookLogin";
+import { supabase } from "@/services/supabase";
 
 export default function Login(): JSX.Element {
   const router = useRouter();
   const { login } = useUser();
   const { setIsLoading } = useLoading();
 
-  const Login = useMutation(
-    (data: LoginApiProps) => LoginWithAccountApi(data),
-    {
-      onMutate: () => setIsLoading(true),
-      onSuccess: (result) => {
-        if (result.data !== null) {
-          login(result.data.accessToken);
-          router.push(`/`);
-        }
-        if (result.code >= 400) {
-          message.error(result.msg);
-        }
-      },
-      onError: () => {
-        setIsLoading(false);
-        message.error("Chức năng tạm thời bảo trì!");
-      },
-    }
-  );
-
-  function LoginHandler(values: LoginApiProps) {
-    Login.mutate(values);
+  async function SendEmail(email: string) {
+    let result = await supabase.auth.resetPasswordForEmail(email);
+    console.log(result.data);
   }
 
   return (
@@ -61,7 +43,7 @@ export default function Login(): JSX.Element {
           autoComplete="true"
           name="normal_login"
           initialValues={{ remember: true }}
-          onFinish={(values) => LoginHandler(values)}
+          onFinish={(values) => values}
         >
           <Form.Item
             name="email"
@@ -72,16 +54,7 @@ export default function Login(): JSX.Element {
           >
             <Input prefix={<MailTwoTone />} placeholder="Email" />
           </Form.Item>
-          <Form.Item
-            name="password"
-            rules={[{ required: true, message: "Vui lòng điền mật khẩu!" }]}
-          >
-            <Input
-              prefix={<LockTwoTone />}
-              type="password"
-              placeholder="Mật khẩu"
-            />
-          </Form.Item>
+
           <Form.Item>
             <Button
               type="primary"
@@ -89,16 +62,16 @@ export default function Login(): JSX.Element {
               className="login-form-button"
               block
             >
-              Đăng nhập
+              Gửi Email
             </Button>
           </Form.Item>
         </Form>
         <Row justify="space-between" gutter={[10, 10]}>
           {`Bạn chưa có tài khoản ?`}
           <Col span={24}>
-            <Link href={`/${PATH.REGISTER}`}>
+            <Link href={`/${PATH.LOGIN}`}>
               <Button type="primary" style={{ float: "left" }}>
-                Đăng ký
+                Đăng nhập
               </Button>
             </Link>
           </Col>

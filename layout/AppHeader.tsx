@@ -77,13 +77,13 @@ export default function AppHeader(): JSX.Element {
                 <Row gutter={[4, 0]} justify="end" align="middle">
                   {user.token && user.token !== "" ? (
                     <React.Fragment>
-                      <Col>
+                      {/* <Col>
                         <Avatar
                           src={
                             "https://xsgames.co/randomusers/avatar.php?g=pixel"
                           }
                         />
-                      </Col>
+                      </Col> */}
                       <Col>
                         {user.role === ROLE.ADMIN ? (
                           <AdminMenu userName={user.name ?? ""} />

@@ -16,8 +16,5 @@ module.exports = nextConfig
 module.exports = {
   images: {
     disableStaticImages: true,
-  },
-  env: {
-    TOKEN_KEY:"alsdhfkl4jas23djkfhqwqoewi241rqtqwmahsdfkjasdqwieurasdfahj4ksdgioq2weuaaa2784",
-  },
+  }
 }

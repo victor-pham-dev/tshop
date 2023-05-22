@@ -3,6 +3,7 @@ import { METHOD, STATUS_CODE } from "@/const/app-const";
 import bcrypt from "bcrypt";
 import { ResponseProps } from "@/network/services/api-handler";
 import { prisma } from "@/lib/prisma";
+import { supabase } from "@/services/supabase";
 
 interface PayloadProps {
   name: string;
@@ -36,6 +37,12 @@ export default async function handler(
         msg: "Email đã được sử dụng",
       });
     }
+    const a = await supabase.auth.signUp({
+      email,
+      password,
+    });
+    console.log(a);
+
     const encryptedPassword = await bcrypt.hash(password, 10);
     await prisma.user.create({
       data: {

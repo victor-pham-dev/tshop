@@ -16,6 +16,7 @@ export const PATH = {
   CART: "gio-hang",
   ORDER: "don-hang",
   WARRANTY: "bao-hanh",
+  CONFIRM_ACCOUNT: "xac-nhan-tai-khoan",
 };
 
 export const STORAGE_KEY = {
@@ -25,6 +26,11 @@ export const STORAGE_KEY = {
 };
 
 export const API = `${process.env.be_url}/api`;
+
+export const SUPABASE_CONFIG = {
+  URL: process.env.SUPABASE_URL as string,
+  PUBKEY: process.env.SUPABASE_KEY as string,
+};
 
 export const TOKEN_KEY = process.env.TOKEN_KEY as string;
 

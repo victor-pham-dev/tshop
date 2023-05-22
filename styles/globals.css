@@ -12,6 +12,9 @@ main {
   width: 100%;
   padding-top: 0.4rem;
 }
+.product-description > * > img {
+  max-width: 60%;
+}
 /* carousel */
 .carouselImage {
   width: 100%;

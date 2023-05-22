@@ -210,9 +210,8 @@ export function Product(): JSX.Element {
               },
             ]}
           >
-            <Input
+            <Input.TextArea
               style={{ width: "100%" }}
-              min={1}
               placeholder="Link, phân cách bởi dấu , "
             />
           </Form.Item>
@@ -235,7 +234,7 @@ export function Product(): JSX.Element {
           </Form.Item>
           <Form.Item wrapperCol={{ span: 24 }}>
             <Button block type="primary" htmlType="submit">
-              Tạo khoá học
+              Tạo sản phẩm
             </Button>
           </Form.Item>
         </Form>

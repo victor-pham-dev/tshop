@@ -50,6 +50,24 @@ export default async function handler(
               const classifi = item.Product.classifications.find(
                 (cls) => cls.id === item.classificationId
               );
+              if (classifi !== undefined && classifi.warranty > 0) {
+                const dueDate = new Date(
+                  new Date().getTime() + classifi.warranty * 24 * 60 * 60 * 1000
+                );
+
+                return await prisma.warranty.create({
+                  data: {
+                    phone: order.phone,
+                    email: order.email,
+                    classificationId: item.classificationId,
+                    orderId: order.id,
+                    dueAt: dueDate.toISOString(),
+                    productId: item.Product.id,
+                    userId: order.userId,
+                  },
+                });
+              }
+
               const statistic = await prisma.sellstatistic.findFirst({
                 where: { classificationId: item.classificationId },
               });
@@ -74,33 +92,6 @@ export default async function handler(
           })
         );
 
-        await Promise.all(
-          items.map(async (item) => {
-            const classify = item.Product.classifications.find(
-              (classifi) => classifi.id === item.classificationId
-            );
-            if (classify !== undefined && classify.warranty > 0) {
-              const dueDate = new Date(
-                new Date().getTime() + classify.warranty * 24 * 60 * 60 * 1000
-              );
-
-              return await prisma.warranty.create({
-                data: {
-                  phone: order.phone,
-                  email: order.email,
-                  classificationId: item.classificationId,
-                  orderId: order.id,
-                  dueAt: dueDate.toISOString(),
-                  productId: item.Product.id,
-                  userId: order.userId,
-                },
-              });
-            } else {
-              return;
-            }
-          })
-        );
-        console.log("done");
         return res.status(STATUS_CODE.OK).json({
           code: STATUS_CODE.OK,
           data: null,
