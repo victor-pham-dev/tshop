@@ -1,7 +1,7 @@
 import React from "react";
 import { PATH, STATUS_CODE } from "../../const/app-const";
 import { LockOutlined, UserOutlined, MailOutlined } from "@ant-design/icons";
-import { Button, Col, Form, Input, message, Row } from "antd";
+import { Button, Col, Divider, Form, Input, message, Row } from "antd";
 import { useLoading } from "../../hooks";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -57,6 +57,7 @@ export default function Register(): JSX.Element {
           <Col>
             <Image src={`/favicon.svg`} alt="mina" width={80} height={80} />
           </Col>
+          <Divider style={{ color: "white" }}>Đăng ký</Divider>
         </Row>
         <Form
           name="normal_login"

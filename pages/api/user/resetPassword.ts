@@ -5,19 +5,20 @@ import jwt from "jsonwebtoken";
 import { ResponseProps } from "@/network/services/api-handler";
 import { prisma } from "@/lib/prisma";
 import { supabase } from "@/services/supabase";
-import { MailSendProps, sendgrid } from "@/services/sendgrid";
-
-interface ResProps {
-  accessToken: string;
-}
+// import { MailSendProps, sendgrid } from "@/services/sendgrid";
 
 interface PayloadProps {
-  email: string;
-  password: string;
+  token: string;
+  newPassword: string;
 }
+interface TokenDecodeProps {
+  email: string;
+  exp: number;
+}
+
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<ResponseProps<ResProps | null>>
+  res: NextApiResponse<ResponseProps<null>>
 ) {
   if (req.method !== METHOD.POST) {
     return res.status(STATUS_CODE.INVALID_METHOD).json({
@@ -27,17 +28,44 @@ export default async function handler(
     });
   }
 
-  //   const { email, password } = req.body as PayloadProps;
+  const { token, newPassword } = req.body as PayloadProps;
 
   try {
-    const mailContent: MailSendProps = {
-      to: "truongpham241.nd@gmail.com",
-      from: "truongpham2412.dev@gmail.com",
-      subject: "test cai",
-      text: "vui ve thoi",
-    };
-    const a = await sendgrid.send(mailContent);
-    console.log(a);
+    const user = jwt.decode(token) as TokenDecodeProps;
+    const now = new Date();
+
+    if (user && now.getTime() > user.exp) {
+      await supabase.auth.updateUser({
+        email: user.email,
+        password: newPassword,
+      });
+      const encryptPw = await bcrypt.hash(newPassword, 10);
+      await prisma.user.update({
+        where: {
+          email: user.email,
+        },
+        data: {
+          password: encryptPw,
+        },
+      });
+      return res
+        .status(STATUS_CODE.OK)
+        .json({ code: STATUS_CODE.OK, data: null, msg: "Thành công" });
+    }
+
+    return res.status(STATUS_CODE.FAILED).json({
+      code: STATUS_CODE.FAILED,
+      data: null,
+      msg: "Đường dẫn đã hết hạn hoặc không hợp lệ",
+    });
+    // const mailContent: MailSendProps = {
+    //   to: "truongpham241.nd@gmail.com",
+    //   from: "truongpham2412.dev@gmail.com",
+    //   subject: "test cai",
+    //   text: "vui ve thoi",
+    // };
+    // const a = await sendgrid.send(mailContent);
+    // console.log(a);
     // const user = await prisma.user.findUnique({
     //   where: {
     //     email: email.toLowerCase(),
@@ -88,10 +116,6 @@ export default async function handler(
     //     expiresIn: "7d",
     //   }
     // );
-
-    return res
-      .status(STATUS_CODE.OK)
-      .json({ code: STATUS_CODE.OK, data: null, msg: "Thành công" });
   } catch (error) {
     return res
       .status(STATUS_CODE.INTERNAL)

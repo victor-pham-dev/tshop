@@ -10,7 +10,7 @@ function Facebook() {
   const [state, setState] = useState("");
 
   const responseFacebook = (res: any) => {
-    console.log(res);
+    // console.log(res);
 
     if (res.id !== null && res.id !== undefined) {
       const value = {
@@ -19,7 +19,7 @@ function Facebook() {
         name: res.name,
         avatar: res.picture.data.url,
       };
-      console.log(value);
+      // console.log(value);
     } else {
       message.error("Đăng nhập không thành công !!!");
     }

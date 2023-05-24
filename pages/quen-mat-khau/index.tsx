@@ -1,26 +1,25 @@
-import { Button, Col, Form, Input, message, Row } from "antd";
+import { Button, Col, Divider, Form, Input, Row, message } from "antd";
 import React from "react";
-// import { Link, useNavigate } from 'react-router-dom
-import { LoginApiProps, LoginWithAccountApi } from "../api/user.api";
-import { useLoading, useUser } from "../../hooks";
-import { LockTwoTone, MailTwoTone } from "@ant-design/icons";
-import { PATH } from "../../const/app-const";
+import { useLoading } from "../../hooks";
+import { MailTwoTone } from "@ant-design/icons";
+import { PATH, STATUS_CODE } from "../../const/app-const";
 import { REGEX } from "../../const/regexp";
-import { useRouter } from "next/router";
 import Link from "next/link";
-import { useMutation } from "react-query";
 import Image from "next/image";
-import Facebook from "@/components/facebookLogin/FacebookLogin";
-import { supabase } from "@/services/supabase";
+import { SendResetMailApi } from "../api/user.api";
 
 export default function Login(): JSX.Element {
-  const router = useRouter();
-  const { login } = useUser();
   const { setIsLoading } = useLoading();
 
   async function SendEmail(email: string) {
-    let result = await supabase.auth.resetPasswordForEmail(email);
-    // console.log(result.data);
+    setIsLoading(true);
+    const result = await SendResetMailApi(email);
+    if (result.code === STATUS_CODE.OK) {
+      message.info("Đã gửi mail, vui lòng kiểm tra cả spam và hòm thư rác");
+    } else {
+      message.error("Đã có lỗi xảy ra");
+    }
+    setIsLoading(false);
   }
 
   return (
@@ -39,11 +38,12 @@ export default function Login(): JSX.Element {
             <Image src={`/favicon.svg`} alt="mina" width={80} height={80} />
           </Col>
         </Row>
+        <Divider style={{ color: "white" }}>Quên mật khẩu</Divider>
         <Form
           autoComplete="true"
           name="normal_login"
           initialValues={{ remember: true }}
-          onFinish={(values) => values}
+          onFinish={(values) => SendEmail(values.email)}
         >
           <Form.Item
             name="email"

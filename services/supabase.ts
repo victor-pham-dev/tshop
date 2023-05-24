@@ -3,5 +3,11 @@ import { createClient } from "@supabase/supabase-js";
 
 export const supabase = createClient(
   SUPABASE_CONFIG.URL,
-  SUPABASE_CONFIG.PUBKEY
+  SUPABASE_CONFIG.PUBKEY,
+  {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+    },
+  }
 );

@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, message, Row } from "antd";
+import { Button, Col, Divider, Form, Input, message, Row } from "antd";
 import React from "react";
 // import { Link, useNavigate } from 'react-router-dom
 import { LoginApiProps, LoginWithAccountApi } from "../api/user.api";
@@ -10,7 +10,6 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { useMutation } from "react-query";
 import Image from "next/image";
-import Facebook from "@/components/facebookLogin/FacebookLogin";
 
 export default function Login(): JSX.Element {
   const router = useRouter();
@@ -57,6 +56,7 @@ export default function Login(): JSX.Element {
             <Image src={`/favicon.svg`} alt="mina" width={80} height={80} />
           </Col>
         </Row>
+        <Divider style={{ color: "white" }}>Đăng nhập</Divider>
         <Form
           autoComplete="true"
           name="normal_login"
@@ -93,19 +93,23 @@ export default function Login(): JSX.Element {
             </Button>
           </Form.Item>
         </Form>
+        <p style={{ marginBottom: 16 }}> {`Bạn chưa có tài khoản ?`}</p>
+
         <Row justify="space-between" gutter={[10, 10]}>
-          {`Bạn chưa có tài khoản ?`}
-          <Col span={24}>
+          <Col span={12}>
             <Link href={`/${PATH.REGISTER}`}>
               <Button type="primary" style={{ float: "left" }}>
                 Đăng ký
               </Button>
             </Link>
           </Col>
-          {/* <Col span={16}>
-            <p>Hoặc đăng nhập với</p>
-            <Facebook />
-          </Col> */}
+          <Col>
+            <Link href={`/${PATH.FORGOT_PASSWORD}`}>
+              <Button type="primary" style={{ float: "left" }}>
+                Quên mật khẩu
+              </Button>
+            </Link>
+          </Col>
         </Row>
       </Col>
     </Row>

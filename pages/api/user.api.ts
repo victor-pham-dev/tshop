@@ -58,4 +58,45 @@ async function AuthenApi(token: string): Promise<ResponseProps<User | null>> {
   return result;
 }
 
-export { RegisAccountApi, LoginWithAccountApi, AuthenApi };
+interface ResetPasswordPayloadProps {
+  token: string;
+  newPassword: string;
+}
+
+async function ResetPasswordApi(
+  data: ResetPasswordPayloadProps
+): Promise<ResponseProps<loginResult | null>> {
+  const url = `/api/user/resetPassword`;
+  const response = await fetch(url, {
+    method: METHOD.POST,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  const result = await response.json();
+  return result;
+}
+
+async function SendResetMailApi(
+  email: string
+): Promise<ResponseProps<loginResult | null>> {
+  const url = `/api/user/sendResetMail`;
+  const response = await fetch(url, {
+    method: METHOD.POST,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email }),
+  });
+  const result = await response.json();
+  return result;
+}
+
+export {
+  RegisAccountApi,
+  LoginWithAccountApi,
+  AuthenApi,
+  ResetPasswordApi,
+  SendResetMailApi,
+};
