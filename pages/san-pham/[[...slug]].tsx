@@ -141,11 +141,11 @@ export default function ProductDetails({ productData }: Props) {
     <>
       <Head>
         <NextSeo
-          title={`${productData?.name ?? ""} - Mix Tech`}
-          description="Mix tech - ITX PC & More"
+          title={`${productData?.name ?? ""} - ITX Gear - Linh kiện ITX PC`}
+          description="ITX Gear - ITX PC & More"
           openGraph={{
-            title: `${productData?.name ?? ""} - Mix Tech`,
-            description: "Mix tech - ITX PC & More",
+            title: `${productData?.name ?? ""} - ITX Gear`,
+            description: "ITX Gear - ITX PC & More",
             images: [
               {
                 url: `${productData?.images[0]}`,

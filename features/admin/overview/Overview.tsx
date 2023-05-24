@@ -134,7 +134,10 @@ export function Overview() {
         </h3>
       </Col>
 
-      <Col span={24}>
+      <Col
+        span={24}
+        style={{ height: "60vh", overflowY: "scroll", padding: 10 }}
+      >
         <Divider className="textTheme">Thống kê bán hàng cho sản phẩm</Divider>
         <Row gutter={[16, 16]}>
           <Col xxl={3}>{`Tên sản phẩm`}</Col>

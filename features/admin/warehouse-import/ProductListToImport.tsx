@@ -13,9 +13,9 @@ interface Props {
 }
 export function ProductListToImport({ setProduct }: Props) {
   const [filter, setFilter] = useState<SearchProductParamsProps>({
-    pageSize: 6,
+    pageSize: 4,
   });
-  const [params, setParams] = useState<string>("page=1&pageSize=9");
+  const [params, setParams] = useState<string>("page=1&pageSize=4");
 
   const getProducts = useQuery(["searchProduct", params], () =>
     SearchProductApi(params)

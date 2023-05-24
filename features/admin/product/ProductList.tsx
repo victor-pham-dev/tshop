@@ -6,6 +6,8 @@ import {
 } from "@/const/app-const";
 import { ProductWithClassifyProps } from "@/contexts/CartContext";
 import { useLoading, useUser } from "@/hooks";
+import { AdminCreateOrderApi } from "@/pages/api/order.api";
+import { adminCreateOrderProps } from "@/pages/api/order/admincreate";
 import {
   CreateClassifyProductApi,
   EditClassifyProductApi,
@@ -167,6 +169,17 @@ export function ProductList() {
                   productId={product?.id}
                   setOpenEditModal={setOpenEditModal}
                   classifies={product?.classifications ?? []}
+                  setProduct={setProduct}
+                />
+              ),
+            },
+            {
+              key: "crete order",
+              label: "Tạo đơn nhập tay",
+              children: (
+                <CreateOrderOtherPlatform
+                  setOpenEditModal={setOpenEditModal}
+                  product={product}
                   setProduct={setProduct}
                 />
               ),
@@ -580,6 +593,141 @@ function EditClassify({
         <Form.Item wrapperCol={{ span: 24 }}>
           <Button block type="primary" htmlType="submit">
             Cập nhật phân loại
+          </Button>
+        </Form.Item>
+      </Form>
+    </Col>
+  );
+}
+
+interface CreateOrderProps {
+  product: ProductWithClassifyProps | undefined;
+  setOpenEditModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setProduct: React.Dispatch<
+    React.SetStateAction<ProductWithClassifyProps | undefined>
+  >;
+}
+function CreateOrderOtherPlatform({
+  product,
+  setOpenEditModal,
+  setProduct,
+}: CreateOrderProps) {
+  const [form] = Form.useForm();
+  const { token } = useUser();
+  const { setIsLoading } = useLoading();
+  const createOrderOtherPlatform = useMutation(
+    "admincreateorder",
+    (data: adminCreateOrderProps) => AdminCreateOrderApi(data, token),
+    {
+      onMutate: () => {
+        setIsLoading(true);
+      },
+      onSuccess: (data) => {
+        if (data.code === STATUS_CODE.CREATED) {
+          message.success("Tạo đơn thành công");
+          setOpenEditModal(false);
+          form.resetFields();
+        } else {
+          message.error("Đã có lỗi xảy ra");
+        }
+        setIsLoading(false);
+        setProduct(undefined);
+      },
+      onError: () => {
+        setIsLoading(false);
+        message.error("Đã có lỗi xảy ra");
+        setProduct(undefined);
+      },
+    }
+  );
+  return (
+    <Col className="roundedBox boxShadow" span={24}>
+      <Form
+        form={form}
+        name={`createorder`}
+        labelCol={{ span: 24 }}
+        wrapperCol={{ span: 24 }}
+        onFinish={(values) =>
+          createOrderOtherPlatform.mutate({ ...values, productId: product?.id })
+        }
+        autoComplete="off"
+      >
+        <Form.Item
+          name={"classificationId"}
+          label="Phân loại"
+          rules={[{ required: true, message: "Phân loại đâu" }]}
+        >
+          <Select
+            options={product?.classifications.map((item) => ({
+              label: item.name,
+              value: item.id,
+            }))}
+            placeholder="Phân loại"
+          />
+        </Form.Item>
+
+        <Form.Item
+          name={"price"}
+          label="Giá bán"
+          rules={[{ required: true, message: "Giá đâu" }]}
+        >
+          <InputNumber
+            style={{ width: "100%" }}
+            placeholder="Giá"
+            formatter={(value) =>
+              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            }
+          />
+        </Form.Item>
+        <Form.Item
+          name={"quantity"}
+          label="Số lượng bán"
+          rules={[{ required: true, message: "Số lượng đâu" }]}
+        >
+          <InputNumber
+            style={{ width: "100%" }}
+            placeholder="Số lượng"
+            formatter={(value) =>
+              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            }
+          />
+        </Form.Item>
+        <Form.Item name={"phone"} label="Số điện thoại">
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          name={"email"}
+          label="Email"
+          rules={[{ type: "email", message: "Email cơ mà" }]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          name={"shipCode"}
+          label="Mã vận chuyển (chỉ ghi mã vận chuyển không ghi kèm đơn vị)"
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          name={"note"}
+          label="Ghi chú cho đơn hàng (ID đơn hàng, mã vận chuyển ....etc...)"
+          rules={[
+            {
+              required: true,
+              message:
+                "Ghi chú cho đơn hàng (ID đơn hàng, mã vận chuyển ....etc...)",
+            },
+          ]}
+        >
+          <Input.TextArea placeholder="Ghi chú cho đơn hàng (ID đơn hàng, mã vận chuyển ....etc...)" />
+        </Form.Item>
+
+        <Form.Item wrapperCol={{ span: 24 }}>
+          <Button block type="primary" htmlType="submit">
+            Tạo đơn nhập tay
           </Button>
         </Form.Item>
       </Form>

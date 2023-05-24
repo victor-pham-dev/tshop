@@ -1,15 +1,21 @@
-import { Col, Divider, Row } from "antd";
+import { Button, Col, Divider, Popconfirm, Row, message } from "antd";
 import { ImportWarehouse } from "./ImportWarehouse";
 import { useMemo, useState } from "react";
 import { ProductWithClassifyProps } from "@/contexts/CartContext";
 import { ProductListToImport } from "./ProductListToImport";
-import { useQuery } from "react-query";
-import { GetWarehouseImportBillsApi } from "@/pages/api/warehouse.api";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import {
+  GetWarehouseImportBillsApi,
+  RemoveWarehouseImportApi,
+} from "@/pages/api/warehouse.api";
 import { WarehouseBillProps } from "@/pages/api/warehouse/all";
-import { useUser } from "@/hooks";
+import { useLoading, useUser } from "@/hooks";
+import { STATUS_CODE } from "@/const/app-const";
 
 export function WarehouseImportManager(): JSX.Element {
+  const queryClient = useQueryClient();
   const { token } = useUser();
+  const { setIsLoading } = useLoading();
   const [product, setProduct] = useState<ProductWithClassifyProps | undefined>(
     undefined
   );
@@ -24,6 +30,30 @@ export function WarehouseImportManager(): JSX.Element {
     }
     return [];
   }, [getBills.data?.data]);
+
+  const onDelete = useMutation(
+    "deleteWarehouse",
+    (id: string) => RemoveWarehouseImportApi(id, token),
+    {
+      onMutate: () => {
+        setIsLoading(true);
+      },
+      onSuccess: (data) => {
+        if (data.code === STATUS_CODE.OK) {
+          message.success("Xoá rồi");
+          queryClient.invalidateQueries("wareHouseBills");
+        } else {
+          message.error("Đã có lỗi xảy ra");
+        }
+        setIsLoading(false);
+      },
+      onError: () => {
+        setIsLoading(false);
+        message.error("Lỗi server");
+      },
+    }
+  );
+
   return (
     <Row gutter={[16, 16]}>
       <Col xxl={10}>
@@ -51,6 +81,7 @@ export function WarehouseImportManager(): JSX.Element {
           </Col>
           {bills.map((item) => (
             <Col
+              style={item.deleted ? { background: "gray" } : {}}
               className="roundedBox textTheme boxShadow"
               key={`bnill ${item.id}`}
               span={24}
@@ -64,7 +95,15 @@ export function WarehouseImportManager(): JSX.Element {
                 <Col span={4}>{item.quantity}</Col>
                 <Col span={4}>{item.importPrice.toLocaleString()}</Col>
                 <Col span={4}>
-                  {(item.importPrice * item.quantity).toLocaleString()}đ
+                  {(item.importPrice * item.quantity).toLocaleString()}đ{`-`}
+                  {!item.deleted && (
+                    <Popconfirm
+                      title="Xoá thật à"
+                      onConfirm={() => onDelete.mutate(item.id)}
+                    >
+                      <Button danger>Xoá</Button>
+                    </Popconfirm>
+                  )}
                 </Col>
               </Row>
             </Col>

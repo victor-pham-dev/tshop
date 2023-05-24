@@ -8,12 +8,30 @@ import { ConfirmOrderProps } from "./order/confirm";
 import { MarkShippingOrderProps } from "./order/markshipping";
 import { MarkDoneOrderProps } from "./order/markdone";
 import { MarkCancelOrderProps } from "./order/cancel";
+import { adminCreateOrderProps } from "./order/admincreate";
 
 async function CreateOrderApi(
   data: Order,
   token: string
 ): Promise<ResponseProps<string | null>> {
   const url = `/api/order/create`;
+  const response = await fetch(url, {
+    method: METHOD.POST,
+    headers: {
+      "Content-Type": "application/json",
+      "x-access-token": token,
+    },
+    body: JSON.stringify(data),
+  });
+  const result = await response.json();
+  return result;
+}
+
+async function AdminCreateOrderApi(
+  data: adminCreateOrderProps,
+  token: string
+): Promise<ResponseProps<string | null>> {
+  const url = `/api/order/admincreate`;
   const response = await fetch(url, {
     method: METHOD.POST,
     headers: {
@@ -158,6 +176,7 @@ async function GetAllOrderApi(
 }
 export {
   CreateOrderApi,
+  AdminCreateOrderApi,
   GetInfoOrderByIdApi,
   GetMyOrdersApi,
   SearchOrdertApi,

@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "mongodb"
-  url      = "mongodb+srv://truongpham2412dev:67eObtKnz8Qyr0My@tshop.108e3fv.mongodb.net/tshop?retryWrites=true&w=majority"
+  url      = env("DATABASE_URL")
 }
 
 // 
@@ -87,14 +87,15 @@ model Order {
   note            String     @default("")
   status          String     @default("Chờ xác nhận")
   total           Int
-  receiver        String
-  email           String
-  phone           String
-  province        String
-  district        String
-  ward            String
-  specificAddress String
+  receiver        String     @default("")
+  email           String     @default("")
+  phone           String     @default("")
+  province        String     @default("")
+  district        String     @default("")
+  ward            String     @default("")
+  specificAddress String     @default("")
   paymentInfo     String     @default("")
+  shipCode        String     @default("")
   shippingInfo    String     @default("")
   cancelReason    String     @default("")
   confirmedAt     String     @default("")
@@ -129,6 +130,7 @@ model WarehouseImport {
   classificationId String          @db.ObjectId
   Classification   Classification? @relation(fields: [classificationId], references: [id])
   importPrice      Int
+  deleted          Boolean         @default(false)
   note             String          @default("")
 }
 

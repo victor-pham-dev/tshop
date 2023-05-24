@@ -13,7 +13,7 @@ function Home() {
   const [filter, setFilter] = useState<SearchProductParamsProps>({
     pageSize: 12,
   });
-  const [params, setParams] = useState<string>("page=1&pageSize=9");
+  const [params, setParams] = useState<string>("page=1&pageSize=12");
 
   const getProducts = useQuery(["searchProduct", params], () =>
     SearchProductApi(params)
@@ -47,11 +47,26 @@ function Home() {
   return (
     <>
       <Head>
-        <title>ITX Gear - itx pc Tối giản tạo nên sự khác biệt</title>
-        <meta name="description" content="Itx Gear - ITX PC" />
+        <title>ITX Gear - ITX PC - Tối giản tạo nên sự khác biệt</title>
+        <meta
+          name="description"
+          content="Shop bán các mặt hàng linh kiện cho Mini PC, Tiny PC, case itx, linh kiện itx, mini pc"
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.svg" />
+        <link rel="icon" href="/favicon.svg" type="" />
+        <meta name="keywords" content="ITX Gear, itx pc, linh kiện mini ITX" />
+        <meta name="author" content="ITX Gear" />
+        <meta name="robots" content="index, follow" />
+
+        <meta
+          property="og:title"
+          content="ITX Gear - ITX PC - Tối giản tạo nên sự khác biệt"
+        />
+        <meta property="og:description" content="Itx Gear - ITX PC" />
+        <meta property="og:image" content="/favicon.svg" />
+        <meta property="og:url" content="https://itxgear.com" />
       </Head>
+
       <main>
         <Messenger />
         <Background />

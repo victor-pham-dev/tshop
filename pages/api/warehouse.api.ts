@@ -34,4 +34,25 @@ async function GetWarehouseImportBillsApi(
   return result;
 }
 
-export { CreateWarehouseImportApi, GetWarehouseImportBillsApi };
+async function RemoveWarehouseImportApi(
+  id: string,
+  token: string
+): Promise<ResponseProps<string | null>> {
+  const url = `/api/warehouse/remove`;
+  const response = await fetch(url, {
+    method: METHOD.POST,
+    headers: {
+      "Content-Type": "application/json",
+      "x-access-token": token,
+    },
+    body: JSON.stringify({ id }),
+  });
+  const result = await response.json();
+  return result;
+}
+
+export {
+  CreateWarehouseImportApi,
+  GetWarehouseImportBillsApi,
+  RemoveWarehouseImportApi,
+};

@@ -64,7 +64,6 @@ export function OrderList({ setOrder }: Props) {
             <Select
               allowClear
               style={{ width: 200 }}
-              defaultValue={ORDER_STATUS.WAITING_FOR_CONFIRM}
               onChange={(value) => handleFilterChange("status", value)}
               placeholder="Trạng thái đơn hàng"
               options={OrderStatusOptions}
