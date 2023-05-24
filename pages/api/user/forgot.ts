@@ -31,14 +31,13 @@ export default async function handler(
 
   try {
     const mailContent: MailSendProps = {
-      to: "truongpham241.dev@gmail.com",
-      from: "truong@itxgear.com",
+      to: "truongpham241.nd@gmail.com",
+      from: "truongpham2412.dev@gmail.com",
       subject: "test cai",
       text: "vui ve thoi",
     };
-    sendgrid.send(mailContent).then(() => {
-      console.log("gui roi ne");
-    });
+    const a = await sendgrid.send(mailContent);
+    console.log(a);
     // const user = await prisma.user.findUnique({
     //   where: {
     //     email: email.toLowerCase(),
