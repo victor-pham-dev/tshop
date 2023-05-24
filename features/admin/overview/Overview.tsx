@@ -72,7 +72,9 @@ export function Overview() {
     let totalMoney = 0;
     const total = bills.length;
     bills.forEach((item) => {
-      totalMoney += item.quantity * item.importPrice;
+      if (item.deleted === false) {
+        totalMoney += item.quantity * item.importPrice;
+      }
     });
     return setImportStatistic({
       total,
