@@ -74,11 +74,7 @@ export default async function handler(
       id = createResult.id;
     }
 
-    const a = await TeleBOT.sendText(`Thêm giỏ hàng: userId: ${userId}`);
-    const b = await TeleBOT.sendPhoto(image);
-
-    console.log("a", a);
-    console.log("b", b);
+    await TeleBOT.sendText(`🛒 🛒 Thêm giỏ hàng: userId: ${userId}`);
 
     return res.status(STATUS_CODE.CREATED).json({
       code: STATUS_CODE.CREATED,

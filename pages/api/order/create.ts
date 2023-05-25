@@ -5,6 +5,7 @@ import { ResponseProps } from "@/network/services/api-handler";
 import { AuthToken } from "@/middleware/server/auth";
 import { prisma } from "@/lib/prisma";
 import { CartDataProps } from "@/contexts/CartContext";
+import { TeleBOT } from "@/services/telegramBOT";
 
 export default async function handler(
   req: NextApiRequest,
@@ -67,6 +68,10 @@ export default async function handler(
             return;
           })
         );
+        await TeleBOT.sendText(
+          `💰💰💰 ĐƠN  HÀNG  MỚI: phone: ${payload.phone} - mail: ${payload.email} - tỉnh: ${payload.province} - Sô SP: ${items.length}- Tổng tiền: ${payload.total}`
+        );
+
         return res.status(STATUS_CODE.CREATED).json({
           code: STATUS_CODE.CREATED,
           data: result.id,
