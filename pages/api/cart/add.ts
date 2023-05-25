@@ -1,9 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { Cart, PrismaClient } from "@prisma/client";
+import { Cart } from "@prisma/client";
 import { METHOD, STATUS_CODE } from "@/const/app-const";
 import { ResponseProps } from "@/network/services/api-handler";
 import { AuthToken } from "@/middleware/server/auth";
 import { prisma } from "@/lib/prisma";
+import { TeleBOT } from "@/services/telegramBOT";
 
 export default async function handler(
   req: NextApiRequest,
@@ -72,6 +73,9 @@ export default async function handler(
       });
       id = createResult.id;
     }
+
+    TeleBOT.sendText(`Thêm giỏ hàng: userId: ${userId}`);
+    TeleBOT.sendPhoto(image);
 
     return res.status(STATUS_CODE.CREATED).json({
       code: STATUS_CODE.CREATED,
