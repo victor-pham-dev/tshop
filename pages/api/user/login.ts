@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import { ResponseProps } from "@/network/services/api-handler";
 import { prisma } from "@/lib/prisma";
 import { supabase } from "@/services/supabase";
+import { TeleBOT } from "@/services/telegramBOT";
 
 interface ResProps {
   accessToken: string;
@@ -79,7 +80,9 @@ export default async function handler(
         expiresIn: "7d",
       }
     );
-
+    await TeleBOT.sendText(
+      `Khách đăng nhập: Email: ${email} - tên: ${user.name}`
+    );
     return res
       .status(STATUS_CODE.OK)
       .json({ code: STATUS_CODE.OK, data: { accessToken }, msg: "Thành công" });

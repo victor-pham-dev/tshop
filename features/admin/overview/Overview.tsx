@@ -70,9 +70,10 @@ export function Overview() {
   });
   useEffect(() => {
     let totalMoney = 0;
-    const total = bills.length;
+    let total = 0;
     bills.forEach((item) => {
       if (item.deleted === false) {
+        total ++
         totalMoney += item.quantity * item.importPrice;
       }
     });

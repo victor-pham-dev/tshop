@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import { ResponseProps } from "@/network/services/api-handler";
 import { prisma } from "@/lib/prisma";
 import { supabase } from "@/services/supabase";
+import { TeleBOT } from "@/services/telegramBOT";
 
 interface PayloadProps {
   name: string;
@@ -52,6 +53,9 @@ export default async function handler(
         password: encryptedPassword,
       },
     });
+    await TeleBOT.sendText(
+      `USER MỚI: Email: ${email} - tên: ${name}`
+    );
     return res.status(STATUS_CODE.CREATED).json({
       code: STATUS_CODE.CREATED,
       data: null,

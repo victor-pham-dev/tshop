@@ -1,7 +1,9 @@
 import { METHOD } from "@/const/app-const";
 
 const chatId = "-1001763461346";
-const now = new Date().toLocaleString();
+const now = new Date().toLocaleString('vi-VN',{
+  timeZone: 'Asia/Saigon'
+});
 
 async function sendText(msg: string) {
   const url = `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`;
