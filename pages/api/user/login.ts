@@ -3,8 +3,7 @@ import { METHOD, STATUS_CODE, TOKEN_KEY } from "@/const/app-const";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { ResponseProps } from "@/network/services/api-handler";
-import { prisma } from "@/lib/prisma";
-import { supabase } from "@/services/supabase";
+import { prisma } from "@/services/prisma";
 import { TeleBOT } from "@/services/telegramBOT";
 
 interface ResProps {
@@ -41,27 +40,6 @@ export default async function handler(
         data: null,
         msg: "Tài khoản hoặc mật khẩu không chính xác",
       });
-    }
-
-    if (user.active === false) {
-      const userSupabase = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      if (userSupabase.data.user === null) {
-        return res.status(STATUS_CODE.FAILED).json({
-          code: STATUS_CODE.FAILED,
-          data: null,
-          msg: "Tài khoản chưa được xác nhận",
-        });
-      } else {
-        await prisma.user.update({
-          where: { id: user.id },
-          data: {
-            active: true,
-          },
-        });
-      }
     }
 
     const comparePassword = bcrypt.compare(password, user.password);

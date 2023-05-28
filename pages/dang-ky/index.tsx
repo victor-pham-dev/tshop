@@ -28,7 +28,7 @@ export default function Register(): JSX.Element {
             message.warning(response.msg);
             break;
           case STATUS_CODE.CREATED:
-            message.success("Vui lòng kiểm tra Email và xác nhận đăng ký!");
+            message.success("Đăng ký tài khoản thành công!");
             router.push(`/${PATH.LOGIN}`);
             break;
           default:

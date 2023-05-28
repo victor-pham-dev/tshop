@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { METHOD, STATUS_CODE } from "@/const/app-const";
 import { ResponseProps } from "@/network/services/api-handler";
 import { AuthToken } from "@/middleware/server/auth";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/services/prisma";
 import { WarehouseImport } from "@prisma/client";
 
 export default async function handler(

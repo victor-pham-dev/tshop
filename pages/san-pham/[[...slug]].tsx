@@ -193,34 +193,38 @@ export default function ProductDetails({ productData }: Props) {
                           {productData?.name}
                         </p>
                       </Col>
-                      {/* <Col span={24}>
-                      <Row gutter={[16, 0]}>
-                        <Col
-                          style={{
-                            borderRight: "1px solid #595959",
-                            lineHeight: "1.5rem",
-                          }}
-                        >
-                          <Rate
-                            allowHalf
-                            defaultValue={4.5}
-                            disabled
-                            style={{ fontSize: "14px" }}
-                          />
-                        </Col>
-                        <Col
-                          style={{
-                            borderRight: "1px solid #595959",
-                            lineHeight: "1.5rem",
-                          }}
-                        >
-                          <p>0&nbsp; Đã bán</p>
-                        </Col>
-                        <Col style={{ lineHeight: "1.5rem" }}>
-                          <p>Tình trạng: {data.product?.status}</p>
-                        </Col>
-                      </Row>
-                    </Col> */}
+                      <Col span={24}>
+                        <Row gutter={[16, 0]}>
+                          {/* <Col
+                            style={{
+                              borderRight: "1px solid #595959",
+                              lineHeight: "1.5rem",
+                            }}
+                          >
+                            <Rate
+                              allowHalf
+                              defaultValue={4.5}
+                              disabled
+                              style={{ fontSize: "14px" }}
+                            />
+                          </Col> */}
+                          {/* <Col
+                            style={{
+                              borderRight: "1px solid #595959",
+                              lineHeight: "1.5rem",
+                            }}
+                          >
+                            <p style={{ color: "black" }}>
+                              Lượt xem: {productData?.view}
+                            </p>
+                          </Col> */}
+                          <Col style={{ lineHeight: "1.5rem" }}>
+                            <p style={{ color: "black" }}>
+                              Tình trạng: {productData?.status}
+                            </p>
+                          </Col>
+                        </Row>
+                      </Col>
                       <Col span={24}>
                         <Divider style={{ backgroundColor: "#bfbfbf" }} />
                         <Row

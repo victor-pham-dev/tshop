@@ -10,33 +10,22 @@ import { PATH, STATUS_CODE } from "@/const/app-const";
 
 export default function ConfirmRegister() {
   const router = useRouter();
-  const isFalse = router.asPath.includes("error");
-  // console.log(router.asPath);
-  const path = router.asPath;
-  const urlParams = new URLSearchParams(path.slice(path.indexOf("#") + 1));
-  const accessToken = urlParams.get("access_token");
-  const type = urlParams.get("type");
+
+  const { token, type } = router.query;
+  console.log(token, type);
 
   // console.log(accessToken);
   // console.log(type);
   return (
     <React.Fragment>
-      {!isFalse && type === "signup" ? (
-        <Divider style={{ color: "white" }}>Xác thực thành công</Divider>
-      ) : !isFalse && type === "recovery" ? (
-        <ResetPassword token={accessToken} />
-      ) : (
-        <Divider style={{ color: "white" }}>
-          Link xác thực đã hết hạn hoặc không hợp lệ
-        </Divider>
-      )}
+      <ResetPassword token={token} />
     </React.Fragment>
   );
 }
 
 // let { data, error } = await supabase.auth.resetPasswordForEmail(email);
 interface ResetPasswordProps {
-  token: string | null;
+  token: string | string[] | undefined;
 }
 function ResetPassword({ token }: ResetPasswordProps) {
   const { setIsLoading } = useLoading();
@@ -47,7 +36,7 @@ function ResetPassword({ token }: ResetPasswordProps) {
     } else {
       setIsLoading(true);
       const result = await ResetPasswordApi({
-        token,
+        token: token?.toString() ?? "",
         newPassword: values.password,
       });
 

@@ -17,7 +17,7 @@ model User {
   createdAt  DateTime   @default(now())
   email      String     @unique
   name       String
-  active     Boolean    @default(false)
+  active     Boolean    @default(true)
   facebookId String     @unique @default("")
   avatar     String     @default("")
   role       Role       @default(USER)
@@ -44,6 +44,7 @@ model Product {
   Warranty        Warranty[]
   WarehouseImport WarehouseImport[]
   Sellstatistic   Sellstatistic[]
+  view            Int               @default(0)
 }
 
 model Classification {
@@ -119,6 +120,7 @@ model Warranty {
   User             User?           @relation(fields: [userId], references: [id])
   phone            String          @default("")
   email            String          @default("")
+  shipCode         String          @default("")
 }
 
 model WarehouseImport {

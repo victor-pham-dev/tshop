@@ -1,8 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { METHOD, STATUS_CODE } from "@/const/app-const";
+import { METHOD, STATUS_CODE, TOKEN_KEY } from "@/const/app-const";
 import { ResponseProps } from "@/network/services/api-handler";
-import { supabase } from "@/services/supabase";
-// import { MailSendProps, sendgrid } from "@/services/sendgrid";
+import jwt from "jsonwebtoken";
+import { sendMail } from "@/services/nodemailer";
+import { templates } from "@/lib/mail-template/templates";
 
 interface PayloadProps {
   email: string;
@@ -23,14 +24,15 @@ export default async function handler(
   const { email } = req.body as PayloadProps;
 
   try {
-    const { error } = await supabase.auth.resetPasswordForEmail(email);
-    if (error !== null) {
-      return res.status(STATUS_CODE.FAILED).json({
-        code: STATUS_CODE.FAILED,
-        data: null,
-        msg: "Failed",
-      });
-    }
+    const resetToken = jwt.sign({ email: email.toLowerCase() }, TOKEN_KEY, {
+      expiresIn: "1d",
+    });
+    const mailContent = templates.resetPassword(resetToken);
+    await sendMail({
+      to: email,
+      subject: "Đặt lại mật khẩu - ITX Gear",
+      html: mailContent,
+    });
     return res.status(STATUS_CODE.OK).json({
       code: STATUS_CODE.OK,
       data: null,

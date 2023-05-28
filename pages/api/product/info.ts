@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { Product } from "@prisma/client";
 import { METHOD, STATUS_CODE } from "@/const/app-const";
 import { ResponseProps } from "@/network/services/api-handler";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/services/prisma";
 
 export default async function handler(
   req: NextApiRequest,
@@ -15,10 +15,10 @@ export default async function handler(
       msg: "Invalid method",
     });
   }
-  const { id } = req.query;
+  const id = req.query.id as string;
   try {
     const product = await prisma.product.findUnique({
-      where: { id: id?.toString() },
+      where: { id },
       include: {
         classifications: true,
       },
