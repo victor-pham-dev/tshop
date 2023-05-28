@@ -43,7 +43,7 @@ function resetPassword(token: string) {
 
         <div style="background-color: darkslategrey; opacity: 0.95;padding: 16px;border-radius: 16px;">
              
-            <h4>Để thay đổi mật khẩu, vui lòng click vào đường dẫn sau: <a href="http://localhost:3000/xac-nhan-tai-khoan/info?token=${token}&type=recovery" target="_blank">Link đặt lại mật khẩu</a></h4>
+            <h4>Để thay đổi mật khẩu, vui lòng click vào đường dẫn sau: <a href="https://itxgear.com/xac-nhan-tai-khoan/info?token=${token}&type=recovery" target="_blank">Link đặt lại mật khẩu</a></h4>
 
             <p style="color: rgb(249, 71, 71);">Nếu không phải bạn, vui lòng không nhấn vào đường dẫn, liên hệ: support@itxgear.com để được hỗ trợ, Xin chân thành cảm ơn !</p>
         </div>
