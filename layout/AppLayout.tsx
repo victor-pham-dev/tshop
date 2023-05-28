@@ -3,6 +3,7 @@ import { Col, Layout, Row, message } from "antd";
 import { AppFooter } from "./AppFooter";
 import { useLoading, useTheme, useUser } from "../hooks";
 import AppHeader from "./AppHeader";
+import { FullPageLoading } from "@/components";
 
 type Props = {
   children: ReactNode;
@@ -53,7 +54,7 @@ export const AppLayout: React.FC<Props> = ({ children }) => {
             position: "relative",
           }}
         >
-          {/* {width < 576 && <MobileMenu />} */}
+          {isLoading && <FullPageLoading />}
           {contextHolder}
           <Header
             style={{ width: "100%", height: "auto", padding: 0, margin: 0 }}
