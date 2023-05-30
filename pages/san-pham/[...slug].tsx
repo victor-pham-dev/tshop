@@ -28,9 +28,13 @@ import { METHOD, PATH, STATUS_CODE } from "@/const/app-const";
 import { AddCartDataProps, AddCartItemApi } from "../api/cart.api";
 import { useCart } from "@/hooks/useAppContext";
 import Head from "next/head";
-import { ResponseProps } from "@/network/services/api-handler";
+import {
+  // PagingResponseProps,
+  ResponseProps,
+} from "@/network/services/api-handler";
 import { ProductWithClassifyProps } from "@/contexts/CartContext";
 import { NextSeo } from "next-seo";
+// import { removeMark } from "@/ultis/dataConvert";
 
 const { Text } = Typography;
 
@@ -41,6 +45,7 @@ export default function ProductDetails({ productData }: Props) {
   const { setIsLoading } = useLoading();
   const { add } = useCart();
   const router = useRouter();
+  // console.log(router);
   const { user } = useUser();
   const { pid } = router.query;
 
@@ -418,6 +423,57 @@ function RelatedProduct({ id }: RelatedProductProps) {
   );
 }
 
+// interface contextProps {
+//   pid: string;
+// }
+// export async function getStaticProps(context: contextProps) {
+//   console.log(context);
+//   // const pid = path.params.slug.toString().split("pid=")[1] as string;
+//   const baseUrl = "https://itxgear.com";
+//   let productData: ProductWithClassifyProps | null = null;
+//   try {
+//     const response = await fetch(`${baseUrl}/api/product/info?id=$}`, {
+//       method: METHOD.GET,
+//     });
+
+//     const result: ResponseProps<ProductWithClassifyProps> =
+//       await response.json();
+//     if (result) {
+//       productData = result.data;
+//     }
+//   } catch (error) {
+//     productData = null;
+//   }
+//   return {
+//     props: {
+//       productData,
+//     },
+//     revalidate: 10,
+//   };
+// }
+
+// export async function getStaticPaths() {
+//   const response = await fetch(
+//     `https://itxgear.com/api/product/search?page=1&pageSize=1000`,
+//     {
+//       method: METHOD.GET,
+//     }
+//   );
+
+//   const result: ResponseProps<PagingResponseProps<ProductWithClassifyProps>> =
+//     await response.json();
+//   const paths = result.data.dataTable.map((product) => {
+//     return {
+//       params: {
+//         pid: product.id,
+//       },
+//     };
+//   });
+//   return {
+//     paths,
+//     fallback: "blocking",
+//   };
+// }
 export async function getServerSideProps(context: any) {
   const { pid } = context.query;
   const { req } = context;

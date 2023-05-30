@@ -12,7 +12,7 @@ export default function ConfirmRegister() {
   const router = useRouter();
 
   const { token, type } = router.query;
-  console.log(token, type);
+  // console.log(token, type);
 
   // console.log(accessToken);
   // console.log(type);

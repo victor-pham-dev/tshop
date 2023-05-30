@@ -18,34 +18,43 @@ export default async function handler(
       msg: "Invalid method",
     });
   }
+
   const { name, page = 1, pageSize = 10 } = req.query;
   const lowercaseName = name ? name.toString().toLowerCase() : "";
 
   try {
-    const products: Product[] = await prisma.product.findMany({
+    const filteredProducts = await prisma.product.findMany({
+      where: {
+        name: {
+          contains: lowercaseName,
+          mode: "insensitive",
+        },
+      },
       include: {
         classifications: true,
       },
+      skip: (Number(page) - 1) * Number(pageSize),
+      take: Number(pageSize),
     });
 
-    const filteredProducts = products.filter((product) => {
-      const lowercaseProductName = product.name.toLowerCase();
-      return lowercaseProductName.includes(lowercaseName);
+    const totalCount = await prisma.product.count({
+      where: {
+        name: {
+          contains: lowercaseName,
+          mode: "insensitive",
+        },
+      },
     });
-
-    const startIndex = (Number(page) - 1) * Number(pageSize);
-    const endIndex = Number(page) * Number(pageSize);
-    const result = filteredProducts.slice(startIndex, endIndex);
 
     return res.status(STATUS_CODE.OK).json({
       code: STATUS_CODE.OK,
       data: {
-        dataTable: result,
+        dataTable: filteredProducts,
         paging: {
           page: Number(page),
           pageSize: Number(pageSize),
         },
-        totalCount: filteredProducts.length,
+        totalCount,
       },
       msg: "OK",
     });
