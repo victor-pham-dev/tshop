@@ -66,11 +66,12 @@ interface ResetPasswordPayloadProps {
 async function ResetPasswordApi(
   data: ResetPasswordPayloadProps
 ): Promise<ResponseProps<loginResult | null>> {
-  const url = `/api/user/resetPassword`;
+  const url = `/api/user/changePassword`;
   const response = await fetch(url, {
     method: METHOD.POST,
     headers: {
       "Content-Type": "application/json",
+      "x-access-token": data.token,
     },
     body: JSON.stringify(data),
   });

@@ -2,9 +2,10 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { METHOD, STATUS_CODE } from "@/const/app-const";
 import bcrypt from "bcrypt";
 import { ResponseProps } from "@/network/services/api-handler";
-import { prisma } from "@/lib/prisma";
-import { supabase } from "@/services/supabase";
+import { prisma } from "@/services/prisma";
 import { TeleBOT } from "@/services/telegramBOT";
+import { templates } from "@/lib/mail-template/templates";
+import { sendMail } from "@/services/nodemailer";
 
 interface PayloadProps {
   name: string;
@@ -38,11 +39,6 @@ export default async function handler(
         msg: "Email đã được sử dụng",
       });
     }
-    await supabase.auth.signUp({
-      email,
-      password,
-    });
-    // console.log(a);
 
     const encryptedPassword = await bcrypt.hash(password, 10);
     await prisma.user.create({
@@ -53,9 +49,15 @@ export default async function handler(
         password: encryptedPassword,
       },
     });
-    await TeleBOT.sendText(
-      `USER MỚI: Email: ${email} - tên: ${name}`
-    );
+    await TeleBOT.sendText(`USER MỚI: Email: ${email} - tên: ${name}`);
+
+    const mailContent = templates.sigupTemplate(name);
+    await sendMail({
+      to: email,
+      html: mailContent,
+      subject: "ITX Gear - Xác nhận đăng ký tài khoản",
+    });
+
     return res.status(STATUS_CODE.CREATED).json({
       code: STATUS_CODE.CREATED,
       data: null,

@@ -3,7 +3,7 @@ import { Classification } from "@prisma/client";
 import { METHOD, STATUS_CODE } from "@/const/app-const";
 import { ResponseProps } from "@/network/services/api-handler";
 import { AuthToken } from "@/middleware/server/auth";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/services/prisma";
 
 interface BodyProps {
   name: string;
@@ -37,7 +37,7 @@ export default async function handler(
         name,
         status,
         category,
-        images: images.split(','),
+        images: images.split(","),
         description,
         classifications: {
           create: classifications.map((item) => item),

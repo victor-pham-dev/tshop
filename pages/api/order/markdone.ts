@@ -3,7 +3,7 @@ import { METHOD, ORDER_STATUS, STATUS_CODE } from "@/const/app-const";
 import { ResponseProps } from "@/network/services/api-handler";
 import { AuthToken } from "@/middleware/server/auth";
 import { CartDataProps } from "@/contexts/CartContext";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/services/prisma";
 
 export interface MarkDoneOrderProps {
   id: string;

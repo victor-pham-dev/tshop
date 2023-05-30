@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import { Card } from "antd";
 // import { ShoppingCartOutlined } from "@ant-design/icons";
 import { ProductWithClassifyProps } from "@/contexts/CartContext";
+import Image from "next/image";
 
 export function ProductCard(product: ProductWithClassifyProps): JSX.Element {
   const avatar = product.images[0];
@@ -73,16 +74,21 @@ export function ProductCard(product: ProductWithClassifyProps): JSX.Element {
           <div
             style={{
               padding: 8,
-              margin: "auto",
+              width: "100%",
             }}
           >
-            <img
-              src={avatar}
-              alt={product.name}
+            <div
               className="imageCard"
-              width="100%"
-              style={{ borderRadius: "8px" }}
-            />
+              style={{ margin: "auto", position: "relative", width: "100%" }}
+            >
+              <Image
+                fill
+                src={avatar}
+                alt={product.name}
+                quality={75}
+                loading="lazy"
+              />
+            </div>
           </div>
         </div>
       }

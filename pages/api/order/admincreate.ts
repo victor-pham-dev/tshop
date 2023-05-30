@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { METHOD, ORDER_STATUS, STATUS_CODE } from "@/const/app-const";
 import { ResponseProps } from "@/network/services/api-handler";
 import { AuthToken } from "@/middleware/server/auth";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/services/prisma";
 import { CartDataProps } from "@/contexts/CartContext";
 
 export interface adminCreateOrderProps {
@@ -73,7 +73,7 @@ export default async function handler(
             quantity,
           },
         ];
-        await prisma.order.create({
+        const order = await prisma.order.create({
           data: {
             items: JSON.stringify(items),
             paymentMethod: "Nền tảng khác",
@@ -86,6 +86,21 @@ export default async function handler(
             status: ORDER_STATUS.DONE,
           },
         });
+
+        // const dueDate = new Date(
+        //   new Date().getTime() + classify.warranty * 24 * 60 * 60 * 1000
+        // );
+        // await prisma.warranty.create({
+        //   data: {
+        //     phone,
+        //     email,
+        //     classificationId,
+        //     orderId: order.id,
+        //     dueAt: dueDate.toISOString(),
+        //     productId,
+        //     userId: order.userId,
+        //   },
+        // });
 
         const statistic = await prisma.sellstatistic.findFirst({
           where: { classificationId },

@@ -3,7 +3,7 @@ import { Product } from "@prisma/client";
 import { METHOD, STATUS_CODE } from "@/const/app-const";
 import { ResponseProps } from "@/network/services/api-handler";
 import { AuthToken } from "@/middleware/server/auth";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/services/prisma";
 
 export default async function handler(
   req: NextApiRequest,
@@ -29,7 +29,7 @@ export default async function handler(
         name: payload.name,
         status: payload.status,
         category: payload.category,
-        images: payload.images.toString().split(','),
+        images: payload.images.toString().split(","),
         description: payload.description,
       },
     });

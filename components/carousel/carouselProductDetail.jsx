@@ -1,4 +1,5 @@
 import Slider from "@ant-design/react-slick";
+import Image from "next/image";
 import { Component } from "react";
 
 export default class CarouselProduct extends Component {
@@ -27,8 +28,9 @@ export default class CarouselProduct extends Component {
           arrows={false}
         >
          {this.props.images.map((item,i)=>(
-          <div key={`to ${i}`}>
-            <img src={item} alt={item} className="imgSlide" style={{width: '100%', borderRadius: '0.5rem'}} />
+          <div key={`to ${i}`} className="imgSlide" >
+            <Image fill src={item} alt={item} priority />
+            {/* <img src={item} alt={item}  style={{width: '100%', }} /> */}
           </div>
          ))}
         </Slider>

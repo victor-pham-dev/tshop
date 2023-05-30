@@ -88,7 +88,7 @@ export default function UserCart() {
     });
     return updateAll(checkAllCart);
   }
-  console.log(cart);
+  // console.log(cart);
   const orderData: OrderDataProps = useMemo(() => {
     let checkedItems: Cart[] = [];
     let total = 0;

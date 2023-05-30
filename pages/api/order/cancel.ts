@@ -2,8 +2,10 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { METHOD, ORDER_STATUS, STATUS_CODE } from "@/const/app-const";
 import { ResponseProps } from "@/network/services/api-handler";
 import { AuthToken } from "@/middleware/server/auth";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/services/prisma";
 import { CartDataProps } from "@/contexts/CartContext";
+import { templates } from "@/lib/mail-template/templates";
+import { sendMail } from "@/services/nodemailer";
 
 export interface MarkCancelOrderProps {
   id: string;
@@ -57,6 +59,18 @@ export default async function handler(
         })
       );
       // }
+      const mailContent = templates.orderCancel(
+        order.id,
+        `${order.receiver}-${order.phone}-${order.specificAddress}-${order.ward}-${order.district}-${order.province}`,
+        order.total,
+        items,
+        cancelReason
+      );
+      await sendMail({
+        to: order.email,
+        subject: "Thông tin huỷ đơn hàng - ITX Gear",
+        html: mailContent,
+      });
 
       return res.status(STATUS_CODE.OK).json({
         code: STATUS_CODE.OK,

@@ -7,8 +7,10 @@ import {
 } from "@/const/app-const";
 import { ResponseProps } from "@/network/services/api-handler";
 import { AuthToken } from "@/middleware/server/auth";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/services/prisma";
 import { CartDataProps } from "@/contexts/CartContext";
+import { templates } from "@/lib/mail-template/templates";
+import { sendMail } from "@/services/nodemailer";
 
 export interface ConfirmOrderProps {
   id: string;
@@ -33,7 +35,7 @@ export default async function handler(
 
   const { id, paymentInfo } = req.body as ConfirmOrderProps;
   try {
-    const order = await prisma.order.findFirst({
+    const order = await prisma.order.findUnique({
       where: { id },
     });
 
@@ -69,6 +71,23 @@ export default async function handler(
               confirmedAt: today.toLocaleDateString(),
             },
           });
+
+          const mailContent = templates.orderInfo(
+            order.id,
+            order.paymentStatus,
+            order.status,
+            `${order.receiver}-${order.phone}-${order.specificAddress}-${order.ward}-${order.district}-${order.province}`,
+            order.total,
+            items,
+            "",
+            "Đơn hàng của quý khách đang được đóng gói"
+          );
+          await sendMail({
+            to: order.email,
+            subject: "Đơn hàng đã được xác nhận - ITX Gear",
+            html: mailContent,
+          });
+
           return res.status(STATUS_CODE.OK).json({
             code: STATUS_CODE.OK,
             data: null,

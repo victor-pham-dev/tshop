@@ -28,6 +28,7 @@ export default function Login(): JSX.Element {
         if (result.code >= 400) {
           message.error(result.msg);
         }
+        setIsLoading(false);
       },
       onError: () => {
         setIsLoading(false);

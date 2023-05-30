@@ -2,7 +2,10 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { METHOD, ORDER_STATUS, STATUS_CODE } from "@/const/app-const";
 import { ResponseProps } from "@/network/services/api-handler";
 import { AuthToken } from "@/middleware/server/auth";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/services/prisma";
+import { templates } from "@/lib/mail-template/templates";
+import { CartDataProps } from "@/contexts/CartContext";
+import { sendMail } from "@/services/nodemailer";
 
 export interface MarkShippingOrderProps {
   id: string;
@@ -42,6 +45,24 @@ export default async function handler(
             shipAt: today.toLocaleDateString(),
           },
         });
+
+        const items: CartDataProps[] = JSON.parse(order.items);
+        const mailContent = templates.orderInfo(
+          order.id,
+          order.paymentStatus,
+          order.status,
+          `${order.receiver}-${order.phone}-${order.specificAddress}-${order.ward}-${order.district}-${order.province}`,
+          order.total,
+          items,
+          shippingInfo,
+          "Đơn hàng của quý khách đang được vận chuyển"
+        );
+        await sendMail({
+          to: order.email,
+          subject: "Đơn hàng đang được vận chuyển - ITX Gear",
+          html: mailContent,
+        });
+
         return res.status(STATUS_CODE.OK).json({
           code: STATUS_CODE.OK,
           data: null,

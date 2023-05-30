@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { METHOD, ORDER_STATUS, STATUS_CODE } from "@/const/app-const";
 import { ResponseProps } from "@/network/services/api-handler";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/services/prisma";
 import {
   Classification,
   Order,

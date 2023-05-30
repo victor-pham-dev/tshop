@@ -9,40 +9,35 @@ import {
   Typography,
   message,
 } from "antd";
-import React, { useMemo, useState } from "react";
-import {
-  Background,
-  CarouselProduct,
-  ContentLoading,
-  ProductCard,
-} from "@/components";
+import React, { useState } from "react";
+import { Background, CarouselProduct, ProductCard } from "@/components";
 import NumberInput from "@/components/ipNumber/ipNumber";
 import { ShoppingCartOutlined, SmileOutlined } from "@ant-design/icons";
-import { ClassifyProps, GetRelatedProductByIdApi } from "../api/product.api";
-import { Classification, Product } from "@prisma/client";
-import { useRouter } from "next/router";
-import { useMutation, useQuery } from "react-query";
+import { Classification } from "@prisma/client";
+import { useMutation } from "react-query";
 import { useLoading, useUser } from "@/hooks";
 import Link from "next/link";
 import { METHOD, PATH, STATUS_CODE } from "@/const/app-const";
 import { AddCartDataProps, AddCartItemApi } from "../api/cart.api";
 import { useCart } from "@/hooks/useAppContext";
 import Head from "next/head";
-import { ResponseProps } from "@/network/services/api-handler";
+import {
+  PagingResponseProps,
+  ResponseProps,
+} from "@/network/services/api-handler";
 import { ProductWithClassifyProps } from "@/contexts/CartContext";
-import { NextSeo } from "next-seo";
+import { removeMark } from "@/ultis/dataConvert";
 
 const { Text } = Typography;
 
 interface Props {
   productData: ProductWithClassifyProps | null;
+  relatedList: ProductWithClassifyProps[];
 }
-export default function ProductDetails({ productData }: Props) {
+export default function ProductDetails({ productData, relatedList }: Props) {
   const { setIsLoading } = useLoading();
   const { add } = useCart();
-  const router = useRouter();
   const { user } = useUser();
-  const { pid } = router.query;
 
   if (productData === null) {
     return (
@@ -140,24 +135,33 @@ export default function ProductDetails({ productData }: Props) {
   return (
     <>
       <Head>
-        <NextSeo
-          title={`${productData?.name ?? ""} - ITX Gear - Linh kiện ITX PC`}
-          description="ITX Gear - ITX PC & More"
-          openGraph={{
-            title: `${productData?.name ?? ""} - ITX Gear`,
-            description: "ITX Gear - ITX PC & More",
-            images: [
-              {
-                url: `${productData?.images[0]}`,
-                width: 400,
-                height: 470,
-                alt: `${productData?.name}`,
-              },
-            ],
-          }}
+        <title>{`${productData.name} - ${initPrice} - ITX Gear`}</title>
+        <meta
+          name="description"
+          content={`${productData.name}-${initPrice}}`}
         />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href={productData.images[0]} />
+        <meta name="keywords" content={productData.name} />
+        <meta name="author" content="ITX Gear" />
+        <meta name="robots" content="index, follow" />
 
-        <link rel="icon" href={productData?.images[0]} />
+        <meta
+          property="og:title"
+          content={`${productData.name} - ${initPrice} - ITX Gear`}
+        />
+        <meta
+          property="og:description"
+          content={`${productData.name} - ${initPrice} - ITX Gear`}
+        />
+        <meta property="og:image" content={productData.images[0]} />
+        <meta
+          property="og:url"
+          content={`https://itxgear.com/san-pham/${removeMark(
+            productData.name
+          )}pid=${productData.id}`}
+        />
+        <meta property="og:type" content="website" />
       </Head>
       <main>
         {productData !== null && (
@@ -173,7 +177,6 @@ export default function ProductDetails({ productData }: Props) {
                     style={{
                       background: "#dbdbdb",
                       borderRadius: "0.5rem",
-                      opacity: 0.95,
                     }}
                     xxl={{ span: 12 }}
                     xs={{ span: 23 }}
@@ -193,38 +196,42 @@ export default function ProductDetails({ productData }: Props) {
                           {productData?.name}
                         </p>
                       </Col>
-                      {/* <Col span={24}>
-                      <Row gutter={[16, 0]}>
-                        <Col
-                          style={{
-                            borderRight: "1px solid #595959",
-                            lineHeight: "1.5rem",
-                          }}
-                        >
-                          <Rate
-                            allowHalf
-                            defaultValue={4.5}
-                            disabled
-                            style={{ fontSize: "14px" }}
-                          />
-                        </Col>
-                        <Col
-                          style={{
-                            borderRight: "1px solid #595959",
-                            lineHeight: "1.5rem",
-                          }}
-                        >
-                          <p>0&nbsp; Đã bán</p>
-                        </Col>
-                        <Col style={{ lineHeight: "1.5rem" }}>
-                          <p>Tình trạng: {data.product?.status}</p>
-                        </Col>
-                      </Row>
-                    </Col> */}
+                      <Col span={24}>
+                        <Row gutter={[16, 0]}>
+                          {/* <Col
+                            style={{
+                              borderRight: "1px solid #595959",
+                              lineHeight: "1.5rem",
+                            }}
+                          >
+                            <Rate
+                              allowHalf
+                              defaultValue={4.5}
+                              disabled
+                              style={{ fontSize: "14px" }}
+                            />
+                          </Col> */}
+                          {/* <Col
+                            style={{
+                              borderRight: "1px solid #595959",
+                              lineHeight: "1.5rem",
+                            }}
+                          >
+                            <p style={{ color: "black" }}>
+                              Lượt xem: {productData?.view}
+                            </p>
+                          </Col> */}
+                          <Col style={{ lineHeight: "1.5rem" }}>
+                            <p style={{ color: "black" }}>
+                              Tình trạng: {productData?.status}
+                            </p>
+                          </Col>
+                        </Row>
+                      </Col>
                       <Col span={24}>
                         <Divider style={{ backgroundColor: "#bfbfbf" }} />
                         <Row
-                          style={{ padding: "0 20px", marginBottom: "30px" }}
+                        // style={{ padding: "0 20px", marginBottom: "30px" }}
                         >
                           <Col
                             style={{
@@ -324,6 +331,21 @@ export default function ProductDetails({ productData }: Props) {
                               </button>
                             )}
                           </Col>
+
+                          <Divider></Divider>
+                          <Text type="danger" keyboard>
+                            🚚 Freeship nội thành Hà Nội, các tỉnh khác áp dụng
+                            với đơn trên 1tr
+                          </Text>
+
+                          <Text type="success">
+                            - Với phương thức COD, quý khách có thể đồng kiểm
+                            trước khi nhận hàng.
+                          </Text>
+                          <Text type="success">
+                            - Nếu có thắc mắc vui lòng liên hệ qua messenger để
+                            được tư vấn.
+                          </Text>
                         </Row>
                       </Col>
                     </Row>
@@ -334,7 +356,7 @@ export default function ProductDetails({ productData }: Props) {
                   style={{
                     background: "#bdbdbd",
                     padding: "1rem",
-                    opacity: 0.95,
+
                     marginTop: "0.5rem",
                     marginBottom: "0.5rem",
                   }}
@@ -352,11 +374,26 @@ export default function ProductDetails({ productData }: Props) {
                 </Row>
               </Col>
               <Col xxl={5} xs={24}>
-                {pid === undefined ? (
+                <Row gutter={[12, 16]} justify="center">
+                  <Divider style={{ color: "white" }}>
+                    Có thể bạn quan tâm
+                  </Divider>
+
+                  {relatedList.map((item, i) => (
+                    <Col key={`related ${item.id} ${i}`} xxl={22} xs={12}>
+                      <Link
+                        href={`/${PATH.PRODUCT}/${item.name}?pid=${item.id}`}
+                      >
+                        <ProductCard {...item} />
+                      </Link>
+                    </Col>
+                  ))}
+                </Row>
+                {/* {pid === undefined ? (
                   <ContentLoading />
                 ) : (
-                  <RelatedProduct id={pid.toString()} />
-                )}
+                  <RelatedProduct list={relatedList} />
+                )} */}
               </Col>
             </Row>
           </React.Fragment>
@@ -385,40 +422,11 @@ export default function ProductDetails({ productData }: Props) {
   );
 }
 
-interface RelatedProductProps {
-  id: string;
-}
-function RelatedProduct({ id }: RelatedProductProps) {
-  const getRelated = useQuery(`getRelated ${id}`, () =>
-    GetRelatedProductByIdApi(id)
-  );
-  const products: (Product & ClassifyProps)[] = useMemo(() => {
-    let list: (Product & ClassifyProps)[] = [];
-    if (getRelated.data?.data) {
-      return getRelated.data?.data;
-    }
-    return list;
-  }, [getRelated.data?.data]);
-  return (
-    <Row gutter={[12, 16]} justify="center">
-      <Divider style={{ color: "white" }}>Có thể bạn quan tâm</Divider>
-      {getRelated.isLoading && <ContentLoading />}
-      {products.map((item, i) => (
-        <Col key={`related ${item.id} ${i}`} xxl={22} xs={12}>
-          <Link href={`/${PATH.PRODUCT}/${item.name}?pid=${item.id}`}>
-            <ProductCard {...item} />
-          </Link>
-        </Col>
-      ))}
-    </Row>
-  );
-}
-
-export async function getServerSideProps(context: any) {
-  const { pid } = context.query;
-  const { req } = context;
-  const baseUrl = "http://" + req.headers.host;
+export async function getStaticProps(context: any) {
+  const pid = context.params.slug.toString().split("pid=")[1] as string;
+  const baseUrl = "https://itxgear.com";
   let productData: ProductWithClassifyProps | null = null;
+  let relatedList: ProductWithClassifyProps[] = [];
   try {
     const response = await fetch(`${baseUrl}/api/product/info?id=${pid}`, {
       method: METHOD.GET,
@@ -426,8 +434,19 @@ export async function getServerSideProps(context: any) {
 
     const result: ResponseProps<ProductWithClassifyProps> =
       await response.json();
-    if (result) {
+    const relatedResponse = await fetch(
+      `${baseUrl}/api/product/related?id=${pid}`,
+      {
+        method: METHOD.GET,
+      }
+    );
+
+    const relatedResult: ResponseProps<ProductWithClassifyProps[]> =
+      await relatedResponse.json();
+
+    if (result && relatedResult) {
       productData = result.data;
+      relatedList = relatedResult.data;
     }
   } catch (error) {
     productData = null;
@@ -435,6 +454,31 @@ export async function getServerSideProps(context: any) {
   return {
     props: {
       productData,
+      relatedList,
     },
+    revalidate: 10,
+  };
+}
+
+export async function getStaticPaths() {
+  const response = await fetch(
+    `https://itxgear.com/api/product/search?page=1&pageSize=1000`,
+    {
+      method: METHOD.GET,
+    }
+  );
+
+  const result: ResponseProps<PagingResponseProps<ProductWithClassifyProps>> =
+    await response.json();
+  const paths = result.data.dataTable.map((product) => {
+    return {
+      params: {
+        slug: [`${removeMark(product.name)}pid=${product.id}`],
+      },
+    };
+  });
+  return {
+    paths,
+    fallback: "blocking",
   };
 }
