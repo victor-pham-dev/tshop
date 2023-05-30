@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { Button, Col, Input, Pagination, Row, message } from "antd";
+import { Button, Col, Input, Pagination, Row } from "antd";
 import { useMemo, useState } from "react";
 import queryString from "query-string";
 import { SearchProductApi, SearchProductParamsProps } from "./api/product.api";
@@ -72,7 +72,6 @@ function Home() {
       </Head>
 
       <main>
-        <Messenger />
         <Background />
         <Row>
           <img

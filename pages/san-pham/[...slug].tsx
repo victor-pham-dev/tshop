@@ -382,7 +382,9 @@ export default function ProductDetails({ productData, relatedList }: Props) {
                   {relatedList.map((item, i) => (
                     <Col key={`related ${item.id} ${i}`} xxl={22} xs={12}>
                       <Link
-                        href={`/${PATH.PRODUCT}/${item.name}?pid=${item.id}`}
+                        href={`/${PATH.PRODUCT}/${removeMark(item.name)}pid=${
+                          item.id
+                        }`}
                       >
                         <ProductCard {...item} />
                       </Link>
