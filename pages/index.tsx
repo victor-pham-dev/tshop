@@ -1,28 +1,54 @@
 import Head from "next/head";
 import { Button, Col, Input, Pagination, Row } from "antd";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import queryString from "query-string";
 import { SearchProductApi, SearchProductParamsProps } from "./api/product.api";
 import { useQuery } from "react-query";
 import Link from "next/link";
-import { PATH } from "@/const/app-const";
+import { METHOD, PATH } from "@/const/app-const";
 import { removeMark } from "@/ultis/dataConvert";
 import { Background, CardLoading, Messenger, ProductCard } from "@/components";
+import {
+  PagingResponseProps,
+  ResponseProps,
+} from "@/network/services/api-handler";
+import { ProductWithClassifyProps } from "@/contexts/CartContext";
 
-function Home() {
+interface HomeProps {
+  initProductData: ProductWithClassifyProps[];
+  initCount: number;
+}
+function Home({ initProductData, initCount }: HomeProps) {
+  const [enabledQuery, setEnableQuery] = useState(false);
   const [filter, setFilter] = useState<SearchProductParamsProps>({
     pageSize: 12,
   });
   const [params, setParams] = useState<string>("page=1&pageSize=12");
 
-  const getProducts = useQuery(["searchProduct", params], () =>
-    SearchProductApi(params)
+  const getProducts = useQuery(
+    ["searchProduct", params],
+    () => SearchProductApi(params),
+    {
+      enabled: enabledQuery,
+    }
   );
 
-  const productsResult = useMemo(
-    () => getProducts.data?.data,
-    [getProducts.data?.data]
-  );
+  useEffect(() => {
+    if (enabledQuery) {
+      getProducts.refetch();
+    }
+  }, [enabledQuery]);
+
+  const productsResult = useMemo(() => {
+    let list: ProductWithClassifyProps[] = initProductData;
+    let totalCount = initCount;
+    if (enabledQuery) {
+      list = getProducts.data?.data?.dataTable ?? [];
+      totalCount = getProducts.data?.data?.totalCount ?? 0;
+    }
+
+    return { list, totalCount };
+  }, [getProducts.data?.data]);
 
   //handle filter change
   function handleFilterChange(
@@ -33,6 +59,7 @@ function Home() {
   }
 
   function onSearch(type: "name" | "newPage", newPage?: number) {
+    setEnableQuery(true);
     let cloneFilter = { ...filter };
 
     if (type === "name") {
@@ -137,24 +164,23 @@ function Home() {
             )}
 
             <Row style={{ padding: "0.5rem" }} gutter={[16, 16]}>
-              {productsResult?.dataTable !== undefined &&
-                productsResult?.dataTable.map((item) => (
-                  <Col
-                    key={`product so ${item.id}`}
-                    sm={8}
-                    md={6}
-                    xs={12}
-                    xxl={6}
+              {productsResult?.list.map((item) => (
+                <Col
+                  key={`product so ${item.id}`}
+                  sm={8}
+                  md={6}
+                  xs={12}
+                  xxl={6}
+                >
+                  <Link
+                    href={`/${PATH.PRODUCT}/${removeMark(item.name)}pid=${
+                      item.id
+                    }`}
                   >
-                    <Link
-                      href={`/${PATH.PRODUCT}/${removeMark(item.name)}pid=${
-                        item.id
-                      }`}
-                    >
-                      <ProductCard {...item} />
-                    </Link>
-                  </Col>
-                ))}
+                    <ProductCard {...item} />
+                  </Link>
+                </Col>
+              ))}
             </Row>
 
             <Row
@@ -186,3 +212,32 @@ function Home() {
 }
 
 export default Home;
+
+export async function getStaticProps() {
+  const baseUrl = "https://itxgear.com";
+  let initProductData: ProductWithClassifyProps[] = [];
+  let initCount = 0;
+  try {
+    const response = await fetch(
+      `${baseUrl}/api/product/search?page=1&pageSize=12`,
+      {
+        method: METHOD.GET,
+      }
+    );
+
+    const result: ResponseProps<PagingResponseProps<ProductWithClassifyProps>> =
+      await response.json();
+
+    initProductData = result.data.dataTable;
+    initCount = result.data.totalCount;
+  } catch (error) {
+    initProductData = [];
+  }
+  return {
+    props: {
+      initProductData,
+      initCount,
+    },
+    revalidate: 30,
+  };
+}
