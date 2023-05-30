@@ -15,6 +15,7 @@ import {
   SearchProductApi,
   SearchProductParamsProps,
 } from "@/pages/api/product.api";
+import { removeMark } from "@/ultis/dataConvert";
 import { Classification, Product } from "@prisma/client";
 import {
   Button,
@@ -117,7 +118,7 @@ export function ProductList() {
                   setProduct(item);
                 }}
                 key={`product so ${item.id}`}
-                xxl={12}
+                xxl={10}
               >
                 <ProductCard {...item} />
               </Col>
@@ -166,6 +167,7 @@ export function ProductList() {
               label: "Sửa thông tin phân loại",
               children: (
                 <EditClassifies
+                  productName={product?.name ?? ""}
                   productId={product?.id}
                   setOpenEditModal={setOpenEditModal}
                   classifies={product?.classifications ?? []}
@@ -226,6 +228,10 @@ function EditProduct({
           message.success("Cập nhật thành công");
           queryClient.invalidateQueries("searchProduct");
           setOpenEditModal(false);
+          window.open(
+            `/san-pham/${removeMark(product?.name ?? "")}pid=${product?.id}`,
+            "_blank"
+          );
         } else {
           message.error("Đã có lỗi xảy ra");
         }
@@ -344,6 +350,7 @@ function EditProduct({
   );
 }
 interface EditClassifiesProps {
+  productName: string;
   classifies: Classification[];
   productId: string | undefined;
   setOpenEditModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -352,6 +359,7 @@ interface EditClassifiesProps {
   >;
 }
 function EditClassifies({
+  productName,
   classifies,
   setOpenEditModal,
   productId,
@@ -360,31 +368,6 @@ function EditClassifies({
   const { token } = useUser();
   const { setIsLoading } = useLoading();
   const queryClient = useQueryClient();
-  const editClassifyProduct = useMutation(
-    "editClassifyProduct",
-    (data: Classification) => EditClassifyProductApi(data, token),
-    {
-      onMutate: () => {
-        setIsLoading(true);
-      },
-      onSuccess: (data) => {
-        if (data.code === STATUS_CODE.OK) {
-          message.success("Cập nhật thành công");
-          queryClient.invalidateQueries("searchProduct");
-          setOpenEditModal(false);
-        } else {
-          message.error("Đã có lỗi xảy ra");
-        }
-        setIsLoading(false);
-        setProduct(undefined);
-      },
-      onError: () => {
-        setIsLoading(false);
-        message.error("Lỗi server");
-        setProduct(undefined);
-      },
-    }
-  );
   const createClassifyProduct = useMutation(
     "createClassifyProduct",
     (data: Classification) => CreateClassifyProductApi(data, token),
@@ -397,6 +380,10 @@ function EditClassifies({
           message.success("Thêm phân loại thành công");
           queryClient.invalidateQueries("searchProduct");
           setOpenEditModal(false);
+          window.open(
+            `/san-pham/${removeMark(productName)}pid=${productId}`,
+            "_blank"
+          );
         } else {
           message.error("Đã có lỗi xảy ra");
         }
@@ -415,6 +402,7 @@ function EditClassifies({
         <EditClassify
           key={`eidt jadj ${item.id} ${productId}`}
           classify={item}
+          productName={productName}
           productId={productId}
           setOpenEditModal={setOpenEditModal}
           setProduct={setProduct}
@@ -488,6 +476,7 @@ function EditClassifies({
 }
 
 interface EditClassifyProps {
+  productName: string;
   classify: Classification;
   productId: string | undefined;
   setOpenEditModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -496,6 +485,7 @@ interface EditClassifyProps {
   >;
 }
 function EditClassify({
+  productName,
   classify,
   setOpenEditModal,
   productId,
@@ -518,6 +508,10 @@ function EditClassify({
           message.success("Cập nhật thành công");
           queryClient.invalidateQueries("searchProduct");
           setOpenEditModal(false);
+          window.open(
+            `/san-pham/${removeMark(productName)}pid=${productId}`,
+            "_blank"
+          );
         } else {
           message.error("Đã có lỗi xảy ra");
         }

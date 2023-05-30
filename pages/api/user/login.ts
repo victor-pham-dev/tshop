@@ -58,9 +58,7 @@ export default async function handler(
         expiresIn: "7d",
       }
     );
-    await TeleBOT.sendText(
-      `Khách đăng nhập: Email: ${email} - tên: ${user.name}`
-    );
+
     return res
       .status(STATUS_CODE.OK)
       .json({ code: STATUS_CODE.OK, data: { accessToken }, msg: "Thành công" });

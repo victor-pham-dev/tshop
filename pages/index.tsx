@@ -53,7 +53,7 @@ function Home() {
           content="Shop bán các mặt hàng linh kiện cho Mini PC, Tiny PC, case itx, linh kiện itx, mini pc"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.svg" type="" />
+        <link rel="icon" href="/favicon.svg" />
         <meta name="keywords" content="ITX Gear, itx pc, linh kiện mini ITX" />
         <meta name="author" content="ITX Gear" />
         <meta name="robots" content="index, follow" />
@@ -62,9 +62,13 @@ function Home() {
           property="og:title"
           content="ITX Gear - ITX PC - Tối giản tạo nên sự khác biệt"
         />
-        <meta property="og:description" content="Itx Gear - ITX PC" />
-        <meta property="og:image" content="/favicon.svg" />
+        <meta
+          property="og:description"
+          content="Itx Gear - ITX PC - Cửa hàng linh kiện mini ITX"
+        />
+        <meta property="og:image" content="/banner.png" />
         <meta property="og:url" content="https://itxgear.com" />
+        <meta property="og:type" content="website" />
       </Head>
 
       <main>
@@ -144,10 +148,9 @@ function Home() {
                     xxl={6}
                   >
                     <Link
-                      href={`/${PATH.PRODUCT}/${removeMark(item.name)}?pid=${
+                      href={`/${PATH.PRODUCT}/${removeMark(item.name)}pid=${
                         item.id
                       }`}
-                      onClick={() => message.info(`Chờ một xíu ...`)}
                     >
                       <ProductCard {...item} />
                     </Link>
