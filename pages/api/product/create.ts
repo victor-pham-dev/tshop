@@ -4,6 +4,7 @@ import { METHOD, STATUS_CODE } from "@/const/app-const";
 import { ResponseProps } from "@/network/services/api-handler";
 import { AuthToken } from "@/middleware/server/auth";
 import { prisma } from "@/services/prisma";
+import { removeMark } from "@/ultis/dataConvert";
 
 interface BodyProps {
   name: string;
@@ -15,7 +16,7 @@ interface BodyProps {
 }
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<ResponseProps<null>>
+  res: NextApiResponse<ResponseProps<string | null>>
 ) {
   if (req.method !== METHOD.POST) {
     return res.status(STATUS_CODE.INVALID_METHOD).json({
@@ -32,7 +33,7 @@ export default async function handler(
   const { name, category, status, images, description, classifications } =
     req.body as BodyProps;
   try {
-    await prisma.product.create({
+    const result = await prisma.product.create({
       data: {
         name,
         status,
@@ -47,7 +48,7 @@ export default async function handler(
 
     return res.status(STATUS_CODE.CREATED).json({
       code: STATUS_CODE.CREATED,
-      data: null,
+      data: `${removeMark(result.name)}pid=${result.id}`,
       msg: "Tạo sản phẩm thành công",
     });
   } catch (error) {

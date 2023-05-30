@@ -12,6 +12,7 @@ import {
   CreateClassifyProductApi,
   EditClassifyProductApi,
   EditProductApi,
+  RegenerateProductApi,
   SearchProductApi,
   SearchProductParamsProps,
 } from "@/pages/api/product.api";
@@ -223,14 +224,13 @@ function EditProduct({
       onMutate: () => {
         setIsLoading(true);
       },
-      onSuccess: (data) => {
+      onSuccess: async (data) => {
         if (data.code === STATUS_CODE.OK) {
           message.success("Cập nhật thành công");
           queryClient.invalidateQueries("searchProduct");
           setOpenEditModal(false);
-          window.open(
-            `/san-pham/${removeMark(product?.name ?? "")}pid=${product?.id}`,
-            "_blank"
+          await RegenerateProductApi(
+            `${removeMark(product?.name ?? "")}pid=${product?.id}`
           );
         } else {
           message.error("Đã có lỗi xảy ra");
@@ -375,14 +375,13 @@ function EditClassifies({
       onMutate: () => {
         setIsLoading(true);
       },
-      onSuccess: (data) => {
+      onSuccess: async (data) => {
         if (data.code === STATUS_CODE.CREATED) {
           message.success("Thêm phân loại thành công");
           queryClient.invalidateQueries("searchProduct");
           setOpenEditModal(false);
-          window.open(
-            `/san-pham/${removeMark(productName)}pid=${productId}`,
-            "_blank"
+          await RegenerateProductApi(
+            `${removeMark(productName)}pid=${productId}`
           );
         } else {
           message.error("Đã có lỗi xảy ra");
@@ -503,14 +502,13 @@ function EditClassify({
       onMutate: () => {
         setIsLoading(true);
       },
-      onSuccess: (data) => {
+      onSuccess: async (data) => {
         if (data.code === STATUS_CODE.OK) {
           message.success("Cập nhật thành công");
           queryClient.invalidateQueries("searchProduct");
           setOpenEditModal(false);
-          window.open(
-            `/san-pham/${removeMark(productName)}pid=${productId}`,
-            "_blank"
+          await RegenerateProductApi(
+            `${removeMark(productName)}pid=${productId}`
           );
         } else {
           message.error("Đã có lỗi xảy ra");

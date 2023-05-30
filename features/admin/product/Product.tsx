@@ -22,7 +22,11 @@ import { useMutation, useQueryClient } from "react-query";
 
 import { PlusOutlined } from "@ant-design/icons";
 import { Product } from "@prisma/client";
-import { CreateProductApi } from "@/pages/api/product.api";
+import {
+  CreateProductApi,
+  RegenerateProductApi,
+} from "@/pages/api/product.api";
+import { removeMark } from "@/ultis/dataConvert";
 
 export function Product(): JSX.Element {
   const { token } = useUser();
@@ -37,11 +41,14 @@ export function Product(): JSX.Element {
       onMutate: () => {
         setIsLoading(true);
       },
-      onSuccess: (data) => {
+      onSuccess: async (data) => {
         if (data.code === STATUS_CODE.CREATED) {
           message.success("Tạo sản phẩm mới thành công");
           form.resetFields();
           queryClient.invalidateQueries("searchProduct");
+          if (data.data !== null) {
+            await RegenerateProductApi(data.data);
+          }
         } else {
           message.error("Đã có lỗi xảy ra");
         }

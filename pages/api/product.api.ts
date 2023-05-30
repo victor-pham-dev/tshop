@@ -9,7 +9,7 @@ import { ProductWithClassifyProps } from "@/contexts/CartContext";
 async function CreateProductApi(
   data: Product,
   token: string
-): Promise<ResponseProps<null>> {
+): Promise<ResponseProps<string | null>> {
   const url = `/api/product/create`;
   const response = await fetch(url, {
     method: METHOD.POST,
@@ -151,6 +151,13 @@ async function GetAllProductApi(
   return result;
 }
 
+async function RegenerateProductApi(param: string) {
+  const url = `https://itxgear.com/san-pham/${param}`;
+  await fetch(url, {
+    method: METHOD.GET,
+  });
+}
+
 export {
   CreateProductApi,
   EditProductApi,
@@ -161,4 +168,5 @@ export {
   GetInfoProductByIdApi,
   GetRelatedProductByIdApi,
   GetAllProductApi,
+  RegenerateProductApi,
 };
