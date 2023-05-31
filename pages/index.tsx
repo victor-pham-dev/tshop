@@ -80,8 +80,14 @@ function Home({ initProductData, initCount }: HomeProps) {
           content="Shop bán các mặt hàng linh kiện cho Mini PC, Tiny PC, case itx, linh kiện itx, mini pc"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.svg" />
-        <meta name="keywords" content="ITX Gear, itx pc, linh kiện mini ITX" />
+        <link
+          rel="icon"
+          href="https://ohaomxltnhpdriahjpvz.supabase.co/storage/v1/object/public/itx_storage/favicon.svg?t=2023-05-31T11%3A17%3A48.992Z"
+        />
+        <meta
+          name="keywords"
+          content="ITX Gear, itx pc, linh kiện mini ITX, mua case itx, mua vỏ case itx, vỏ case itx, nguồn flex, nguồn sfx, tản nhiệt mini, pc mini"
+        />
         <meta name="author" content="ITX Gear" />
         <meta name="robots" content="index, follow" />
 
@@ -93,7 +99,10 @@ function Home({ initProductData, initCount }: HomeProps) {
           property="og:description"
           content="Itx Gear - ITX PC - Cửa hàng linh kiện mini ITX"
         />
-        <meta property="og:image" content="/banner.png" />
+        <meta
+          property="og:image"
+          content="https://ohaomxltnhpdriahjpvz.supabase.co/storage/v1/object/public/itx_storage/favicon.svg?t=2023-05-31T11%3A17%3A48.992Z"
+        />
         <meta property="og:url" content="https://itxgear.com" />
         <meta property="og:type" content="website" />
       </Head>
@@ -133,6 +142,15 @@ function Home({ initProductData, initCount }: HomeProps) {
           <Col xxl={16} xs={24}>
             {getProducts.isLoading && (
               <Row style={{ padding: "0.5rem" }} gutter={[16, 16]}>
+                <Col xs={12} xxl={6}>
+                  <CardLoading />
+                </Col>
+                <Col xs={12} xxl={6}>
+                  <CardLoading />
+                </Col>
+                <Col xs={12} xxl={6}>
+                  <CardLoading />
+                </Col>
                 <Col xs={12} xxl={6}>
                   <CardLoading />
                 </Col>
