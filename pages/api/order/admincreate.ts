@@ -87,20 +87,30 @@ export default async function handler(
           },
         });
 
-        // const dueDate = new Date(
-        //   new Date().getTime() + classify.warranty * 24 * 60 * 60 * 1000
-        // );
-        // await prisma.warranty.create({
-        //   data: {
-        //     phone,
-        //     email,
-        //     classificationId,
-        //     orderId: order.id,
-        //     dueAt: dueDate.toISOString(),
-        //     productId,
-        //     userId: order.userId,
-        //   },
-        // });
+        await prisma.classification.update({
+          where: { id: classificationId },
+          data: {
+            quantity: {
+              decrement: quantity,
+            },
+          },
+        });
+        if (classify.warranty > 0) {
+          const dueDate = new Date(
+            new Date().getTime() + classify.warranty * 24 * 60 * 60 * 1000
+          );
+          await prisma.warranty.create({
+            data: {
+              phone,
+              email,
+              classificationId,
+              orderId: order.id,
+              dueAt: dueDate.toISOString(),
+              productId,
+              userId: order.userId,
+            },
+          });
+        }
 
         const statistic = await prisma.sellstatistic.findFirst({
           where: { classificationId },
