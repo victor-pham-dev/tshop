@@ -163,7 +163,11 @@ function Home({ initProductData, initCount }: HomeProps) {
               </Row>
             )}
 
-            <Row style={{ padding: "0.5rem" }} gutter={[16, 16]}>
+            <Row
+              style={{ padding: "0.5rem" }}
+              gutter={[16, 16]}
+              justify="center"
+            >
               {productsResult?.list.map((item) => (
                 <Col
                   key={`product so ${item.id}`}
@@ -171,6 +175,7 @@ function Home({ initProductData, initCount }: HomeProps) {
                   md={6}
                   xs={12}
                   xxl={6}
+                  xl={5}
                 >
                   <Link
                     href={`/${PATH.PRODUCT}/${removeMark(item.name)}pid=${

@@ -170,7 +170,7 @@ export default function ProductDetails({ productData, relatedList }: Props) {
             <Row gutter={[16, 16]} style={{ marginTop: "1rem" }}>
               <Col xxl={19} style={{ padding: "1rem" }}>
                 <Row justify={"center"} gutter={[16, 6]}>
-                  <Col xxl={{ span: 12 }} xs={{ span: 24 }}>
+                  <Col xxl={{ span: 12 }} xs={{ span: 24 }} xl={12}>
                     <CarouselProduct images={arrImg} />
                   </Col>
                   <Col
@@ -179,6 +179,7 @@ export default function ProductDetails({ productData, relatedList }: Props) {
                       borderRadius: "0.5rem",
                     }}
                     xxl={{ span: 12 }}
+                    xl={11}
                     xs={{ span: 23 }}
                   >
                     <Row style={{ padding: "1rem" }} gutter={[0, 8]}>
@@ -380,7 +381,12 @@ export default function ProductDetails({ productData, relatedList }: Props) {
                   </Divider>
 
                   {relatedList.map((item, i) => (
-                    <Col key={`related ${item.id} ${i}`} xxl={22} xs={12}>
+                    <Col
+                      key={`related ${item.id} ${i}`}
+                      xxl={22}
+                      xs={12}
+                      xl={6}
+                    >
                       <Link
                         href={`/${PATH.PRODUCT}/${removeMark(item.name)}pid=${
                           item.id

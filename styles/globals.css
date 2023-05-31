@@ -399,3 +399,14 @@ body {
   font-size: 1.3rem;
 }
 }
+@media only screen and (max-width: 1280px){
+
+.imageCard {
+  height: 220px;
+}
+.imgSlide{
+  height:   440px;
+}
+
+}
+
