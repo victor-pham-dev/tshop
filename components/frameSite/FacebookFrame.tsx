@@ -1,4 +1,4 @@
-import { Col, Divider, Row } from "antd";
+import { Col, Row } from "antd";
 
 export function FacebookFrame() {
   return (
