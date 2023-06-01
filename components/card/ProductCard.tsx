@@ -41,7 +41,6 @@ export function ProductCard(product: ProductWithClassifyProps): JSX.Element {
               display: "flex",
               flexDirection: "row",
               padding: "6px",
-              marginBottom: 6,
               background: "rgba(41,52,98,1)",
             }}
           >
@@ -74,7 +73,7 @@ export function ProductCard(product: ProductWithClassifyProps): JSX.Element {
           </div>
           <div
             style={{
-              padding: 8,
+              padding: 4,
               width: "100%",
             }}
           >
@@ -93,20 +92,16 @@ export function ProductCard(product: ProductWithClassifyProps): JSX.Element {
           </div>
         </div>
       }
-      hoverable
       bodyStyle={{
-        padding: "0 9px 9px 9px",
-        margin: 0,
+        padding: 0,
       }}
     >
       <div
         style={{
-          padding: "6px",
+          marginTop: 4,
+          padding: 8,
           margin: 0,
           backgroundColor: "#fff",
-          borderBottomLeftRadius: "6px",
-          borderBottomRightRadius: "6px",
-          boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
         }}
       >
         <blockquote
