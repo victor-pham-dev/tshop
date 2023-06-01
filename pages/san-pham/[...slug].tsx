@@ -246,10 +246,7 @@ export default function ProductDetails({ productData, relatedList }: Props) {
                             </p>
                           </Col>
                         </Row>
-                        <Row
-                          style={{ padding: "0 20px", marginBottom: "30px" }}
-                          gutter={[0, 10]}
-                        >
+                        <Row style={{ marginBottom: "30px" }} gutter={[0, 10]}>
                           <Col span={24}>
                             <p className="textTheme">Phân loại:</p>
                           </Col>
@@ -274,7 +271,7 @@ export default function ProductDetails({ productData, relatedList }: Props) {
                           </Col>
                         </Row>
                         <Row
-                          style={{ padding: "0 20px", marginBottom: "30px" }}
+                          style={{ marginBottom: "30px" }}
                           gutter={[0, 10]}
                           align="middle"
                         >
@@ -305,7 +302,7 @@ export default function ProductDetails({ productData, relatedList }: Props) {
                           </Col>
                         </Row>
                         <Row
-                          style={{ padding: "0 20px", marginBottom: "30px" }}
+                          style={{ marginBottom: "30px" }}
                           gutter={[20, 0]}
                           align="middle"
                         >
@@ -383,7 +380,7 @@ export default function ProductDetails({ productData, relatedList }: Props) {
                   {relatedList.map((item, i) => (
                     <Col
                       key={`related ${item.id} ${i}`}
-                      xxl={22}
+                      xxl={20}
                       xs={12}
                       xl={6}
                     >

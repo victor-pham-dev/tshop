@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { Col, Row } from "antd";
+import { FacebookFrame } from "@/components/frameSite/FacebookFrame";
 
 export const AppFooter: React.FC = () => {
   const thisYear = new Date().getFullYear();
@@ -12,6 +13,10 @@ export const AppFooter: React.FC = () => {
       justify="center"
       style={{ padding: "1rem" }}
     >
+      <Col xs={24} xxl={6} xl={6} md={12}>
+        <FacebookFrame />
+      </Col>
+
       <Col xxl={2}>
         <Image src="/favicon.svg" alt="shop" width={80} height={80}></Image>
       </Col>

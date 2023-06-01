@@ -30,7 +30,8 @@ export function ProductCard(product: ProductWithClassifyProps): JSX.Element {
       className="hoverEffect"
       style={{
         width: "100%",
-        backgroundColor: "#ffc107",
+        background:
+          "linear-gradient(180deg, rgba(0,150,159,1) 0%, rgba(41,52,98,1) 100%)",
         overflow: "hidden",
       }}
       cover={
@@ -41,7 +42,7 @@ export function ProductCard(product: ProductWithClassifyProps): JSX.Element {
               flexDirection: "row",
               padding: "6px",
               marginBottom: 6,
-              backgroundColor: "#55e6ff",
+              background: "rgba(41,52,98,1)",
             }}
           >
             <div
@@ -100,10 +101,12 @@ export function ProductCard(product: ProductWithClassifyProps): JSX.Element {
     >
       <div
         style={{
-          padding: "8px",
+          padding: "6px",
           margin: 0,
           backgroundColor: "#fff",
-          borderRadius: "8px",
+          borderBottomLeftRadius: "6px",
+          borderBottomRightRadius: "6px",
+          boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
         }}
       >
         <blockquote
@@ -116,6 +119,7 @@ export function ProductCard(product: ProductWithClassifyProps): JSX.Element {
             padding: 0,
             margin: 0,
             overflow: "hidden",
+            fontWeight: 500,
           }}
         >
           {product.name}
@@ -136,6 +140,7 @@ export function ProductCard(product: ProductWithClassifyProps): JSX.Element {
               padding: 0,
               margin: 0,
               lineHeight: "20px",
+              fontWeight: 600,
             }}
           >
             {price}
