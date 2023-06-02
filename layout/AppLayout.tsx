@@ -54,7 +54,6 @@ export const AppLayout: React.FC<Props> = ({ children }) => {
             position: "relative",
           }}
         >
-          {isLoading && <FullPageLoading />}
           {contextHolder}
           <Header
             style={{ width: "100%", height: "auto", padding: 0, margin: 0 }}
@@ -83,6 +82,7 @@ export const AppLayout: React.FC<Props> = ({ children }) => {
           </Footer>
         </Layout>
       </Col>
+      {isLoading && <FullPageLoading />}
     </Row>
   );
 };

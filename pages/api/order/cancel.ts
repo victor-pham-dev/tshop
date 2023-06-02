@@ -66,7 +66,7 @@ export default async function handler(
         items,
         cancelReason
       );
-      await sendMail({
+      sendMail({
         to: order.email,
         subject: "Thông tin huỷ đơn hàng - ITX Gear",
         html: mailContent,

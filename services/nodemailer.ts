@@ -15,12 +15,13 @@ export interface mailContentProps {
   subject: string;
   html: any;
 }
-export async function sendMail({ to, subject, html }: mailContentProps) {
+export function sendMail({ to, subject, html }: mailContentProps) {
   const mailOptions = {
     from: `support@itxgear.com`,
     to: to,
     subject: subject,
     html: html,
   };
-  await transporter.sendMail(mailOptions);
+  const result = transporter.sendMail(mailOptions);
+  return result;
 }
