@@ -80,7 +80,7 @@ export default async function handler(
           "",
           ""
         );
-        sendMail({
+        await sendMail({
           to: result.email,
           subject: "Xác nhận đặt hàng - ITX Gear",
           html: mailContent,

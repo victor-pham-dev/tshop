@@ -57,7 +57,7 @@ export default async function handler(
           shippingInfo,
           "Đơn hàng của quý khách đang được vận chuyển"
         );
-        sendMail({
+        await sendMail({
           to: order.email,
           subject: "Đơn hàng đang được vận chuyển - ITX Gear",
           html: mailContent,

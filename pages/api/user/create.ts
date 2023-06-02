@@ -52,7 +52,7 @@ export default async function handler(
     await TeleBOT.sendText(`USER MỚI: Email: ${email} - tên: ${name}`);
 
     const mailContent = templates.sigupTemplate(name);
-    sendMail({
+    await sendMail({
       to: email,
       html: mailContent,
       subject: "ITX Gear - Xác nhận đăng ký tài khoản",

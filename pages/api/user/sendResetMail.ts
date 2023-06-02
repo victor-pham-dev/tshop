@@ -28,7 +28,7 @@ export default async function handler(
       expiresIn: "1d",
     });
     const mailContent = templates.resetPassword(resetToken);
-    sendMail({
+    await sendMail({
       to: email,
       subject: "Đặt lại mật khẩu - ITX Gear",
       html: mailContent,
