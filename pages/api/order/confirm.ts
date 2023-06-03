@@ -82,7 +82,7 @@ export default async function handler(
             "",
             "Đơn hàng của quý khách đang được đóng gói"
           );
-          await sendMail({
+          sendMail({
             to: order.email,
             subject: "Đơn hàng đã được xác nhận - ITX Gear",
             html: mailContent,
