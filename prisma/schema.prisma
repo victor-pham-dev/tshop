@@ -6,145 +6,150 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 // 
 
 model User {
-  id         String     @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt  DateTime   @default(now())
-  email      String     @unique
-  name       String
-  active     Boolean    @default(true)
-  facebookId String     @unique @default("")
-  avatar     String     @default("")
-  role       Role       @default(USER)
-  password   String
-  Warranty   Warranty[]
+  id        Int      @id @unique @default(autoincrement())
+  createdAt DateTime @default(now())
+  email     String   @unique
+  name      String
+  active    Boolean  @default(true)
+  avatar    String   @default("")
+  password  String
+  // Warranty  Warranty[]
+
+  ROLES UserRole[]
 }
 
-enum Role {
-  USER
-  ADMIN
+model Role {
+  id        Int        @id @unique @default(autoincrement())
+  label     String
+  alias     String
+  userRoles UserRole[] // Mối quan hệ 1-n giữa Role và UserRole
+}
+
+model UserRole {
+  id     Int  @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [id])
+  role   Role @relation(fields: [roleId], references: [id])
+  userId Int
+  roleId Int
+
+  // Mối quan hệ 1-1 giữa UserRole và Role
+  @@unique([userId, roleId])
 }
 
 model Product {
-  id              String            @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @default(now())
+  id              Int              @id @unique @default(autoincrement())
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @default(now())
   status          String
   category        String
   name            String
-  images          String[]
+  images          String
   description     String
   classifications Classification[]
-  Cart            Cart[]
-  Warranty        Warranty[]
-  WarehouseImport WarehouseImport[]
-  Sellstatistic   Sellstatistic[]
-  view            Int               @default(0)
 }
 
 model Classification {
-  id              String            @id @default(auto()) @map("_id") @db.ObjectId
-  name            String
-  image           String
-  price           Int
-  quantity        Int               @default(0)
-  Product         Product?          @relation(fields: [productId], references: [id])
-  productId       String?           @db.ObjectId
-  warranty        Int               @default(0)
-  Warranty        Warranty[]
-  WarehouseImport WarehouseImport[]
-  Sellstatistic   Sellstatistic[]
+  id           Int      @id @unique @default(autoincrement())
+  name         String
+  price        Int
+  quantity     Int      @default(0)
+  // Warranty  Warranty[]
+  Product      Product? @relation(fields: [productId], references: [id])
+  productId    Int?
+  warrantyTime Int
 }
 
-model Cart {
-  id               String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId           String?  @db.ObjectId
-  image            String
-  quantity         Int      @default(1)
-  classificationId String?  @db.ObjectId
-  productId        String?  @db.ObjectId
-  Product          Product? @relation(fields: [productId], references: [id])
-}
+// model Cart {
+//   id               String   @id @default(auto()) @map("_id") @db.ObjectId
+//   userId           String?  @db.ObjectId
+//   image            String
+//   quantity         Int      @default(1)
+//   classificationId String?  @db.ObjectId
+//   productId        String?  @db.ObjectId
+//   Product          Product? @relation(fields: [productId], references: [id])
+// }
 
-model Shipping {
-  id         String  @id @default(auto()) @map("_id") @db.ObjectId
-  logs       String
-  shipMethod String
-  OrderId    String? @db.ObjectId
-}
+// model Shipping {
+//   id         String  @id @default(auto()) @map("_id") @db.ObjectId
+//   logs       String
+//   shipMethod String
+//   OrderId    String? @db.ObjectId
+// }
 
-model Order {
-  id              String     @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt       DateTime   @default(now())
-  userId          String     @db.ObjectId
-  items           String
-  paymentMethod   String
-  paymentStatus   String     @default("Chưa thanh toán")
-  note            String     @default("")
-  status          String     @default("Chờ xác nhận")
-  total           Int
-  receiver        String     @default("")
-  email           String     @default("")
-  phone           String     @default("")
-  province        String     @default("")
-  district        String     @default("")
-  ward            String     @default("")
-  specificAddress String     @default("")
-  paymentInfo     String     @default("")
-  shipCode        String     @default("")
-  shippingInfo    String     @default("")
-  cancelReason    String     @default("")
-  confirmedAt     String     @default("")
-  shipAt          String     @default("")
-  doneAt          String     @default("")
-  cancelAt        String     @default("")
-  Warranty        Warranty[]
-}
+// model Order {
+//   id              String     @id @default(auto()) @map("_id") @db.ObjectId
+//   createdAt       DateTime   @default(now())
+//   userId          String     @db.ObjectId
+//   items           String
+//   paymentMethod   String
+//   paymentStatus   String     @default("Chưa thanh toán")
+//   note            String     @default("")
+//   status          String     @default("Chờ xác nhận")
+//   total           Int
+//   receiver        String     @default("")
+//   email           String     @default("")
+//   phone           String     @default("")
+//   province        String     @default("")
+//   district        String     @default("")
+//   ward            String     @default("")
+//   specificAddress String     @default("")
+//   paymentInfo     String     @default("")
+//   shipCode        String     @default("")
+//   shippingInfo    String     @default("")
+//   cancelReason    String     @default("")
+//   confirmedAt     String     @default("")
+//   shipAt          String     @default("")
+//   doneAt          String     @default("")
+//   cancelAt        String     @default("")
+//   Warranty        Warranty[]
+// }
 
-model Warranty {
-  id               String          @id @default(auto()) @map("_id") @db.ObjectId
-  Order            Order?          @relation(fields: [orderId], references: [id])
-  orderId          String?         @db.ObjectId
-  productId        String?         @db.ObjectId
-  Product          Product?        @relation(fields: [productId], references: [id])
-  classificationId String?         @db.ObjectId
-  Classification   Classification? @relation(fields: [classificationId], references: [id])
-  startedAt        DateTime        @default(now())
-  dueAt            DateTime
-  userId           String?         @db.ObjectId
-  User             User?           @relation(fields: [userId], references: [id])
-  phone            String          @default("")
-  email            String          @default("")
-  shipCode         String          @default("")
-}
+// model Warranty {
+//   id               String          @id @default(auto()) @map("_id") @db.ObjectId
+//   Order            Order?          @relation(fields: [orderId], references: [id])
+//   orderId          String?         @db.ObjectId
+//   productId        String?         @db.ObjectId
+//   Product          Product?        @relation(fields: [productId], references: [id])
+//   classificationId String?         @db.ObjectId
+//   Classification   Classification? @relation(fields: [classificationId], references: [id])
+//   startedAt        DateTime        @default(now())
+//   dueAt            DateTime
+//   userId           String?         @db.ObjectId
+//   User             User?           @relation(fields: [userId], references: [id])
+//   phone            String          @default("")
+//   email            String          @default("")
+//   shipCode         String          @default("")
+// }
 
-model WarehouseImport {
-  id               String          @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt        DateTime        @default(now())
-  quantity         Int
-  productId        String?         @db.ObjectId
-  Product          Product?        @relation(fields: [productId], references: [id])
-  classificationId String          @db.ObjectId
-  Classification   Classification? @relation(fields: [classificationId], references: [id])
-  importPrice      Int
-  deleted          Boolean         @default(false)
-  note             String          @default("")
-}
+// model WarehouseImport {
+//   id               String          @id @default(auto()) @map("_id") @db.ObjectId
+//   createdAt        DateTime        @default(now())
+//   quantity         Int
+//   productId        String?         @db.ObjectId
+//   Product          Product?        @relation(fields: [productId], references: [id])
+//   classificationId String          @db.ObjectId
+//   Classification   Classification? @relation(fields: [classificationId], references: [id])
+//   importPrice      Int
+//   deleted          Boolean         @default(false)
+//   note             String          @default("")
+// }
 
-model Sellstatistic {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
+// model Sellstatistic {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  productId          String?         @db.ObjectId
-  Product            Product?        @relation(fields: [productId], references: [id])
-  classificationId   String          @db.ObjectId
-  Classification     Classification? @relation(fields: [classificationId], references: [id])
-  importQuantity     Int
-  importAveragePrice Float
-  sellQuantity       Int
-  sellAveragePrice   Float
-}
+//   productId          String?         @db.ObjectId
+//   Product            Product?        @relation(fields: [productId], references: [id])
+//   classificationId   String          @db.ObjectId
+//   Classification     Classification? @relation(fields: [classificationId], references: [id])
+//   importQuantity     Int
+//   importAveragePrice Float
+//   sellQuantity       Int
+//   sellAveragePrice   Float
+// }
