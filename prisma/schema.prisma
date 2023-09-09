@@ -78,8 +78,8 @@ model OrderCustomerInfo {
 }
 
 model OrderItem {
-  id Int @id @unique @default(autoincrement())
-
+  id        Int      @id @unique @default(autoincrement())
+  quantity  Int
   productId Int?
   Product   Product? @relation(fields: [productId], references: [id])
 
