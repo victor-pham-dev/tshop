@@ -4,6 +4,7 @@ import { adminNavItems } from '@/@App/Pages/Admin/configs/navItems'
 import { useUser } from '@/hooks'
 import { useRouter } from 'next/router'
 import { productNavItems } from '@/@App/Pages/Product/configs/navItems'
+import { orderNavItems } from '@/@App/Pages/Ordrer/configs/navItems'
 export interface NavItemProps {
 	role: string
 	route?: string
@@ -30,7 +31,7 @@ function getItem(label: React.ReactNode, key: React.Key, icon?: React.ReactNode,
 	} as MenuItem
 }
 
-const itemsList = [...adminNavItems, ...productNavItems]
+const itemsList = [...adminNavItems, ...productNavItems, ...orderNavItems]
 
 export const navList = () => {
 	const router = useRouter()

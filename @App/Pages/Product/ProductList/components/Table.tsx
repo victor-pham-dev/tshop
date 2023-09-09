@@ -7,6 +7,7 @@ import moment from 'moment'
 import { EditOutlined } from '@ant-design/icons'
 import { useRouter } from 'next/router'
 import { PRODUCT_ROUTER } from '../../configs/router'
+import { useDescriptionModal } from '../hooks/useDescriptionModal'
 
 export default () => {
 	const router = useRouter()
@@ -18,6 +19,7 @@ export default () => {
 	}, [])
 	console.log('🚀 ~ file: Table.tsx:9 ~ tableProps:', tableProps)
 	const { handleOpenImageModal, renderImagesModal } = useImageModal()
+	const { handleOpenDescriptionModal, renderDescriptionModal } = useDescriptionModal()
 
 	// const { type, changeType, submit, reset } = search
 
@@ -56,7 +58,12 @@ export default () => {
 		},
 		{
 			title: 'Mô tả- Giới thiệu',
-			dataIndex: 'description'
+			dataIndex: 'description',
+			render: (data: string) => (
+				<Button onClick={() => handleOpenDescriptionModal(data)} type="primary">
+					Xem mô tả
+				</Button>
+			)
 		},
 		{
 			title: 'Trạng thái',
@@ -101,6 +108,7 @@ export default () => {
 		<>
 			<Table columns={columns} rowKey="id" {...tableProps} />
 			{renderImagesModal()}
+			{renderDescriptionModal()}
 		</>
 	)
 }

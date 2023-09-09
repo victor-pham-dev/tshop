@@ -14,10 +14,12 @@ export const useProductDetail = () => {
 		loading: loadingFetchProduct,
 		run: fetchProduct
 	} = useRequest(productServices.find, { manual: true })
+
 	useEffect(() => {
 		if (id && id?.toString() !== 'new') {
 			fetchProduct(id?.toString())
 		}
 	}, [id])
+
 	return { product: product?.data, loadingFetchProduct }
 }

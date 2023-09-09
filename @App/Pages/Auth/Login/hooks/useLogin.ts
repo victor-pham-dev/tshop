@@ -14,7 +14,7 @@ export const useLogin = () => {
 			if (data?.code === STATUS_CODE.OK) {
 				login(data?.data?.accessToken)
 				message.success(data?.msg)
-				// fetchAuth()
+				fetchAuth()
 			} else {
 				message.error(data?.msg)
 			}

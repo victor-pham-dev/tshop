@@ -46,7 +46,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 			})
 		}
 
-		const comparePassword = bcrypt.compare(password, user.password)
+		const comparePassword = await bcrypt.compare(password, user.password)
 		if (!comparePassword) {
 			return res.status(STATUS_CODE.FAILED).json({
 				code: STATUS_CODE.FAILED,

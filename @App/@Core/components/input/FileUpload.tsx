@@ -18,6 +18,7 @@ const FileUpload: React.FC<Props> = ({ form, maxItem, initValue, label, formName
 	const { getFieldError } = form
 	// const isError
 	const [uploading, setUploading] = useState(false)
+	const [deleting, setDeleting] = useState(false)
 	const [fileList, setFileList] = useState<string[]>(() => {
 		const init: string[] = initValue?.map(item => {
 			const splitStr = item.split(
@@ -63,6 +64,7 @@ const FileUpload: React.FC<Props> = ({ form, maxItem, initValue, label, formName
 	}
 
 	const handleDelete = async (fileName: string) => {
+		setDeleting(true)
 		const { data, error } = await supabase.storage.from('file').remove([`public/${fileName}`])
 		if (error === null) {
 			setFileList(prevFileList => prevFileList.filter(item => item !== fileName))
@@ -70,6 +72,7 @@ const FileUpload: React.FC<Props> = ({ form, maxItem, initValue, label, formName
 		} else {
 			message.error('Xoá thất bại')
 		}
+		setDeleting(false)
 	}
 
 	const renderUploadList = (fileList: string[]) => {
@@ -80,7 +83,13 @@ const FileUpload: React.FC<Props> = ({ form, maxItem, initValue, label, formName
 					src={`https://esvelufzuzhhmsqjiior.supabase.co/storage/v1/object/public/file/public/${file}`}
 					alt="vui ve thoi"
 				/>
-				<Button type="primary" danger icon={<DeleteOutlined />} onClick={() => handleDelete(file)}>
+				<Button
+					loading={deleting}
+					type="primary"
+					danger
+					icon={<DeleteOutlined />}
+					onClick={() => handleDelete(file)}
+				>
 					Xoá
 				</Button>
 			</div>

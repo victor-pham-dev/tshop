@@ -10,7 +10,7 @@ const ProductDetail = () => {
 	const { id } = router.query
 	const { loadingFetchProduct, product } = useProductDetail()
 	return (
-		<ProductDetailProvider product={product}>
+		<ProductDetailProvider product={product} id={id}>
 			{loadingFetchProduct ? (
 				<div className="flex items-center justify-center w-full h-[]">
 					<Spin />

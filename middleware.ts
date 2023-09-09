@@ -49,7 +49,7 @@ export async function middleware(req: NextRequest) {
 
 					return handleAuth(decodeToken)
 				} else {
-					handleNotAuth('/404')
+					NextResponse.redirect(new URL('/404', req.url))
 				}
 			} else {
 				console.log(' 🚀 SKIP middleware MODULEs ')

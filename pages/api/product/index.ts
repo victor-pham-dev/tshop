@@ -2,11 +2,16 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { METHOD, STATUS_CODE } from '@/const/app-const'
 import { ResponseProps } from '@/network/services/api-handler'
 import createProduct from '@/Server/Modules/Product/create'
+import editProduct from '@/Server/Modules/Product/edit'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseProps<string | null>>) {
 	let response: any
 	if (req.method === METHOD.POST) {
 		response = await createProduct(req)
+	}
+
+	if (req.method === METHOD.PUT) {
+		response = await editProduct(req)
 	}
 
 	if (response) {
