@@ -78,12 +78,12 @@ model OrderCustomerInfo {
 }
 
 model OrderItem {
-  id        Int      @id @unique @default(autoincrement())
-  quantity  Int
-  productId Int?
+  id Int @id @unique @default(autoincrement())
+
+  productId Int
   Product   Product? @relation(fields: [productId], references: [id])
 
-  classificationId Int?
+  classificationId Int
   Classification   Classification? @relation(fields: [classificationId], references: [id])
   Order            Order?          @relation(fields: [orderId], references: [id])
   orderId          Int?
