@@ -53,17 +53,78 @@ model Product {
   images          String
   description     String
   classifications Classification[]
+  OrderItem       OrderItem[]
 }
 
 model Classification {
-  id           Int      @id @unique @default(autoincrement())
+  id           Int         @id @unique @default(autoincrement())
   name         String
   price        Int
-  quantity     Int      @default(0)
+  quantity     Int         @default(0)
   // Warranty  Warranty[]
-  Product      Product? @relation(fields: [productId], references: [id])
+  Product      Product?    @relation(fields: [productId], references: [id])
   productId    Int?
   warrantyTime Int
+  OrderItem    OrderItem[]
+}
+
+model OrderCustomerInfo {
+  id      Int     @id @unique @default(autoincrement()) //
+  name    String //Tên khách hàng
+  phone   String //Số điện thoại
+  address String // Địa chỉ nhận hàng
+  email   String //Email
+  Order   Order[]
+}
+
+model OrderItem {
+  id Int @id @unique @default(autoincrement())
+
+  productId Int?
+  Product   Product? @relation(fields: [productId], references: [id])
+
+  classificationId Int?
+  Classification   Classification? @relation(fields: [classificationId], references: [id])
+  Order            Order?          @relation(fields: [orderId], references: [id])
+  orderId          Int?
+}
+
+model OrderPayment {
+  id     Int      @id @unique @default(autoincrement())
+  status String
+  amount Int
+  method String
+  note   String
+  paidAt DateTime @default(now())
+  Order  Order[]
+}
+
+model OrderShipping {
+  id     Int     @id @unique @default(autoincrement())
+  status String
+  note   String
+  Order  Order[]
+}
+
+model Order {
+  id     Int         @id @unique @default(autoincrement())
+  note   String      @default("")
+  status String
+  items  OrderItem[]
+
+  payment OrderPayment @relation(fields: [orderPaymentId], references: [id])
+
+  shipping OrderShipping @relation(fields: [orderShippingId], references: [id])
+
+  customerInfo OrderCustomerInfo @relation(fields: [orderCustomerInfoId], references: [id])
+
+  orderPaymentId      Int
+  orderShippingId     Int
+  orderCustomerInfoId Int
+
+  @@unique([id, orderPaymentId])
+  @@unique([id, orderShippingId])
+  @@unique([id, orderCustomerInfoId])
 }
 
 // model Cart {
