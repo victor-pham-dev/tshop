@@ -1,8 +1,7 @@
-import { NextApiRequest, NextApiResponse } from 'next'
+import { NextApiRequest } from 'next'
 import { Classification } from '@prisma/client'
-import { METHOD, STATUS_CODE } from '@/const/app-const'
-import { ResponseProps } from '@/network/services/api-handler'
-import { AuthToken } from '@/middleware/server/auth'
+import { STATUS_CODE } from '@/const/app-const'
+
 import { prisma } from '@/services/prisma'
 import { removeMark } from '@/ultis/dataConvert'
 

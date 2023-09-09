@@ -1,17 +1,12 @@
 'use client'
-import React, { ReactNode, useCallback, useEffect, useMemo } from 'react'
-import { PATH, STATUS_CODE, STORAGE_KEY } from '../../../const/app-const'
-import { AuthenApi } from '../../../pages/api/user.api'
+import React, { ReactNode, useEffect } from 'react'
+import { STATUS_CODE, STORAGE_KEY } from '../../../const/app-const'
 import { useRouter } from 'next/router'
-import { checkRes } from '@/network/services/api-handler'
-import { GetMyCartApi } from '@/pages/api/cart.api'
-// import { useCart, useUser } from "@/hooks/useAppContext";
-import { message } from 'antd'
 import { useUser } from '@/hooks'
 import { AUTH_ROUTER } from '@/@App/Pages/Auth/configs/router'
 import { authService } from '@/@App/Pages/Auth/services/authServices'
 import { useRequest } from 'ahooks'
-import { FullPageLoading } from '@/components/loading/FullPageLoading'
+import { Spin } from 'antd'
 interface Props {
 	children: ReactNode
 }
@@ -57,7 +52,17 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
 		}
 	}, [token])
 
-	return <>{authLoading ? <FullPageLoading /> : children}</>
+	return (
+		<>
+			{authLoading ? (
+				<div className="items-center justify-center w-full h-full">
+					<Spin />
+				</div>
+			) : (
+				children
+			)}
+		</>
+	)
 }
 
 export default React.memo(AuthProvider)
