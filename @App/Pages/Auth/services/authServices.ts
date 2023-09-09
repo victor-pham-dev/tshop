@@ -1,19 +1,19 @@
-import { BaseService } from "@/@App/@Core/service/BaseService";
+import { BaseService } from '@/@App/@Core/service/BaseService'
 
 class Auth extends BaseService {
-  register = (data: any) => {
-    const endpoint = "/api/auth/register";
-    return this.post({ endpoint, data });
-  };
+	register = (data: any) => {
+		const endpoint = API_AUTH.register
+		return this.post({ endpoint, data })
+	}
 
-  login = (data: any) => {
-    const endpoint = "/api/auth/login";
-    return this.post({ endpoint, data });
-  };
+	login = (data: any) => {
+		const endpoint = API_AUTH.login
+		return this.post({ endpoint, data })
+	}
 
-  me = () => {
-    const endpoint = "/api/auth/me";
-    return this.get({ endpoint });
-  };
+	me = () => {
+		const endpoint = API_AUTH.me
+		return this.get({ endpoint })
+	}
 }
-export const authService = new Auth();
+export const authService = new Auth()

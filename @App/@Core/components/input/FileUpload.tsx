@@ -3,7 +3,6 @@ import { List, Button, Upload, message, FormInstance, Form, Row, Col, Select, Sp
 import { UploadOutlined, DeleteOutlined } from '@ant-design/icons'
 import { removeSpecial } from '@/ultis/dataConvert'
 
-import { useLoading } from '@/hooks'
 import { supabase } from '@/services/supabase'
 
 interface Props {

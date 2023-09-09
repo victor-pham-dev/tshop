@@ -1,14 +1,10 @@
 'use client'
-import React, { useEffect, useState } from 'react'
-import { Row, Col, Switch, Button, Avatar, Badge } from 'antd'
-import { useTheme, useUser } from '@/hooks'
+import React from 'react'
+import { Avatar, Badge } from 'antd'
+import { useUser } from '@/hooks'
 import { useRouter } from 'next/router'
-import { PATH, ROLE } from '@/const/app-const'
-import { ShoppingCartOutlined } from '@ant-design/icons'
-import Link from 'next/link'
-import { AdminMenu } from '@/components/menu/AdminMenu'
-import { UserMenu } from '@/components/menu/UserMenu'
-import Image from 'next/image'
+import { PATH } from '@/const/app-const'
+
 // import { useCart } from "@/hooks/useAppContext";
 
 export default function AppHeader(): JSX.Element {
@@ -37,7 +33,7 @@ export default function AppHeader(): JSX.Element {
 	}
 
 	return (
-		<div className="bg-blue-500 flex items-center gap-4 p-4 text-white">
+		<div className="flex items-center gap-4 p-4 text-white bg-blue-500">
 			<Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel" />
 			<div className="text-12">{user?.name}</div>
 			{/* <Col span={24}>

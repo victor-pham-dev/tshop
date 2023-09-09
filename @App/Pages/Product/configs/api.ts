@@ -1,3 +1,3 @@
 export const PRODUCT_API = {
-	endpoint: '/api/product'
+	endpoint: '/api/v1/product'
 }
