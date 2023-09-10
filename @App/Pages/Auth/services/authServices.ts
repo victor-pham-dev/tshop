@@ -1,4 +1,5 @@
 import { BaseService } from '@/@App/@Core/service/BaseService'
+import { API_AUTH } from '../configs/api'
 
 class Auth extends BaseService {
 	register = (data: any) => {
