@@ -36,7 +36,7 @@ const FormDetail = () => {
 					onFinish={saveProduct}
 					autoComplete="off"
 					initialValues={{
-						id,
+						id: id !== 'new' && id,
 						images: initImages,
 						name: product?.name,
 						status: product?.status,

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { List, Button, Upload, message, FormInstance, Form, Row, Col, Select, Spin } from 'antd'
+import { List, Button, Upload, message, FormInstance, Form, Row, Col, Select, Spin, Image } from 'antd'
 import { UploadOutlined, DeleteOutlined } from '@ant-design/icons'
 import { removeSpecial } from '@/ultis/dataConvert'
 
@@ -77,12 +77,14 @@ const FileUpload: React.FC<Props> = ({ form, maxItem, initValue, label, formName
 	const renderUploadList = (fileList: string[]) => {
 		return fileList.map((file, i) => (
 			<div key={file + i} className="flex flex-col items-center gap-2 p-2 bg-white rounded-md shadow-2xl">
-				<img
+				<Image
+					loading="lazy"
 					height={160}
 					src={`https://esvelufzuzhhmsqjiior.supabase.co/storage/v1/object/public/file/public/${file}`}
 					alt="vui ve thoi"
 				/>
 				<Button
+					htmlType="button"
 					loading={deleting}
 					type="primary"
 					danger
@@ -105,7 +107,7 @@ const FileUpload: React.FC<Props> = ({ form, maxItem, initValue, label, formName
 				{renderUploadList(fileList)}
 
 				{uploading && (
-					<div className="flex w-[240px]  rounded-md bg-white shadow-2xl items-center justify-center">
+					<div className="flex w-[240px] h-[200px]  rounded-md bg-white shadow-2xl items-center justify-center">
 						<Spin />
 					</div>
 				)}
@@ -113,7 +115,7 @@ const FileUpload: React.FC<Props> = ({ form, maxItem, initValue, label, formName
 			<div className="flex flex-col">
 				{fileList.length < maxItem ? (
 					<Upload beforeUpload={handleUpload} showUploadList={false}>
-						<Button className="w-[200px]" type="primary" icon={<UploadOutlined />}>
+						<Button htmlType="button" className="w-[200px]" type="primary" icon={<UploadOutlined />}>
 							Tải lên
 						</Button>
 					</Upload>

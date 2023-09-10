@@ -55,7 +55,7 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
 	return (
 		<>
 			{authLoading ? (
-				<div className="items-center justify-center w-full h-full">
+				<div className="items-center justify-center w-[100vw] h-[100vh] flex">
 					<Spin />
 				</div>
 			) : (

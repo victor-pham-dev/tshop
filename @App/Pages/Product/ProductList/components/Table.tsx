@@ -14,9 +14,6 @@ export default () => {
 	const { getTableData } = useTable()
 	const { tableProps, run } = useAntdTable(getTableData)
 
-	useEffect(() => {
-		run({ current: 1, pageSize: 10 }, {})
-	}, [])
 	console.log('🚀 ~ file: Table.tsx:9 ~ tableProps:', tableProps)
 	const { handleOpenImageModal, renderImagesModal } = useImageModal()
 	const { handleOpenDescriptionModal, renderDescriptionModal } = useDescriptionModal()
