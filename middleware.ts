@@ -12,12 +12,15 @@ export interface DecodeTokenProps {
 export async function middleware(req: NextRequest) {
 	const path = req.nextUrl.pathname as string
 	console.log('🚀 ~ file: middleware.ts:14 ~ middleware ~ path:', path)
-	const handleNotAuth = (url: string) => NextResponse.rewrite(new URL(url, req.url))
+	const handleNotAuth = (url: string) => {
+		if (!['/auth/logout', '/auth/login'].includes(path)) {
+			return NextResponse.redirect(new URL(url, req.url))
+		}
+	}
 
 	const handleAuth = (decodeToken: any) => {
 		const requestHeaders = new Headers(req.headers)
 		requestHeaders.set('user', JSON.stringify(decodeToken))
-		requestHeaders.set('a', '1')
 		return NextResponse.next({
 			request: {
 				headers: requestHeaders
@@ -28,18 +31,20 @@ export async function middleware(req: NextRequest) {
 	const token = req.headers.get('x-access-token')
 	console.log('🚀 ~ file: middleware.ts:29 ~ middleware ~ token:', token)
 
-	const regex = /\/api\/([^/]+)/
+	const regex = /\/api\/v[123456789]\/([^/]+)\//
 	const url = req.url
 	const checkModule = url.match(regex)
 
 	const skipModules = ['auth']
 	const module = checkModule && !skipModules.includes(checkModule[1]) ? checkModule[1] : null
+	console.log('🚀 ~ file: middleware.ts:40 ~ middleware ~ module:', module)
 
 	try {
 		const decodeToken = await tokenUtils.verify(token ?? '')
+		console.log('🚀 ~ file: middleware.ts:43 ~ middleware ~ decodeToken:', decodeToken)
 
-		if (!token) {
-			return handleNotAuth('/auth/login')
+		if (!token || decodeToken?.id === -1) {
+			return handleNotAuth('/auth/logout')
 		} else {
 			const { roles, id, email } = decodeToken
 
@@ -49,7 +54,7 @@ export async function middleware(req: NextRequest) {
 
 					return handleAuth(decodeToken)
 				} else {
-					NextResponse.redirect(new URL('/404', req.url))
+					return handleNotAuth('/403')
 				}
 			} else {
 				console.log(' 🚀 SKIP middleware MODULEs ')
@@ -57,9 +62,7 @@ export async function middleware(req: NextRequest) {
 			}
 		}
 	} catch (error) {
-		if (!['/auth/logout', '/auth/login'].includes(path)) {
-			return NextResponse.redirect(new URL('/auth/logout', req.url))
-		}
+		return handleNotAuth('/auth/logout')
 	}
 }
 
