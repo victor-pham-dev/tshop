@@ -13,7 +13,7 @@ const DashboardAdmin = () => {
 export default DashboardAdmin
 
 const { Option } = Select
-export const CustomSelectWithApi = () => {
+export const CustomSelectWithApi = ({ ...restProps }) => {
 	const [searchText, setSearchText] = useState<string>('')
 
 	const { loading, run, data } = useRequest(roleServices.search, { manual: true, debounceWait: 500 })
@@ -36,6 +36,7 @@ export const CustomSelectWithApi = () => {
 			onSearch={handleSearch}
 			notFoundContent={loading ? <Spin size="small" /> : null}
 			className="w-[240px]"
+			{...restProps}
 		>
 			{data?.data?.dataTable?.map((option: any) => (
 				<Option key={option.value} value={option?.id}>
