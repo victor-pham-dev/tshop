@@ -1,21 +1,23 @@
 import { useState } from 'react'
 import { Form, Input, Switch, Button } from 'antd'
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
-import { roleFormDetail } from './roleFormDetail'
-import { role } from './useRoleModal';
+import { roleFormDetail } from '../hooks/useroleFormDetail'
+import { role } from '../hooks/useRoleModal'
 
-interface FromRoleProps  {
-  data: role | null | undefined;
+interface FromRoleProps {
+	data: role | null | undefined
 }
-export const FromRole = ( props: FromRoleProps ) => {
-  let { data } = props
+export const FromRole = (props: FromRoleProps) => {
+	let { data } = props
 	const [form] = Form.useForm()
+
 	const { loadingSaveRole, saveRole } = roleFormDetail(data?.id ?? 0)
-  const onChange = (checked: boolean) => {
-    if(data){
-      data.isActive = checked ? 1: 0
-    }
-  };
+
+	const onChange = (checked: boolean) => {
+		if (data) {
+			data.isActive = checked ? 1 : 0
+		}
+	}
 
 	return (
 		<Form
@@ -63,12 +65,16 @@ export const FromRole = ( props: FromRoleProps ) => {
 							checkedChildren={<CheckOutlined />}
 							unCheckedChildren={<CloseOutlined />}
 							defaultChecked={data.isActive === 1}
-              onChange={onChange}
+							onChange={onChange}
 						/>
 					</Form.Item>
 				)}
-				<Form.Item className='m-0 p-0 h-0' name="id"> </Form.Item>
-				<Form.Item className='m-0 p-0 h-0' name="isActive"> </Form.Item>
+				<Form.Item className="h-0 p-0 m-0" name="id">
+					{' '}
+				</Form.Item>
+				<Form.Item className="h-0 p-0 m-0" name="isActive">
+					{' '}
+				</Form.Item>
 				<Form.Item wrapperCol={{ span: 24 }}>
 					<Button loading={loadingSaveRole} block type="primary" htmlType="submit">
 						{data?.id ? 'Sửa quyền' : 'Tạo quyền'}

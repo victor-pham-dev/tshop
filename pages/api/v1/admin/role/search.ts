@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { Product } from '@prisma/client'
 import { METHOD, STATUS_CODE } from '@/const/app-const'
 import { PagingResponseProps, ResponseProps } from '@/network/services/api-handler'
-import searchRole from '@/Server/Modules/Role/search'
+import searchRole from '@/Server/Modules/Admin/Role/search'
 
 export default async function handler(
 	req: NextApiRequest,

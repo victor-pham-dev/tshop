@@ -1,3 +1,3 @@
 export const ROLE_API = {
-	endpoint: '/api/v1/role'
+	endpoint: '/api/v1/admin/role'
 }

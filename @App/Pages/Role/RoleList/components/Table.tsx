@@ -1,18 +1,19 @@
 import { useAntdTable } from 'ahooks'
-import { Button, Image, Switch, Table, Tooltip } from 'antd'
+import { Button, Image, Switch, Table, Tag, Tooltip } from 'antd'
 import { useTable } from '../hooks/useTable'
 import { useEffect } from 'react'
 import moment from 'moment'
 import { CheckOutlined, CloseOutlined, EditOutlined } from '@ant-design/icons'
 import { useRouter } from 'next/router'
 // import { PRODUCT_ROUTER } from '../../configs/router'
-import { role, useDescriptionModal } from '../hooks/useRoleModal'
+import { role, useRoleModal } from '../hooks/useRoleModal'
+import { useCoreContext } from '@/@App/@Core/hooks/useAppContext'
 
 export default () => {
 	const router = useRouter()
-	const { getTableData } = useTable()
-	const { tableProps, run } = useAntdTable(getTableData)
-	const { handleOpenRoleModal, renderRoleModal } = useDescriptionModal()
+	const { tableProps } = useTable()
+
+	const { handleOpenRoleModal, renderRoleModal } = useCoreContext()
 
 	// const { type, changeType, submit, reset } = search
 
@@ -33,11 +34,7 @@ export default () => {
 			title: 'Status',
 			dataIndex: 'isActive',
 			render: (data: number) => (
-				<Switch
-					checkedChildren={<CheckOutlined />}
-					unCheckedChildren={<CloseOutlined />}
-					checked={data === 1}
-				/>
+				<Tag color={data === 1 ? 'green' : 'red'}> {data === 1 ? 'Hoạt động' : 'OFF'}</Tag>
 			)
 		},
 		{
@@ -63,7 +60,12 @@ export default () => {
 	]
 	return (
 		<>
-			<Button onClick={() => handleOpenRoleModal()} type="primary" color="success" style={{ width: '20%', marginBottom: '10px' }}>
+			<Button
+				onClick={() => handleOpenRoleModal()}
+				type="primary"
+				color="success"
+				style={{ width: '20%', marginBottom: '10px' }}
+			>
 				Thêm Quyền
 			</Button>
 			<Table columns={columns} rowKey="id" {...tableProps} />

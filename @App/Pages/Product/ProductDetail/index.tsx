@@ -9,26 +9,18 @@ const ProductDetail = () => {
 	const router = useRouter()
 	const { id } = router.query
 	const { loadingFetchProduct, product } = useProductDetail()
-	console.log(product)
-	if((id === 'new' || product !==null)){
-		return (
-			<ProductDetailProvider product={product} id={id}>
-				{loadingFetchProduct ? (
-					<div className="flex items-center justify-center w-full h-[]">
-						<Spin />
-					</div>
-				) : (
-					<FormDetail />
-				)}
-			</ProductDetailProvider>
-		)
-	}
-	return (
-		<div>
-        <h1>404 Page</h1>
-    </div>
-	)
 
+	return (
+		<ProductDetailProvider product={product} id={id}>
+			{loadingFetchProduct ? (
+				<div className="flex items-center justify-center w-full h-[]">
+					<Spin />
+				</div>
+			) : (
+				<FormDetail />
+			)}
+		</ProductDetailProvider>
+	)
 }
 
 export default ProductDetail

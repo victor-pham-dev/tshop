@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import { Modal } from 'antd'
-import { FromRole } from './FromRole'
+import { FromRole } from '../components/FromRole'
 
 export interface role {
 	id: number
@@ -9,34 +9,36 @@ export interface role {
 	isActive: number
 	deleted: number
 }
-export const useDescriptionModal = () => {
-	const [openImagesModal, setOpenImageModal] = useState(false)
+export const useRoleModal = () => {
+	const [openModal, setOpenModal] = useState(false)
 	const [data, setData] = useState<role | null>()
 
-	const handleOpenRoleModal = (dataModel: role | null = null) => {
-		setOpenImageModal(true)
-		if (data !== dataModel) {
-			setData(dataModel)
-		}
-	}
-	const FormSubmit = useCallback(() => {
-		return <FromRole data={data} />
-	}, [data])
+	const handleOpenRoleModal = useCallback(
+		(dataModel: role | null = null) => {
+			setOpenModal(true)
+			if (data !== dataModel) {
+				setData(dataModel)
+			}
+		},
+		[data]
+	)
 
-	const renderRoleModal = () => {
+	const handleCloseRoleModal = useCallback(() => setOpenModal(false), [])
+
+	const renderRoleModal = useCallback(() => {
 		return (
-			openImagesModal && (
+			openModal && (
 				<Modal
-					open={openImagesModal}
-					onCancel={() => setOpenImageModal(false)}
+					open={openModal}
+					onCancel={handleCloseRoleModal}
 					footer={null}
 					title={data ? `Chỉnh sửa quền: ${data.label}` : 'Thêm quyền'}
 				>
-					<FormSubmit />
+					<FromRole data={data} />
 				</Modal>
 			)
 		)
-	}
+	}, [openModal])
 
-	return { handleOpenRoleModal, renderRoleModal }
+	return { handleOpenRoleModal, renderRoleModal, handleCloseRoleModal }
 }
