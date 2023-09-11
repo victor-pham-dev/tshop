@@ -13,7 +13,8 @@ export default () => {
 	const router = useRouter()
 	const { getTableData } = useTable()
 	const { tableProps, run } = useAntdTable(getTableData)
-
+	console.log("🚀 ~ file: Table.tsx:16 ~ tableProps:", tableProps)
+	
 	console.log('🚀 ~ file: Table.tsx:9 ~ tableProps:', tableProps)
 	const { handleOpenImageModal, renderImagesModal } = useImageModal()
 	const { handleOpenDescriptionModal, renderDescriptionModal } = useDescriptionModal()

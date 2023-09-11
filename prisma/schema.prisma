@@ -27,8 +27,10 @@ model User {
 
 model Role {
   id        Int        @id @unique @default(autoincrement())
-  label     String
-  alias     String
+  label     String     
+  alias     String     @unique
+  isActive  Int        @default(1)
+  deleted   Int        @default(0)
   userRoles UserRole[] // Mối quan hệ 1-n giữa Role và UserRole
 }
 
