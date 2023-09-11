@@ -3,7 +3,6 @@ import { METHOD, STATUS_CODE } from '@/const/app-const'
 import { ResponseProps } from '@/network/services/api-handler'
 import createRole from '@/Server/Modules/Admin/Role/create'
 import editProduct from '@/Server/Modules/Admin/Role/edit'
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseProps<string | null>>) {
 	let response: any
 	if (req.method === METHOD.POST) {
