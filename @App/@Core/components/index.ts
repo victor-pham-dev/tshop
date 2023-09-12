@@ -1,3 +1,3 @@
 import FileUpload from './input/FileUpload'
-
-export { FileUpload }
+import CoreSelectWithApi from './select/CoreSelectWithApi'
+export { FileUpload, CoreSelectWithApi }

@@ -1,5 +1,5 @@
 import queryString from 'query-string'
-interface searchProps {
+export interface searchProps {
 	// endpoint: string
 	options?: any
 	config?: any
