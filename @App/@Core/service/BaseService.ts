@@ -1,22 +1,19 @@
+import { message } from 'antd'
+import { METHOD } from '@/const/app-const'
 import queryString from 'query-string'
 export interface searchProps {
-	// endpoint: string
-	options?: any
-	config?: any
+	params?: any
+	header?: any
 }
 
-interface postProps {
-	endpoint: string
-	data: any
+interface findProps {
+	headers: any
 	config?: any
-}
-
-interface getProps {
-	endpoint: string
-	config?: any
+	id: string
 }
 
 export class BaseService {
+	BASE_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : ''
 	BASE_ENDPOINT: string | undefined = ''
 	constructor(endpoint?: string) {
 		this.BASE_ENDPOINT = endpoint
@@ -27,92 +24,85 @@ export class BaseService {
 		return token ?? ''
 	}
 
-	checkAuth = (res: any) => {
-		console.log(res)
-		return true
-	}
-
-	search = async ({ options, config }: searchProps) => {
-		const params = queryString.stringify(options ?? { page: 1, pageSize: 10 })
-		const rqEndpoint = `${this.BASE_ENDPOINT ?? ''}/search?${params}`
-		const response = await fetch(rqEndpoint, {
-			method: 'GET',
-			headers: {
-				'x-access-token': this.getToken(),
-				...config
+	request = {
+		get: async (endpoint: string, headers?: any, config?: any) => {
+			try {
+				const response = await fetch(endpoint, {
+					method: METHOD.GET,
+					headers: {
+						'x-access-token': this.getToken(),
+						...headers
+					},
+					...config
+				})
+				const result = await response.json()
+				if (!result.ok) {
+					throw { message: 'API error', data: result }
+				}
+				return result
+			} catch (error) {
+				throw { message: 'Network error', error }
 			}
-		})
-		const result = await response.json()
-		return result
-	}
+		},
 
-	post = async ({ endpoint, data, config }: postProps) => {
-		const response = await fetch(endpoint, {
-			method: 'POST',
-			headers: {
-				'x-access-token': this.getToken(),
-				'Content-Type': 'application/json',
-				...config
-			},
-			body: JSON.stringify(data)
-		})
-		const result = await response.json()
-		const authPass = this.checkAuth(result)
-		if (authPass) return result
-		return
-	}
-
-	get = async ({ endpoint, config }: getProps) => {
-		const response = await fetch(endpoint, {
-			method: 'GET',
-			headers: {
-				'x-access-token': this.getToken(),
-				...config
+		post: async (endpoint: string, data: any, config?: any) => {
+			try {
+				const response = await fetch(endpoint, {
+					method: METHOD.POST,
+					headers: {
+						'x-access-token': this.getToken(),
+						...config
+					},
+					body: JSON.stringify(data)
+				})
+				const result = await response.json()
+				if (!result.ok) {
+					throw { message: 'API error', data: result }
+				}
+				return result
+			} catch (error) {
+				throw { message: 'Network error', error }
 			}
-		})
-		const result = await response.json()
-		return result
+		},
+
+		put: async (endpoint: string, data: any, config?: any) => {
+			try {
+				const response = await fetch(endpoint, {
+					method: METHOD.PUT,
+					headers: {
+						'x-access-token': this.getToken(),
+						...config
+					},
+					body: JSON.stringify(data)
+				})
+				const result = await response.json()
+				if (!result.ok) {
+					throw { message: 'API error', data: result }
+				}
+				return result
+			} catch (error) {
+				throw { message: 'Network error', error }
+			}
+		}
+	}
+
+	search = async ({ params, header }: searchProps) => {
+		const convertParams = queryString.stringify(params ?? { page: 1, pageSize: 10 })
+		const endpoint = `${this.BASE_URL}/${this.BASE_ENDPOINT}/search?${convertParams}`
+		return this.request.get(endpoint, header)
 	}
 
 	find = async (id: string, config?: any) => {
-		const endpoint = `${this.BASE_ENDPOINT ?? ''}/${id}`
-		const response = await fetch(endpoint, {
-			method: 'GET',
-			headers: {
-				'x-access-token': this.getToken(),
-				...config
-			}
-		})
-		const result = await response.json()
-		return result
+		const endpoint = `${this.BASE_URL}/${this.BASE_ENDPOINT}/${id}`
+		return this.request.get(endpoint, {}, config)
 	}
 
-	save = async ({ endpoint, data, config }: postProps) => {
-		let response: Response
-		if (!data?.id) {
-			response = await fetch(endpoint, {
-				method: 'POST',
-				headers: {
-					'x-access-token': this.getToken(),
-					'Content-Type': 'application/json',
-					...config
-				},
-				body: JSON.stringify(data)
-			})
-		} else {
-			response = await fetch(endpoint, {
-				method: 'PUT',
-				headers: {
-					'x-access-token': this.getToken(),
-					'Content-Type': 'application/json',
-					...config
-				},
-				body: JSON.stringify(data)
-			})
+	save = async (data: any, config?: any) => {
+		console.log('🚀 ~ file: BaseService.ts:88 ~ BaseService ~ save= ~ data:', data)
+		const endpoint = `${this.BASE_URL}/${this.BASE_ENDPOINT}`
+		if (data?.id) {
+			return this.request.put(endpoint, data, config)
 		}
-
-		const result = await response.json()
-
-		return result
+		return this.request.post(endpoint, data, config)
 	}
 }

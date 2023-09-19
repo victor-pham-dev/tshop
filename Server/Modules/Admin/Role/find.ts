@@ -14,7 +14,7 @@ export default async function findProduct(req: NextApiRequest) {
 		})
 
 		return {
-			code: STATUS_CODE.OK,
+			ok: true,
 			data: product,
 			msg: 'ok'
 		}

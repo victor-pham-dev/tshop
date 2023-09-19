@@ -1,12 +1,11 @@
 import { Button, Col, Divider, Form, Input, InputNumber, Row, Select, Spin } from 'antd'
 import { productCategoryOptions, productStatusOptions } from '@/const/app-const'
-import { PlusOutlined } from '@ant-design/icons'
+import { GiftOutlined, PlusOutlined } from '@ant-design/icons'
 import dynamic from 'next/dynamic'
-import { FileUpload } from '@/@App/@Core/components'
+import { CoreCard, FileUpload } from '@/@App/@Core/components'
 import clsx from 'clsx'
 import { useCoreContext } from '@/@App/@Core/hooks/useAppContext'
 import { useFormDetail } from '../hooks/useFormDetail'
-import { useEffect } from 'react'
 const InputRichText = dynamic(() => import('@/@App/@Core/components/input/InputRichText'), {
 	ssr: false,
 	loading: () => (
@@ -15,6 +14,9 @@ const InputRichText = dynamic(() => import('@/@App/@Core/components/input/InputR
 		</div>
 	)
 })
+
+const { TextArea } = Input
+
 const FormDetail = () => {
 	const [form] = Form.useForm()
 	const { product, id } = useCoreContext()
@@ -33,7 +35,9 @@ const FormDetail = () => {
 					name="newPost"
 					labelCol={{ span: 24 }}
 					wrapperCol={{ span: 24 }}
-					onFinish={saveProduct}
+					onFinish={values => {
+						saveProduct({ ...values, overView: values?.overView?.map((item: any) => item.name) })
+					}}
 					autoComplete="off"
 					initialValues={{
 						id: id !== 'new' && id,
@@ -45,70 +49,107 @@ const FormDetail = () => {
 						description: product?.description
 					}}
 				>
-					<FileUpload
-						formName="images"
-						label={'Ảnh sản phẩm'}
-						initValue={initImages}
-						maxItem={10}
-						form={form}
-					/>
+					<CoreCard className="my-5">
+						<FileUpload
+							formName="images"
+							label={'Ảnh sản phẩm'}
+							initValue={initImages}
+							maxItem={10}
+							form={form}
+						/>
+					</CoreCard>
 
 					<Row gutter={[16, 16]}>
 						<Col xxl={12}>
-							<p style={{ width: '100%' }} className="text-[16px] py-4 font-600 text-blue-500">
-								Thông tin cơ bản
-							</p>
-							<div className="p-4 bg-gray-100 rounded-md ">
-								<Form.Item name="id"></Form.Item>
-								<Form.Item
-									name="name"
-									label={<label className="textTheme">Tên sản phẩm</label>}
-									rules={[
-										{
-											required: true,
-											message: 'Vui lòng điền!'
-										}
-									]}
-								>
-									<Input placeholder="Tên sản phẩm" />
-								</Form.Item>
-								<Form.Item
-									name="status"
-									label={<label className="textTheme">Tình trạng sản phẩm</label>}
-									rules={[
-										{
-											required: true,
-											message: 'Vui lòng chọn tình trạng!'
-										}
-									]}
-								>
-									<Select
-										placeholder="Tình trạng sản phẩm"
-										allowClear
-										options={productStatusOptions}
-									/>
-								</Form.Item>
-								<Form.Item
-									name="category"
-									label={<label className="textTheme">Danh mục sản phẩm</label>}
-									rules={[
-										{
-											required: true,
-											message: 'Vui lòng chọn danh mục!'
-										}
-									]}
-								>
-									<Select
-										placeholder="danh mục sản phẩm"
-										allowClear
-										options={productCategoryOptions}
-									/>
-								</Form.Item>
-							</div>
+							<CoreCard>
+								<p style={{ width: '100%' }} className="text-[16px] py-4 font-600 text-blue-500">
+									Thông tin cơ bản
+								</p>
+								<div className="p-4 bg-gray-100">
+									{' '}
+									<Form.Item className="hidden" name="id"></Form.Item>
+									<Form.Item
+										name="name"
+										label={<label className="textTheme">Tên sản phẩm</label>}
+										rules={[
+											{
+												required: true,
+												message: 'Vui lòng điền!'
+											}
+										]}
+									>
+										<Input placeholder="Tên sản phẩm" />
+									</Form.Item>
+									<Form.Item
+										name="status"
+										label={<label className="textTheme">Tình trạng sản phẩm</label>}
+										rules={[
+											{
+												required: true,
+												message: 'Vui lòng chọn tình trạng!'
+											}
+										]}
+									>
+										<Select
+											placeholder="Tình trạng sản phẩm"
+											allowClear
+											options={productStatusOptions}
+										/>
+									</Form.Item>
+									<Form.Item
+										name="category"
+										label={<label className="textTheme">Danh mục sản phẩm</label>}
+										rules={[
+											{
+												required: true,
+												message: 'Vui lòng chọn danh mục!'
+											}
+										]}
+									>
+										<Select
+											placeholder="danh mục sản phẩm"
+											allowClear
+											options={productCategoryOptions}
+										/>
+									</Form.Item>
+									<Form.Item
+										name="seo"
+										label="Nội dung SEO"
+										rules={[
+											{
+												required: true,
+												message: 'Vui lòng điền!'
+											},
+											{
+												max: 120,
+												message: 'Tối đa 120 kí tự'
+											}
+										]}
+									>
+										<TextArea placeholder="Tên sản phẩm" />
+									</Form.Item>
+									<Form.Item
+										name="keywords"
+										label="Từ khoá SEO"
+										rules={[
+											{
+												required: true,
+												message: 'Vui lòng điền!'
+											},
+											{
+												max: 120,
+												message: 'Tối đa 120 kí tự'
+											}
+										]}
+									>
+										<TextArea placeholder="Từ khoá SEO, cách nhau bởi dấu phảy" />
+									</Form.Item>
+								</div>
+							</CoreCard>
 						</Col>
 
 						<Col xxl={12}>
-							<div>
+							<CoreCard>
 								<Form.List name="classifications">
 									{(fields, { add, remove }) => (
 										<>
@@ -127,7 +168,7 @@ const FormDetail = () => {
 												</Form.Item>
 											</div>
 
-											<div className="h-[362px] overflow-y-scroll p-4 bg-gray-100 rounded-md">
+											<div className="h-[426px] overflow-y-scroll p-4 bg-gray-100 rounded-md">
 												{fields.length === 0 && (
 													<p
 														className={clsx('text-center', {
@@ -208,8 +249,183 @@ const FormDetail = () => {
 										</>
 									)}
 								</Form.List>
-							</div>
+							</CoreCard>
 						</Col>
+
+						<Col xxl={12}>
+							<CoreCard>
+								<Form.List name="overView">
+									{(fields, { add, remove }) => (
+										<>
+											<div className="flex items-baseline gap-4">
+												<span className="text-[16px] py-4 font-600 text-blue-500">
+													Thông tin tổng quan
+												</span>
+												<Form.Item>
+													<Button
+														type="primary"
+														onClick={() => add()}
+														icon={<PlusOutlined />}
+													>
+														Thêm
+													</Button>
+												</Form.Item>
+											</div>
+
+											<div className="h-[362px] flex-col gap-4 overflow-y-scroll p-4 bg-gray-100 rounded-md">
+												{fields.length === 0 && (
+													<p
+														className={clsx('text-center', {
+															'text-red-500': getFieldError('overView')
+														})}
+													>
+														Chưa có thông tin nào!
+													</p>
+												)}
+												{fields.map(({ key, name, ...restField }) => (
+													<div key={name} className="flex justify-between gap-4">
+														<Form.Item
+															{...restField}
+															name={[name, 'name']}
+															rules={[{ required: true, message: 'Vui lòng điền ' }]}
+															className="w-full"
+														>
+															<Input
+																style={{ width: '100%' }}
+																placeholder="Nhập thông tin"
+															/>
+														</Form.Item>
+
+														<Button type="primary" danger onClick={() => remove(name)}>
+															Xoá
+														</Button>
+													</div>
+												))}
+											</div>
+										</>
+									)}
+								</Form.List>
+							</CoreCard>
+						</Col>
+						<Col xxl={12}>
+							<CoreCard>
+								<Form.List name="configInfo">
+									{(fields, { add, remove }) => (
+										<>
+											<div className="flex items-baseline gap-4">
+												<span className="text-[16px] py-4 font-600 text-blue-500">
+													Thông số sản phẩm
+												</span>
+												<Form.Item>
+													<Button
+														type="primary"
+														onClick={() => add()}
+														icon={<PlusOutlined />}
+													>
+														Thêm
+													</Button>
+												</Form.Item>
+											</div>
+
+											<div className="h-[362px] flex-col gap-4 overflow-y-scroll p-4 bg-gray-100 rounded-md">
+												{fields.length === 0 && (
+													<p
+														className={clsx('text-center', {
+															'text-red-500': getFieldError('configInfo')
+														})}
+													>
+														Chưa có thông tin cấu hình nào!
+													</p>
+												)}
+												{fields.map(({ key, name, ...restField }) => (
+													<div key={name} className="flex justify-between gap-4">
+														<Form.Item
+															{...restField}
+															name={[name, 'label']}
+															rules={[{ required: true, message: 'Vui lòng điền ' }]}
+															className="w-1/3"
+														>
+															<Input
+																style={{ width: '100%' }}
+																placeholder="Tên thông số"
+															/>
+														</Form.Item>
+														<Form.Item
+															{...restField}
+															name={[name, 'value']}
+															rules={[{ required: true, message: 'Vui lòng điền ' }]}
+															className="w-full"
+														>
+															<TextArea style={{ width: '100%' }} placeholder="Giá trị" />
+														</Form.Item>
+														<Button type="primary" danger onClick={() => remove(name)}>
+															Xoá
+														</Button>
+													</div>
+												))}
+											</div>
+										</>
+									)}
+								</Form.List>
+							</CoreCard>
+						</Col>
+						<Col xxl={12}>
+							<CoreCard>
+								<Form.List name="promotions">
+									{(fields, { add, remove }) => (
+										<>
+											<div className="flex items-baseline gap-4">
+												<span className="text-[16px] py-4 font-600 text-blue-500">
+													<GiftOutlined className="mx-2 text-red-500 text-[24px]" />
+													Thông tin khuyến mãi
+												</span>
+												<Form.Item>
+													<Button
+														type="primary"
+														onClick={() => add()}
+														icon={<PlusOutlined />}
+													>
+														Thêm
+													</Button>
+												</Form.Item>
+											</div>
+
+											<div className="h-[200px] flex-col gap-4 overflow-y-scroll p-4 bg-gray-100 rounded-md">
+												{fields.length === 0 && (
+													<p
+														className={clsx('text-center', {
+															'text-orange-500': getFieldError('promotions')
+														})}
+													>
+														Chưa có khuyến mãi nào!
+													</p>
+												)}
+												{fields.map(({ key, name, ...restField }) => (
+													<div className="flex justify-between gap-4">
+														<Form.Item
+															{...restField}
+															name={[name, 'name']}
+															rules={[{ required: true, message: 'Vui lòng điền ' }]}
+															className="w-full"
+														>
+															<Input
+																style={{ width: '100%' }}
+																placeholder="Nhập thông tin khuyến mãi"
+															/>
+														</Form.Item>
+
+														<Button type="primary" danger onClick={() => remove(name)}>
+															Xoá
+														</Button>
+													</div>
+												))}
+											</div>
+										</>
+									)}
+								</Form.List>
+							</CoreCard>
+						</Col>
+
 						<Col span={24}>
 							<Form.Item
 								name="description"

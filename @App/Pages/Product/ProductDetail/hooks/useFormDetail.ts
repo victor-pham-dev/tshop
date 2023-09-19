@@ -6,7 +6,7 @@ import { PRODUCT_ROUTER } from '../../configs/router'
 
 export const useFormDetail = (id: string) => {
 	const router = useRouter()
-	const { loading: loadingSaveProduct, run: saveProduct } = useRequest(productServices.detail, {
+	const { loading: loadingSaveProduct, run: saveProduct } = useRequest(productServices.save, {
 		manual: true,
 		onSuccess: data => {
 			if (id === 'new') {

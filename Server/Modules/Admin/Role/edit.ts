@@ -11,7 +11,7 @@ interface BodyProps {
 }
 export default async function editProduct(req: NextApiRequest) {
 	console.log(req.body)
-	const { id, label, alias, isActive } = req.body as BodyProps
+	const { id, label, alias, isActive } = JSON.parse(req.body) as BodyProps
 	try {
 		await prisma.role.update({
 			where: { id: id },
@@ -22,7 +22,7 @@ export default async function editProduct(req: NextApiRequest) {
 			}
 		})
 		return {
-			code: STATUS_CODE.OK,
+			ok: true,
 			data: `label: ${label} alias: ${alias} isActive: ${isActive}`,
 			msg: 'Chỉnh sửa quyền thành công'
 		}

@@ -18,21 +18,19 @@ export const useUserInfo = () => {
 	const { loading: authLoading, run: fetchAuth } = useRequest(authService.me, {
 		manual: true,
 		onSuccess: res => {
-			if (res?.code === STATUS_CODE.OK) {
-				update(res?.data)
-				if (currentPath === '/auth/login') {
-					if (res?.data?.roles?.includes('admin')) {
-						return router.push('/admin/dashboard')
-					}
-					return router.push('/dashboard')
+			update(res?.data)
+			if (currentPath === '/auth/login') {
+				if (res?.data?.roles?.includes('admin')) {
+					return router.push('/admin/dashboard')
 				}
-			} else {
-				router.push(AUTH_ROUTER.LOGIN)
-				reset()
-				sessionStorage.clear()
+				return router.push('/dashboard')
 			}
 		},
-		onError: () => router.push(AUTH_ROUTER.LOGIN)
+		onError: () => {
+			router.push(AUTH_ROUTER.LOGIN)
+			reset()
+			sessionStorage.clear()
+		}
 	})
 	return { authLoading, fetchAuth }
 }

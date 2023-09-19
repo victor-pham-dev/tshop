@@ -1,20 +1,15 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { METHOD, STATUS_CODE, TOKEN_KEY } from '@/const/app-const'
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
 import { ResponseProps } from '@/network/services/api-handler'
 import { prisma } from '@/services/prisma'
 import { tokenUtils } from '@/ultis/BE/token'
-
-interface ResProps {
-	accessToken: string
-}
 
 interface PayloadProps {
 	email: string
 	password: string
 }
-export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseProps<ResProps | null>>) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	if (req.method !== METHOD.POST) {
 		return res.status(STATUS_CODE.INVALID_METHOD).json({
 			code: STATUS_CODE.INVALID_METHOD,
@@ -23,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 		})
 	}
 
-	const { email, password } = req.body as PayloadProps
+	const { email, password } = JSON.parse(req.body) as PayloadProps
 
 	try {
 		const user = await prisma.user.findUnique({
@@ -40,7 +35,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 		})
 		if (user === null) {
 			return res.status(STATUS_CODE.FAILED).json({
-				code: STATUS_CODE.FAILED,
+				ok: false,
 				data: null,
 				msg: 'Tài khoản hoặc mật khẩu không chính xác'
 			})
@@ -49,7 +44,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 		const comparePassword = await bcrypt.compare(password, user.password)
 		if (!comparePassword) {
 			return res.status(STATUS_CODE.FAILED).json({
-				code: STATUS_CODE.FAILED,
+				ok: false,
 				data: null,
 				msg: 'Mật khẩu không chính xác'
 			})
@@ -60,11 +55,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 		const accessToken = await tokenUtils.sign({ email: email.toLowerCase(), roles: mapRoles, id: user.id })
 
 		return res.status(STATUS_CODE.OK).json({
-			code: STATUS_CODE.OK,
+			ok: true,
 			data: { accessToken },
 			msg: `Xin chào ${user.name}`
 		})
 	} catch (error) {
-		return res.status(STATUS_CODE.INTERNAL).json({ code: STATUS_CODE.INTERNAL, data: null, msg: 'Lỗi hệ thống' })
+		return res.status(STATUS_CODE.INTERNAL).json({ ok: false, data: null, msg: 'Lỗi hệ thống' })
 	}
 }

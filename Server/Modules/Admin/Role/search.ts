@@ -30,7 +30,7 @@ export default async function searchRole(req: NextApiRequest) {
 		})
 
 		return {
-			code: STATUS_CODE.OK,
+			ok: true,
 			data: {
 				dataTable: filteredRoles,
 				paging: {

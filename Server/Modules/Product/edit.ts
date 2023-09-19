@@ -1,5 +1,5 @@
 import { NextApiRequest } from 'next'
-import { Classification } from '@prisma/client'
+import { Classification, ProductConfigInfo } from '@prisma/client'
 import { STATUS_CODE } from '@/const/app-const'
 import { prisma } from '@/services/prisma'
 
@@ -11,10 +11,12 @@ interface BodyProps {
 	images: string[]
 	description: string
 	classifications: Classification[]
+	configInfo: ProductConfigInfo[]
+	overView: string[]
 }
 export default async function editProduct(req: NextApiRequest) {
-	console.log(req.body)
-	const { id, name, category, status, images, description, classifications } = req.body as BodyProps
+	const { id, name, category, status, images, configInfo, overView, description, classifications } =
+		req.body as BodyProps
 	try {
 		await prisma.product.update({
 			where: { id: Number(id) },
@@ -23,6 +25,7 @@ export default async function editProduct(req: NextApiRequest) {
 				status,
 				category,
 				images: JSON.stringify(images),
+				overView: JSON.stringify(overView),
 				description
 			}
 		})
@@ -37,10 +40,27 @@ export default async function editProduct(req: NextApiRequest) {
 					})
 					return
 				} else {
-					const a = await prisma.classification.create({
+					await prisma.classification.create({
 						data: { name, price, productId: Number(id), warrantyTime }
 					})
-					console.log(a)
+					return
+				}
+			})
+		)
+
+		await Promise.all(
+			configInfo.map(async item => {
+				const { label, value } = item
+				if (item?.id) {
+					await prisma.productConfigInfo.update({
+						where: { id: item.id },
+						data: { label, value }
+					})
+					return
+				} else {
+					await prisma.productConfigInfo.create({
+						data: { label, value, productId: Number(id) }
+					})
 					return
 				}
 			})

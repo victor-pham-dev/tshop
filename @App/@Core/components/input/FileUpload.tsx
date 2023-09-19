@@ -98,7 +98,7 @@ const FileUpload: React.FC<Props> = ({ form, maxItem, initValue, label, formName
 	}
 
 	return (
-		<div className="flex flex-col gap-1">
+		<div className="flex flex-col gap-1 bg-white">
 			<label className="my-4">
 				{label}(Tối đa {`${fileList.length}/${maxItem}`})
 			</label>

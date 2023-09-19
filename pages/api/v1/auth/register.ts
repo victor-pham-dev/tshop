@@ -1,58 +1,52 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { METHOD, STATUS_CODE } from "@/const/app-const";
-import bcrypt from "bcrypt";
-import { ResponseProps } from "@/network/services/api-handler";
-import { prisma } from "@/services/prisma";
+import bcrypt from 'bcrypt'
+import { NextApiRequest, NextApiResponse } from 'next'
+import { METHOD, STATUS_CODE } from '@/const/app-const'
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<ResponseProps<null>>
-) {
-  if (req.method !== METHOD.POST) {
-    return res.status(STATUS_CODE.INVALID_METHOD).json({
-      code: STATUS_CODE.INVALID_METHOD,
-      data: null,
-      msg: "Không hợp lệ",
-    });
-  }
+import { ResponseProps } from '@/network/services/api-handler'
+import { prisma } from '@/services/prisma'
 
-  const { name, email, password } = req.body as any;
-  console.log("🚀 ~ file: register.ts:20 ~ password:", password);
-  const findExisted = await prisma.user.findFirst({
-    where: {
-      email,
-    },
-  });
-  if (findExisted !== null) {
-    return res.status(STATUS_CODE.OK).json({
-      data: null,
-      msg: "Email đã được sử dụng",
-    });
-  }
+export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
+	if (req.method !== METHOD.POST) {
+		return res.status(STATUS_CODE.INVALID_METHOD).json({
+			ok: false,
+			data: null,
+			msg: 'Phương thức không hỗ trợ'
+		})
+	}
 
-  try {
-    const encryptedPassword = await bcrypt.hash(password, 10);
-    console.log(
-      "🚀 ~ file: register.ts:36 ~ encryptedPassword:",
-      encryptedPassword
-    );
-    await prisma.user.create({
-      data: {
-        name,
-        email: email.toLowerCase(),
-        password: encryptedPassword,
-      },
-    });
+	const { name, email, password } = JSON.parse(req.body) as any
+	console.log('🚀 ~ file: register.ts:18 ~ handler ~ req.body:', typeof req.body)
+	const findExisted = await prisma.user.findFirst({
+		where: {
+			email
+		}
+	})
+	if (findExisted !== null) {
+		return res.status(STATUS_CODE.OK).json({
+			ok: false,
+			data: null,
+			msg: 'Email đã được sử dụng'
+		})
+	}
 
-    return res.status(STATUS_CODE.CREATED).json({
-      code: STATUS_CODE.CREATED,
-      data: null,
-      msg: "Đăng ký thành công",
-    });
-  } catch (error) {
-    console.log("🚀 ~ file: register.ts:67 ~ error:", error);
-    return res
-      .status(STATUS_CODE.INTERNAL)
-      .json({ code: STATUS_CODE.INTERNAL, data: null, msg: "internal" });
-  }
+	try {
+		const encryptedPassword = await bcrypt.hash(password, 10)
+		console.log('🚀 ~ file: register.ts:36 ~ encryptedPassword:', encryptedPassword)
+		await prisma.user.create({
+			data: {
+				name,
+				email: email.toLowerCase(),
+				password: encryptedPassword
+			}
+		})
+
+		return res.status(STATUS_CODE.CREATED).json({
+			code: STATUS_CODE.CREATED,
+			data: null,
+			msg: 'Đăng ký thành công'
+		})
+	} catch (error) {
+		console.log('🚀 ~ file: register.ts:67 ~ error:', error)
+		return res.status(STATUS_CODE.INTERNAL).json({ code: STATUS_CODE.INTERNAL, data: null, msg: 'internal' })
+	}
 }

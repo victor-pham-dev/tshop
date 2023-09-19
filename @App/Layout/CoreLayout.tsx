@@ -22,7 +22,7 @@ const CoreLayout: React.FC<CoreLayoutProps> = ({ children }) => {
 				)}
 
 				<div className="w-full h-full px-2 pb-20 overflow-y-scroll bg-gray-100">
-					<div className="p-4 bg-white rounded-md">{children}</div>
+					<div className="p-4 bg-gray-100 rounded-md">{children}</div>
 				</div>
 			</div>
 		</div>

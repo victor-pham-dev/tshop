@@ -11,7 +11,7 @@ export const roleFormDetail = (id: number) => {
 	const { triggerRefresh, handleCloseRoleModal } = useCoreContext()
 	console.log('🚀 ~ file: useroleFormDetail.ts:12 ~ roleFormDetail ~ handleCloseRoleModal:', handleCloseRoleModal)
 
-	const { loading: loadingSaveRole, run: saveRole } = useRequest(roleServices.detail, {
+	const { loading: loadingSaveRole, run: saveRole } = useRequest(roleServices.save, {
 		manual: true,
 		onSuccess: data => {
 			console.log('🚀 ~ file: roleFormDetail.ts:12 ~ roleFormDetail ~ data:', data)

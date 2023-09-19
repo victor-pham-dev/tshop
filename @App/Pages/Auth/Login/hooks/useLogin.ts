@@ -11,16 +11,12 @@ export const useLogin = () => {
 	const { loading, run } = useRequest(authService.login, {
 		manual: true,
 		onSuccess: data => {
-			if (data?.code === STATUS_CODE.OK) {
-				login(data?.data?.accessToken)
-				message.success(data?.msg)
-				fetchAuth()
-			} else {
-				message.error(data?.msg)
-			}
+			login(data?.data?.accessToken)
+			message.success(data?.msg)
+			fetchAuth()
 		},
-		onError: () => {
-			internalErrorMsg()
+		onError: a => {
+			console.log('🚀 ~ file: useLogin.ts:19 ~ useLogin ~ err:', a)
 		}
 	})
 
