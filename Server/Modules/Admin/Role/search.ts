@@ -4,7 +4,7 @@ import { STATUS_CODE } from '@/const/app-const'
 import { prisma } from '@/services/prisma'
 export default async function searchRole(req: NextApiRequest) {
 	const { label, page = 1, pageSize = 10 } = req.query
-	const lowercaseLabel = label ? label.toString().toLowerCase() : ''
+	const lowercaseLabel = label?.toString()?.toLowerCase() ?? ''
 
 	try {
 		const filteredRoles = await prisma.role.findMany({
@@ -13,11 +13,12 @@ export default async function searchRole(req: NextApiRequest) {
 					contains: lowercaseLabel,
 					mode: 'insensitive'
 				},
-				deleted: 0 // Thêm điều kiện deleted = 0 vào đây
+				deleted: 0
 			},
 			skip: (Number(page) - 1) * Number(pageSize),
 			take: Number(pageSize)
 		})
+		console.log('🚀 ~ file: search.ts:21 ~ searchRole ~ filteredRoles:', filteredRoles)
 
 		const totalCount = await prisma.role.count({
 			where: {
@@ -25,7 +26,7 @@ export default async function searchRole(req: NextApiRequest) {
 					contains: lowercaseLabel,
 					mode: 'insensitive'
 				},
-				deleted: 0 // Thêm điều kiện deleted = 0 vào đây
+				deleted: 0
 			}
 		})
 

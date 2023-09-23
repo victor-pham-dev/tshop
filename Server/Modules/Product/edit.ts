@@ -67,7 +67,7 @@ export default async function editProduct(req: NextApiRequest) {
 		)
 
 		return {
-			code: STATUS_CODE.OK,
+			ok: true,
 			data: 'OK',
 			msg: 'Chỉnh sửa sản phẩm thành công'
 		}

@@ -19,7 +19,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	}
 
 	const { email, password } = JSON.parse(req.body) as PayloadProps
-
 	try {
 		const user = await prisma.user.findUnique({
 			where: {
@@ -33,8 +32,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 				}
 			}
 		})
-		if (user === null) {
-			return res.status(STATUS_CODE.FAILED).json({
+		if (!user) {
+			return res.status(STATUS_CODE.AUTH_FAILED).json({
 				ok: false,
 				data: null,
 				msg: 'Tài khoản hoặc mật khẩu không chính xác'

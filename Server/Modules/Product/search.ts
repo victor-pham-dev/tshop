@@ -31,7 +31,7 @@ export default async function searchProduct(req: NextApiRequest) {
 		})
 
 		return {
-			code: STATUS_CODE.OK,
+			ok: true,
 			data: {
 				dataTable: filteredProducts,
 				paging: {

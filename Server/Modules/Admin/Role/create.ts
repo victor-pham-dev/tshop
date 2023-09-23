@@ -20,10 +20,11 @@ export default async function createRole(req: NextApiRequest) {
 
 		return {
 			ok: true,
-			data: `label: ${label}, alias: ${alias}`,
+			data: true,
 			msg: 'Tạo quyền thành công'
 		}
 	} catch (error) {
+		console.log('🚀 ~ file: create.ts:27 ~ createRole ~ error:', error)
 		return null
 	}
 }

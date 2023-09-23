@@ -10,7 +10,7 @@ import { PATH } from '@/const/app-const'
 export default function AppHeader(): JSX.Element {
 	const router = useRouter()
 	const { user } = useUser()
-	console.log('🚀 ~ file: AppHeader.tsx:16 ~ user:', user)
+	// console.log('🚀 ~ file: AppHeader.tsx:16 ~ user:', user)
 	// const { cart } = useCart();
 	// const { theme, changeTheme } = useTheme();
 	// const [activeSwitch, setActiveSwitch] = useState(false);

@@ -9,12 +9,13 @@ export default async function findProduct(req: NextApiRequest) {
 		const product = await prisma.product.findUnique({
 			where: { id: Number(id) },
 			include: {
-				classifications: true
+				classifications: true,
+				configInfo: true
 			}
 		})
 
 		return {
-			code: STATUS_CODE.OK,
+			ok: true,
 			data: product,
 			msg: 'ok'
 		}

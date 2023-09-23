@@ -4,7 +4,7 @@ import { ResponseProps } from '@/network/services/api-handler'
 
 import { prisma } from '@/services/prisma'
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseProps<any>>) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	if (req.method !== METHOD.GET) {
 		return res.status(STATUS_CODE.INVALID_METHOD).json({
 			code: STATUS_CODE.INVALID_METHOD,
@@ -29,11 +29,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 		})
 
 		return res.status(STATUS_CODE.OK).json({
-			code: STATUS_CODE.OK,
+			ok: true,
 			data: products,
 			msg: 'ok'
 		})
 	} catch (error) {
-		return res.status(STATUS_CODE.INTERNAL).json({ code: STATUS_CODE.INTERNAL, data: null, msg: 'internal' })
+		return res.status(STATUS_CODE.INTERNAL).json({ ok: false, data: null, msg: 'internal' })
 	}
 }

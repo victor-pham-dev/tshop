@@ -20,6 +20,7 @@ const { TextArea } = Input
 const FormDetail = () => {
 	const [form] = Form.useForm()
 	const { product, id } = useCoreContext()
+	console.log('🚀 ~ file: Form.tsx:23 ~ FormDetail ~ product:', product)
 
 	const initImages = (product?.images ? JSON.parse(product?.images) : []) as string[]
 
@@ -46,7 +47,11 @@ const FormDetail = () => {
 						status: product?.status,
 						category: product?.category,
 						classifications: product?.classifications,
-						description: product?.description
+						description: product?.description,
+						configInfo: product?.configInfo,
+						overView: product?.overView
+							? JSON.parse(product?.overView)?.map((item: any) => ({ name: item }))
+							: []
 					}}
 				>
 					<CoreCard className="my-5">

@@ -21,7 +21,7 @@ interface Result {
 }
 export const useTable = () => {
 	const getTableData = async ({ current, pageSize }: PagingParam, formData: Object): Promise<Result> => {
-		const data = await productServices.search({ options: { page: current, pageSize: pageSize, ...formData } })
+		const data = await productServices.search({ params: { page: current, pageSize: pageSize, ...formData } })
 		return {
 			list: data?.data?.dataTable ?? [],
 			total: data?.data?.totalCount

@@ -20,9 +20,10 @@ interface BodyProps {
 }
 export default async function createProduct(req: NextApiRequest) {
 	const { name, category, status, keywords, images, description, configInfo, seo, overView, classifications } =
-		req.body as BodyProps
+		JSON.parse(req.body) as BodyProps
+	console.log('🚀 ~ file: create.ts:23 ~ createProduct ~ configInfo:', configInfo)
 	try {
-		const result = await prisma.product.create({
+		await prisma.product.create({
 			data: {
 				name,
 				status,
@@ -42,8 +43,8 @@ export default async function createProduct(req: NextApiRequest) {
 		})
 
 		return {
-			code: STATUS_CODE.CREATED,
-			data: `${removeMark(result.name)}pid=${result.id}`,
+			ok: true,
+			data: true,
 			msg: 'Tạo sản phẩm thành công'
 		}
 	} catch (error) {
