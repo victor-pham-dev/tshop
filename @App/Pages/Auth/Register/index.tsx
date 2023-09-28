@@ -4,6 +4,7 @@ import { Button, Col, Divider, Form, Input, Row } from "antd";
 import Link from "next/link";
 import Image from "next/image";
 import { useRegister } from "./hooks/useRegister";
+import { AUTH_ROUTER } from "../configs/router";
 
 export default function Register(): JSX.Element {
   const { loading, handleSubmit } = useRegister();
@@ -109,7 +110,7 @@ export default function Register(): JSX.Element {
             <Row justify="end" gutter={[8, 8]}>
               <Col>Đã có tài khoản?</Col>
               <Col>
-                <Link href={`/a`}>
+                <Link href={AUTH_ROUTER.LOGIN}>
                   <Button type="primary" style={{ float: "left" }}>
                     Đăng nhập
                   </Button>

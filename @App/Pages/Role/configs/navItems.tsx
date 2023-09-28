@@ -15,7 +15,14 @@ export const roleNavItems: NavItemProps[] = [
 				label: 'Quản lý quyền',
 				route: ROLE_ROUTER.LIST,
 				icon: <UnorderedListOutlined />
-			}
+			},
+			{
+				role: 'admin',
+				key: 'role-users',
+				label: 'Quản lý quyền User',
+				route: ROLE_ROUTER.ROLE_USERS,
+				icon: <UnorderedListOutlined />
+			},
 		]
 	}
 ]

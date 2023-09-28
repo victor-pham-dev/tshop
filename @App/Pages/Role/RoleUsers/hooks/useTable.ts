@@ -1,6 +1,6 @@
 import { useAntdTable, useRequest } from 'ahooks'
 import { useEffect, useState } from 'react'
-import { roleServices } from '../../services/roleServices'
+import { roleUserServices } from '../../services/roleServices'
 import { useCoreContext } from '@/@App/@Core/hooks/useAppContext'
 
 interface PagingParam {
@@ -17,7 +17,7 @@ export const useTable = () => {
 	const { refreshTable, trigger } = useCoreContext()
 
 	const getTableData = async ({ current, pageSize }: PagingParam, formData: Object): Promise<Result> => {
-		const data = await roleServices.search({ params: { page: current, pageSize: pageSize, ...formData } })
+		const data = await roleUserServices.search({ params: { page: current, pageSize: pageSize, ...formData } })
 
 		return {
 			list: data?.data?.dataTable ?? [],

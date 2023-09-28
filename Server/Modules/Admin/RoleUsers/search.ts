@@ -2,39 +2,39 @@ import { NextApiRequest } from 'next'
 import { STATUS_CODE } from '@/const/app-const'
 
 import { prisma } from '@/services/prisma'
-export default async function searchRole(req: NextApiRequest) {
+export default async function searchRoleUsers(req: NextApiRequest) {
 	const { label, page = 1, pageSize = 10 } = req.query
 	const lowercaseLabel = label?.toString()?.toLowerCase() ?? ''
-	console.log("🚀 ~ file: search.ts:8 ~ searchRole ~ lowercaseLabel:", lowercaseLabel)
 
 	try {
-		const filteredRoles = await prisma.role.findMany({
-			where: {
-				label: {
-					contains: lowercaseLabel,
-					mode: 'insensitive'
+		const userRoles = await prisma.userRole.findMany({
+			include: {
+				user: {
+					select: {
+						id: true,
+						name: true,
+						active: true,
+					},
 				},
-				deleted: 0
+				role: {
+					select: {
+						label: true,
+					},
+				},
+			},
+			orderBy: {
+				userId: 'asc',
 			},
 			skip: (Number(page) - 1) * Number(pageSize),
 			take: Number(pageSize)
-		})
-		console.log('🚀 ~ file: search.ts:21 ~ searchRole ~ filteredRoles:', filteredRoles)
+		});
 
-		const totalCount = await prisma.role.count({
-			where: {
-				label: {
-					contains: lowercaseLabel,
-					mode: 'insensitive'
-				},
-				deleted: 0
-			}
-		})
+		const totalCount = await prisma.userRole.count({})
 
 		return {
 			ok: true,
 			data: {
-				dataTable: filteredRoles,
+				dataTable: userRoles,
 				paging: {
 					page: Number(page),
 					pageSize: Number(pageSize)

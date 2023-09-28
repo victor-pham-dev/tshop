@@ -8,7 +8,7 @@ const { Option } = Select
 interface Props {
 	name: string
 	label?: ReactNode
-	apiService: ({ options, config }: searchProps) => Promise<any>
+	apiService: ({ params, header }: searchProps) => Promise<any>
 	valuePath?: string
 	labelPath?: string
 	customRender?: (data: any[]) => void
@@ -28,7 +28,7 @@ export const CoreSelectWithApi: React.FC<Props> = ({
 	const { loading, run, data } = useRequest(apiService, { manual: true, debounceWait: 500 })
 
 	useEffect(() => {
-		run({ options: { label: searchText, page: 1, pageSize: 1000 } })
+		run({ params: { label: searchText, page: 1, pageSize: 1000 } })
 	}, [searchText])
 
 	const handleSearch = (value: any) => {

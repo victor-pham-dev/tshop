@@ -83,7 +83,26 @@ export class BaseService {
 			} catch (error) {
 				throw { message: 'Network error', error }
 			}
-		}
+		},
+
+		delete: async (endpoint: string, config?: any) => {
+			try {
+				const response = await fetch(endpoint, {
+					method: METHOD.DELETE,
+					headers: {
+						'x-access-token': this.getToken(),
+						...config
+					},
+				})
+				const result = await response.json()
+				if (!result.ok) {
+					throw { message: 'API error', data: result }
+				}
+				return result
+			} catch (error) {
+				throw { message: 'Network error', error }
+			}
+		},
 	}
 
 	search = async ({ params, header }: searchProps) => {
@@ -97,8 +116,12 @@ export class BaseService {
 		return this.request.get(endpoint, {}, config)
 	}
 
+	remove = async (id: string, config?: any) => {
+		const endpoint = `${this.BASE_URL}/${this.BASE_ENDPOINT}/${id}`
+		return this.request.delete(endpoint, config)
+	}
+
 	save = async (data: any, config?: any) => {
-		console.log('🚀 ~ file: BaseService.ts:88 ~ BaseService ~ save= ~ data:', data)
 		const endpoint = `${this.BASE_URL}/${this.BASE_ENDPOINT}`
 		if (data?.id) {
 			return this.request.put(endpoint, data, config)
