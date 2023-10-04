@@ -1,11 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { METHOD, STATUS_CODE } from '@/const/app-const'
-import searchProduct from '@/Server/Modules/Product/search'
+import searchOrder from '@/Server/Modules/Order/search'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	let response: any
 	if (req.method === METHOD.GET) {
-		response = await searchProduct(req)
+		response = await searchOrder(req)
 	}
 
 	if (response) {

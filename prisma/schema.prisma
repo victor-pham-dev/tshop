@@ -97,10 +97,10 @@ model OrderCustomerInfo {
 model OrderItem {
   id        Int      @id @unique @default(autoincrement())
   quantity  Int
-  productId Int?
+  productId Int
   Product   Product? @relation(fields: [productId], references: [id])
 
-  classificationId Int?
+  classificationId Int
   Classification   Classification? @relation(fields: [classificationId], references: [id])
   Order            Order?          @relation(fields: [orderId], references: [id])
   orderId          Int?
@@ -117,10 +117,9 @@ model OrderPayment {
 }
 
 model OrderShipping {
-  id     Int     @id @unique @default(autoincrement())
+  id     Int    @id @unique @default(autoincrement())
   status String
   note   String
-  Order  Order[]
 }
 
 model Order {
@@ -131,16 +130,12 @@ model Order {
 
   payment OrderPayment @relation(fields: [orderPaymentId], references: [id])
 
-  shipping OrderShipping @relation(fields: [orderShippingId], references: [id])
-
   customerInfo OrderCustomerInfo @relation(fields: [orderCustomerInfoId], references: [id])
 
   orderPaymentId      Int
-  orderShippingId     Int
   orderCustomerInfoId Int
 
   @@unique([id, orderPaymentId])
-  @@unique([id, orderShippingId])
   @@unique([id, orderCustomerInfoId])
 }
 

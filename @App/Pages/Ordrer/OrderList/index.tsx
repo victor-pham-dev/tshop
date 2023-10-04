@@ -1,4 +1,12 @@
+import OrderListProvider from './OrderListProvider'
+import Table from './components/Table'
+
 const OrderList = () => {
-	return <>day la trang order</>
+	return (
+		<OrderListProvider>
+			<Table />
+		</OrderListProvider>
+	)
 }
+
 export default OrderList

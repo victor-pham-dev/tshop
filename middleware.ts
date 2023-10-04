@@ -41,6 +41,7 @@ export async function middleware(req: NextRequest) {
 	const url = req.url
 
 	const checkModule = url.match(regex)
+	console.log("🚀 ~ file: middleware.ts:44 ~ middleware ~ checkModule:", checkModule)
 
 	const module = checkModule && !skipModules.includes(checkModule[1]) ? checkModule[1] : null
 	console.log('🚀 check module:', module)

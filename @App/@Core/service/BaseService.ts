@@ -1,4 +1,3 @@
-import { message } from 'antd'
 import { METHOD } from '@/const/app-const'
 import queryString from 'query-string'
 export interface searchProps {
@@ -85,6 +84,26 @@ export class BaseService {
 			}
 		},
 
+		patch: async (endpoint: string, data: any, config?: any) => {
+			try {
+				const response = await fetch(endpoint, {
+					method: METHOD.PATCH,
+					headers: {
+						'x-access-token': this.getToken(),
+						...config
+					},
+					body: JSON.stringify(data)
+				})
+				const result = await response.json()
+				if (!result.ok) {
+					throw { message: 'API error', data: result }
+				}
+				return result
+			} catch (error) {
+				throw { message: 'Network error', error }
+			}
+		},
+
 		delete: async (endpoint: string, config?: any) => {
 			try {
 				const response = await fetch(endpoint, {
@@ -127,5 +146,10 @@ export class BaseService {
 			return this.request.put(endpoint, data, config)
 		}
 		return this.request.post(endpoint, data, config)
+	}
+
+	update = async (data: any, config?: any) => {
+		const endpoint = `${this.BASE_URL}/${this.BASE_ENDPOINT}`
+		return this.request.patch(endpoint, data, config)
 	}
 }

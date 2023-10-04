@@ -1,3 +1,4 @@
 export const ORDER_ROUTER = {
-	LIST: '/order'
+	LIST: '/order',
+	DETAIL: (id: string) => `/order/${id}`,
 }

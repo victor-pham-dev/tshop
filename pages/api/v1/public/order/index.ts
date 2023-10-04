@@ -1,11 +1,20 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { METHOD, STATUS_CODE } from '@/const/app-const'
-import searchProduct from '@/Server/Modules/Product/search'
+import createOrder from '@/Server/Modules/Public/Order/create'
+import statusOrder from '@/Server/Modules/Order/status'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+	const { canceledOrder } = statusOrder;
 	let response: any
-	if (req.method === METHOD.GET) {
-		response = await searchProduct(req)
+	if (req.method === METHOD.POST) {
+		response = await createOrder(req)
+	}
+
+	if (req.method === METHOD.PATCH) {
+		const status = req.body.status
+		if (status === 'CANCELED') {
+			response = await canceledOrder(req)
+		}
 	}
 
 	if (response) {
