@@ -45,7 +45,7 @@ export default () => {
 				return (
 					<div className="flex flex-col gap-2">
 						<Tooltip placement="topLeft" title={'Chỉnh sửa'}>
-							<Button loading={loadingDeleteRole} onClick={() => deleteRole(data.id)} type="primary" style={{ width: '25%', backgroundColor: 'red' }}>
+							<Button loading={loadingDeleteRole} className='flex justify-center items-center' onClick={() => deleteRole(data.id)} type="primary" style={{ width: '25%', backgroundColor: 'red' }}>
 								<DeleteOutlined />
 							</Button>
 						</Tooltip>
