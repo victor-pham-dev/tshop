@@ -1,24 +1,34 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { METHOD, STATUS_CODE } from '@/const/app-const'
-import createRoleUser from '@/Server/Modules/Admin/RoleUsers/create'
-import deleteRoleUser from '@/Server/Modules/Admin/RoleUsers/delete'
-// import editProduct from '@/Server/Modules/Admin/Role/edit'
+import create from '@/Server/Modules/Admin/RoleUsers/create'
+import edit from '@/Server/Modules/Admin/RoleUsers/edit'
+import search from '@/Server/Modules/Admin/RoleUsers/search'
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-	let response: any
-	if (req.method === METHOD.POST) {
-		response = await createRoleUser(req)
-	}
+	const methods = [
+		{
+			method: METHOD.POST,
+			handler: create
+		},
+		{
+			method: METHOD.PUT,
+			handler: edit
+		},
+		{
+			method: METHOD.GET,
+			handler: search
+		}
+	]
 
-	// if (req.method === METHOD.PUT) {
-	// 	response = await editProduct(req)
-	// }
-
-	if (req.method === METHOD.DELETE) {
-		response = await deleteRoleUser(req)
+	const handler = methods.find(item => item.method === req.method)?.handler
+	if (!handler) {
+		return res.status(STATUS_CODE.INVALID_METHOD).json({
+			ok: false,
+			data: null,
+			msg: 'Invalid Method'
+		})
 	}
+	const response = await handler(req)
 
-	if (response) {
-		return res.status(STATUS_CODE.OK).json(response)
-	}
-	return res.status(STATUS_CODE.INTERNAL).json({ ok: false, data: null, msg: 'Internal server' })
+	return res.status(response?.status).json(response)
 }

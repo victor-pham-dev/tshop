@@ -1,5 +1,5 @@
 import { NextApiRequest } from 'next'
-import { Classification, ProductConfigInfo } from '@prisma/client'
+import { ProductConfigInfo } from '@prisma/client'
 import { STATUS_CODE } from '@/const/app-const'
 import { prisma } from '@/services/prisma'
 
@@ -7,47 +7,49 @@ interface BodyProps {
 	id: string
 	name: string
 	status: string
-	category: string
+	categoryId: number
 	images: string[]
 	description: string
-	classifications: Classification[]
 	configInfo: ProductConfigInfo[]
 	overView: string[]
+	price: number
+	active: boolean
+	salePrice: number
 }
-export default async function editProduct(req: NextApiRequest) {
-	const { id, name, category, status, images, configInfo, overView, description, classifications } =
-		req.body as BodyProps
+export default async function edit(req: NextApiRequest) {
+	const { id, name, categoryId, status, images, configInfo, overView, description, active, price, salePrice } =
+		JSON.parse(req.body) as BodyProps
 	try {
 		await prisma.product.update({
 			where: { id: Number(id) },
 			data: {
 				name,
 				status,
-				category,
+				categoryId,
 				images: JSON.stringify(images),
 				overView: JSON.stringify(overView),
-				description
+				description,
+				active,
+				price,
+				salePrice
 			}
 		})
 
-		await Promise.all(
-			classifications.map(async item => {
-				const { name, price, warrantyTime } = item
-				if (item?.id) {
-					await prisma.classification.update({
-						where: { id: item.id },
-						data: { name, price, warrantyTime }
-					})
-					return
-				} else {
-					await prisma.classification.create({
-						data: { name, price, productId: Number(id), warrantyTime }
-					})
-					return
-				}
-			})
-		)
+		const currentConfig = await prisma.productConfigInfo.findMany({
+			where: { productId: Number(id) }
+		})
 
+		const configIdsToRemove = currentConfig.filter(item => !configInfo?.find(current => current.id === item.id))
+		await Promise.all(
+			configIdsToRemove.map(
+				async id =>
+					await prisma.productConfigInfo.delete({
+						where: {
+							id: Number(id)
+						}
+					})
+			)
+		)
 		await Promise.all(
 			configInfo.map(async item => {
 				const { label, value } = item
@@ -69,10 +71,15 @@ export default async function editProduct(req: NextApiRequest) {
 		return {
 			ok: true,
 			data: 'OK',
-			msg: 'Chỉnh sửa sản phẩm thành công'
+			msg: 'Chỉnh sửa sản phẩm thành công',
+			status: STATUS_CODE.OK
 		}
 	} catch (error) {
-		console.log('🚀 ~ file: edit.ts:40 ~ createProduct ~ error:', error)
-		return null
+		return {
+			ok: false,
+			data: null,
+			msg: JSON.stringify(error),
+			status: STATUS_CODE.INTERNAL
+		}
 	}
 }

@@ -1,6 +1,4 @@
-import { useRequest } from 'ahooks'
 import { productServices } from '../../services/productServices'
-import { useEffect } from 'react'
 interface PagingParam {
 	current: number
 	pageSize: number

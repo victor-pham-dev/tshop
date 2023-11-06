@@ -1,54 +1,66 @@
+import { message } from 'antd'
 import { NextApiRequest } from 'next'
-import { Classification, ProductConfigInfo } from '@prisma/client'
-import { STATUS_CODE } from '@/const/app-const'
-
+import { ProductConfigInfo } from '@prisma/client'
 import { prisma } from '@/services/prisma'
-import { removeMark } from '@/ultis/dataConvert'
+import { STATUS_CODE } from '@/const/app-const'
 
 interface BodyProps {
 	name: string
 	status: string
-	category: string
+	categoryId: number
 	images: string[]
 	overView: string[]
 	description: string
 	code: string
 	seo: string
 	keywords: string
-	classifications: Classification[]
 	configInfo: ProductConfigInfo[]
+	price: number
+	salePrice: number
 }
-export default async function createProduct(req: NextApiRequest) {
-	const { name, category, status, keywords, images, description, configInfo, seo, overView, classifications } =
+export default async function create(req: NextApiRequest) {
+	const { name, categoryId, status, keywords, images, description, configInfo, seo, overView, price, salePrice } =
 		JSON.parse(req.body) as BodyProps
-	console.log('🚀 ~ file: create.ts:23 ~ createProduct ~ configInfo:', configInfo)
 	try {
-		await prisma.product.create({
+		const result = await prisma.product.create({
 			data: {
 				name,
 				status,
-				category,
+				categoryId,
 				seo,
 				keywords,
 				images: JSON.stringify(images),
 				description,
 				overView: JSON.stringify(overView),
-				classifications: {
-					create: classifications.map(item => item)
-				},
+				price,
+				salePrice,
 				configInfo: {
 					create: configInfo.map(item => item)
 				}
 			}
 		})
+		const warehouse = await prisma.wareHouse.create({
+			data: { productId: result.id }
+		})
+
+		await prisma.product.update({
+			where: { id: result.id },
+			data: { wareHouseId: warehouse.id }
+		})
 
 		return {
 			ok: true,
-			data: true,
-			msg: 'Tạo sản phẩm thành công'
+			data: result,
+			msg: 'Tạo sản phẩm thành công',
+			status: STATUS_CODE.CREATED
 		}
-	} catch (error) {
-		console.log('🚀 ~ file: create.ts:43 ~ createProduct ~ error:', error)
-		return null
+	} catch (error: any) {
+		console.log('🚀 ~ file: create.ts:49 ~ createProduct ~ error:', error)
+		return {
+			ok: false,
+			data: null,
+			msg: error?.message,
+			status: STATUS_CODE.INTERNAL
+		}
 	}
 }

@@ -18,9 +18,9 @@ export const useFormDetail = (id: string) => {
 		},
 		onError: error => {
 			if (id === 'new') {
-				message.success('Tạo sản phẩm thất bại')
+				message.error('Tạo sản phẩm thất bại')
 			} else {
-				message.success('Cập nhật phẩm thất bại')
+				message.error('Cập nhật phẩm thất bại')
 			}
 		}
 	})

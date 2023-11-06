@@ -1,11 +1,12 @@
-import { Button, Col, Divider, Form, Input, InputNumber, Row, Select, Spin } from 'antd'
+import { Button, Col, Divider, Form, Input, InputNumber, Row, Select, Spin, Switch } from 'antd'
 import { productCategoryOptions, productStatusOptions } from '@/const/app-const'
 import { GiftOutlined, PlusOutlined } from '@ant-design/icons'
 import dynamic from 'next/dynamic'
-import { CoreCard, FileUpload } from '@/@App/@Core/components'
+import { CoreCard, CoreSelectWithApi, FileUpload } from '@/@App/@Core/components'
 import clsx from 'clsx'
 import { useCoreContext } from '@/@App/@Core/hooks/useAppContext'
 import { useFormDetail } from '../hooks/useFormDetail'
+import { categoryService } from '@/@App/Pages/System/services/categoryService'
 const InputRichText = dynamic(() => import('@/@App/@Core/components/input/InputRichText'), {
 	ssr: false,
 	loading: () => (
@@ -46,12 +47,16 @@ const FormDetail = () => {
 						name: product?.name,
 						status: product?.status,
 						category: product?.category,
-						classifications: product?.classifications,
+						price: product?.price,
+						salePrice: product?.salePrice,
 						description: product?.description,
 						configInfo: product?.configInfo,
+						seo: product?.seo,
+						keywords: product?.keywords,
 						overView: product?.overView
 							? JSON.parse(product?.overView)?.map((item: any) => ({ name: item }))
-							: []
+							: [],
+						active: product?.active ?? true
 					}}
 				>
 					<CoreCard className="my-5">
@@ -102,7 +107,7 @@ const FormDetail = () => {
 										/>
 									</Form.Item>
 									<Form.Item
-										name="category"
+										name="categoryId"
 										label={<label className="textTheme">Danh mục sản phẩm</label>}
 										rules={[
 											{
@@ -111,10 +116,34 @@ const FormDetail = () => {
 											}
 										]}
 									>
-										<Select
-											placeholder="danh mục sản phẩm"
-											allowClear
-											options={productCategoryOptions}
+										<CoreSelectWithApi
+											placeholder="Chọn danh mục"
+											apiService={categoryService.search}
+											customRender={(option: any) => (
+												<>{`${option?.label} --  ${option?.alias}`}</>
+											)}
+										/>
+									</Form.Item>
+									<Form.Item
+										name="price"
+										label="Giá"
+										rules={[{ required: true, message: 'Giá đâu' }]}
+									>
+										<InputNumber
+											style={{ width: '100%' }}
+											placeholder="Giá"
+											formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+										/>
+									</Form.Item>
+									<Form.Item
+										name="salePrice"
+										label="Giá đã giảm"
+										rules={[{ required: true, message: 'Giá đã giảm đâu' }]}
+									>
+										<InputNumber
+											style={{ width: '100%' }}
+											placeholder="Giá sau giảm"
+											formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
 										/>
 									</Form.Item>
 									<Form.Item
@@ -131,7 +160,7 @@ const FormDetail = () => {
 											}
 										]}
 									>
-										<TextArea placeholder="Tên sản phẩm" />
+										<TextArea />
 									</Form.Item>
 									<Form.Item
 										name="keywords"
@@ -150,110 +179,6 @@ const FormDetail = () => {
 										<TextArea placeholder="Từ khoá SEO, cách nhau bởi dấu phảy" />
 									</Form.Item>
 								</div>
-							</CoreCard>
-						</Col>
-
-						<Col xxl={12}>
-							<CoreCard>
-								<Form.List name="classifications">
-									{(fields, { add, remove }) => (
-										<>
-											<div className="flex items-baseline gap-4">
-												<span className="text-[16px] py-4 font-600 text-blue-500">
-													Phân loại sản phẩm ({fields.length})
-												</span>
-												<Form.Item>
-													<Button
-														type="primary"
-														onClick={() => add()}
-														icon={<PlusOutlined />}
-													>
-														Thêm phân loại
-													</Button>
-												</Form.Item>
-											</div>
-
-											<div className="h-[426px] overflow-y-scroll p-4 bg-gray-100 rounded-md">
-												{fields.length === 0 && (
-													<p
-														className={clsx('text-center', {
-															'text-red-500': getFieldError('classifications')
-														})}
-													>
-														Chưa có phân loại nào!
-													</p>
-												)}
-												{fields.map(({ key, name, ...restField }) => (
-													<Row align="middle" key={key} gutter={[16, 0]}>
-														<Col span={20}>
-															<p className="py-2 textTheme ">Phân loại {key + 1}</p>
-															{/* <Form.Item
-															{...restField}
-															name={[name, 'image']}
-															rules={[{ required: true, message: 'Link ảnh đâu ?' }]}
-														>
-															<Input style={{ width: '100%' }} placeholder="Link ảnh" />
-														</Form.Item> */}
-															<Form.Item
-																{...restField}
-																name={[name, 'name']}
-																label="Tên phân loại"
-																rules={[
-																	{ required: true, message: 'Tên phân loại đâu ?' }
-																]}
-															>
-																<Input
-																	style={{ width: '100%' }}
-																	placeholder="Tên phân loại"
-																/>
-															</Form.Item>
-															<Form.Item
-																{...restField}
-																name={[name, 'price']}
-																label="Giá"
-																rules={[{ required: true, message: 'Giá đâu' }]}
-															>
-																<InputNumber
-																	style={{ width: '100%' }}
-																	placeholder="Giá"
-																	formatter={value =>
-																		`${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-																	}
-																/>
-															</Form.Item>
-															<Form.Item
-																{...restField}
-																name={[name, 'warrantyTime']}
-																label="Thời gian bảo hành"
-																rules={[
-																	{
-																		required: true,
-																		message: 'Thời gian bảo hành đâu'
-																	}
-																]}
-															>
-																<InputNumber
-																	style={{ width: '100%' }}
-																	placeholder="Số ngày bảo hành"
-																	min={0}
-																	formatter={value =>
-																		`${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-																	}
-																/>
-															</Form.Item>
-														</Col>
-														<Col span={4}>
-															<Button danger type="primary" onClick={() => remove(name)}>
-																Xoá
-															</Button>
-														</Col>
-														<Divider></Divider>
-													</Row>
-												))}
-											</div>
-										</>
-									)}
-								</Form.List>
 							</CoreCard>
 						</Col>
 
@@ -374,7 +299,7 @@ const FormDetail = () => {
 								</Form.List>
 							</CoreCard>
 						</Col>
-						<Col xxl={12}>
+						{/* <Col xxl={12}>
 							<CoreCard>
 								<Form.List name="promotions">
 									{(fields, { add, remove }) => (
@@ -406,7 +331,7 @@ const FormDetail = () => {
 													</p>
 												)}
 												{fields.map(({ key, name, ...restField }) => (
-													<div className="flex justify-between gap-4">
+													<div key={key} className="flex justify-between gap-4">
 														<Form.Item
 															{...restField}
 															name={[name, 'name']}
@@ -429,7 +354,7 @@ const FormDetail = () => {
 									)}
 								</Form.List>
 							</CoreCard>
-						</Col>
+						</Col> */}
 
 						<Col span={24}>
 							<Form.Item
@@ -446,6 +371,9 @@ const FormDetail = () => {
 								<InputRichText form={form} name="description" />
 							</Form.Item>
 						</Col>
+						<Form.Item valuePropName="active" name="active" label="Bật tắt Hiển thị">
+							<Switch defaultChecked={product?.active ?? true} />
+						</Form.Item>
 					</Row>
 
 					<Form.Item wrapperCol={{ span: 24 }}>

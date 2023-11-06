@@ -1,8 +1,8 @@
 import { NextApiRequest } from 'next'
-import { STATUS_CODE } from '@/const/app-const'
 
 import { prisma } from '@/services/prisma'
-export default async function searchRoleUsers(req: NextApiRequest) {
+import { STATUS_CODE } from '@/const/app-const'
+export default async function search(req: NextApiRequest) {
 	const { label, page = 1, pageSize = 10 } = req.query
 	const lowercaseLabel = label?.toString()?.toLowerCase() ?? ''
 
@@ -13,21 +13,21 @@ export default async function searchRoleUsers(req: NextApiRequest) {
 					select: {
 						id: true,
 						name: true,
-						active: true,
-					},
+						active: true
+					}
 				},
 				role: {
 					select: {
-						label: true,
-					},
-				},
+						label: true
+					}
+				}
 			},
 			orderBy: {
-				userId: 'asc',
+				userId: 'asc'
 			},
 			skip: (Number(page) - 1) * Number(pageSize),
 			take: Number(pageSize)
-		});
+		})
 
 		const totalCount = await prisma.userRole.count({})
 
@@ -41,10 +41,16 @@ export default async function searchRoleUsers(req: NextApiRequest) {
 				},
 				totalCount
 			},
-			msg: 'OK'
+			msg: 'OK',
+			status: STATUS_CODE.OK
 		}
 	} catch (error) {
 		console.log('🚀 ~ file: search.ts:61 ~ createProduct ~ error:', error)
-		return null
+		return {
+			ok: false,
+			data: JSON.stringify(error),
+			msg: 'Internal server',
+			status: STATUS_CODE.INTERNAL
+		}
 	}
 }

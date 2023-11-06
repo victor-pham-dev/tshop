@@ -18,7 +18,7 @@ export const useImageModal = () => {
 					footer={null}
 					title="Danh sách ảnh sản phẩm"
 				>
-					<div className="flex flex-col bg-gray">
+					<div className="flex flex-col w-60 bg-gray aspect-video">
 						{images.map(img => (
 							<Image key={img} src={img} alt={img} />
 						))}

@@ -1,5 +1,5 @@
 import { useAntdTable } from 'ahooks'
-import { Button, Image, Table, Tooltip } from 'antd'
+import { Button, Image, Table, Tag, Tooltip } from 'antd'
 import { useTable } from '../hooks/useTable'
 import { useEffect } from 'react'
 import { useImageModal } from '../hooks/useImageModal'
@@ -8,14 +8,14 @@ import { EditOutlined } from '@ant-design/icons'
 import { useRouter } from 'next/router'
 import { PRODUCT_ROUTER } from '../../configs/router'
 import { useDescriptionModal } from '../hooks/useDescriptionModal'
+import { WareHouse } from '@prisma/client'
+import clsx from 'clsx'
 
 export default () => {
 	const router = useRouter()
 	const { getTableData } = useTable()
 	const { tableProps, run } = useAntdTable(getTableData)
-	console.log("🚀 ~ file: Table.tsx:16 ~ tableProps:", tableProps)
-	
-	console.log('🚀 ~ file: Table.tsx:9 ~ tableProps:', tableProps)
+
 	const { handleOpenImageModal, renderImagesModal } = useImageModal()
 	const { handleOpenDescriptionModal, renderDescriptionModal } = useDescriptionModal()
 
@@ -29,6 +29,31 @@ export default () => {
 		{
 			title: 'Tên sản phẩm',
 			dataIndex: 'name'
+		},
+		{
+			title: 'Giá gốc',
+			dataIndex: 'price',
+			render: (data: any) => data?.toLocaleString()
+		},
+		{
+			title: 'Giá bán',
+			dataIndex: 'salePrice',
+			render: (data: any) => data?.toLocaleString()
+		},
+		{
+			title: 'Kho',
+			dataIndex: 'WareHouse',
+			render: (data?: WareHouse) => (
+				<span
+					className={clsx('rounded-md text-white  p-4', {
+						'bg-red-500': data?.quantity === 0,
+						'bg-green-500': data?.quantity && data?.quantity > 4,
+						'bg-orange-500': data?.quantity && data?.quantity > 0
+					})}
+				>
+					{data?.quantity?.toLocaleString()}
+				</span>
+			)
 		},
 		{
 			title: 'Ảnh',
@@ -49,11 +74,7 @@ export default () => {
 			title: 'Danh mục',
 			dataIndex: 'category'
 		},
-		{
-			title: 'Phân loại',
-			dataIndex: 'classifications',
-			render: (data: any) => <Button type="primary">Xem {data?.length} phân loại</Button>
-		},
+
 		{
 			title: 'Mô tả- Giới thiệu',
 			dataIndex: 'description',
@@ -66,6 +87,15 @@ export default () => {
 		{
 			title: 'Trạng thái',
 			dataIndex: 'status'
+		},
+		{
+			title: 'Trạng thái',
+			dataIndex: 'active',
+			render: (data: boolean) => (
+				<>
+					<Tag color={data ? 'green' : 'red'}>{data ? 'Bật' : 'Tắt'}</Tag>
+				</>
+			)
 		},
 
 		{

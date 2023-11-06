@@ -15,8 +15,9 @@ export const useLogin = () => {
 			message.success(data?.msg)
 			fetchAuth()
 		},
-		onError: a => {
-			console.log('🚀 ~ file: useLogin.ts:19 ~ useLogin ~ err:', a)
+		onError: err => {
+			message.error(err?.message)
+			console.log('🚀 ~ file: useLogin.ts:19 ~ useLogin ~ err:', err)
 		}
 	})
 

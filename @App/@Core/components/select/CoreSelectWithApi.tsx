@@ -6,18 +6,21 @@ import { searchProps } from '../../service/BaseService'
 const { Option } = Select
 
 interface Props {
-	name: string
+	name?: string
 	label?: ReactNode
 	apiService: ({ params, header }: searchProps) => Promise<any>
 	valuePath?: string
 	labelPath?: string
 	customRender?: (data: any[]) => void
+	placeholder?: string
+	searchKey?: string
 }
 
 export const CoreSelectWithApi: React.FC<Props> = ({
 	name,
 	label,
 	apiService,
+	searchKey = 'name',
 	valuePath = 'id',
 	labelPath = 'name',
 	customRender,
@@ -28,7 +31,7 @@ export const CoreSelectWithApi: React.FC<Props> = ({
 	const { loading, run, data } = useRequest(apiService, { manual: true, debounceWait: 500 })
 
 	useEffect(() => {
-		run({ params: { label: searchText, page: 1, pageSize: 1000 } })
+		run({ params: { [searchKey]: searchText ?? '', page: 1, pageSize: 1000 } })
 	}, [searchText])
 
 	const handleSearch = (value: any) => {
@@ -48,7 +51,7 @@ export const CoreSelectWithApi: React.FC<Props> = ({
 			{...restProps}
 		>
 			{data?.data?.dataTable?.map((option: any) => (
-				<Option key={option.value} value={option[valuePath]}>
+				<Option key={Math.random()} value={option[valuePath]}>
 					{customRender ? customRender(option) : option[labelPath]}
 				</Option>
 			))}

@@ -1,8 +1,8 @@
 import { NextApiRequest } from 'next'
+import { prisma } from '@/services/prisma'
 import { STATUS_CODE } from '@/const/app-const'
 
-import { prisma } from '@/services/prisma'
-export default async function searchProduct(req: NextApiRequest) {
+export default async function search(req: NextApiRequest) {
 	const { name, page = 1, pageSize = 10 } = req.query
 	const lowercaseName = name ? name.toString().toLowerCase() : ''
 
@@ -15,7 +15,7 @@ export default async function searchProduct(req: NextApiRequest) {
 				}
 			},
 			include: {
-				classifications: true
+				WareHouse: true
 			},
 			skip: (Number(page) - 1) * Number(pageSize),
 			take: Number(pageSize)
@@ -40,10 +40,16 @@ export default async function searchProduct(req: NextApiRequest) {
 				},
 				totalCount
 			},
-			msg: 'OK'
+			msg: 'OK',
+			status: STATUS_CODE.OK
 		}
 	} catch (error) {
 		console.log('🚀 ~ file: search.ts:61 ~ createProduct ~ error:', error)
-		return null
+		return {
+			ok: false,
+			data: JSON.stringify(error),
+			msg: 'Internal server',
+			status: STATUS_CODE.INTERNAL
+		}
 	}
 }

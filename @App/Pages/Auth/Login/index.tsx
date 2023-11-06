@@ -27,7 +27,7 @@ const Login = () => {
 						<Image src={`/favicon.svg`} alt="mina" width={80} height={80} />
 					</Col>
 				</Row>
-				<Divider style={{ color: 'white' }}>Đăng nhập</Divider>
+				<Divider>Đăng nhập</Divider>
 				<Form
 					autoComplete="true"
 					name="normal_login"

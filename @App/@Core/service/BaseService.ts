@@ -36,11 +36,11 @@ export class BaseService {
 				})
 				const result = await response.json()
 				if (!result.ok) {
-					throw { message: 'API error', data: result }
+					throw result
 				}
 				return result
-			} catch (error) {
-				throw { message: 'Network error', error }
+			} catch (error: any) {
+				throw { message: error?.msg, status: error?.status }
 			}
 		},
 
@@ -56,11 +56,11 @@ export class BaseService {
 				})
 				const result = await response.json()
 				if (!result.ok) {
-					throw { message: 'API error', data: result }
+					throw result
 				}
 				return result
-			} catch (error) {
-				throw { message: 'Network error', error }
+			} catch (error: any) {
+				throw { message: error?.msg, status: error?.status }
 			}
 		},
 
@@ -76,11 +76,11 @@ export class BaseService {
 				})
 				const result = await response.json()
 				if (!result.ok) {
-					throw { message: 'API error', data: result }
+					throw result
 				}
 				return result
-			} catch (error) {
-				throw { message: 'Network error', error }
+			} catch (error: any) {
+				throw { message: error?.msg, status: error?.status }
 			}
 		},
 
@@ -96,11 +96,11 @@ export class BaseService {
 				})
 				const result = await response.json()
 				if (!result.ok) {
-					throw { message: 'API error', data: result }
+					throw result
 				}
 				return result
-			} catch (error) {
-				throw { message: 'Network error', error }
+			} catch (error: any) {
+				throw { message: error?.msg, status: error?.status }
 			}
 		},
 
@@ -111,22 +111,22 @@ export class BaseService {
 					headers: {
 						'x-access-token': this.getToken(),
 						...config
-					},
+					}
 				})
 				const result = await response.json()
 				if (!result.ok) {
-					throw { message: 'API error', data: result }
+					throw result
 				}
 				return result
-			} catch (error) {
-				throw { message: 'Network error', error }
+			} catch (error: any) {
+				throw { message: error?.msg, status: error?.status }
 			}
-		},
+		}
 	}
 
 	search = async ({ params, header }: searchProps) => {
 		const convertParams = queryString.stringify(params ?? { page: 1, pageSize: 10 })
-		const endpoint = `${this.BASE_URL}/${this.BASE_ENDPOINT}/search?${convertParams}`
+		const endpoint = `${this.BASE_URL}/${this.BASE_ENDPOINT}?${convertParams}`
 		return this.request.get(endpoint, header)
 	}
 

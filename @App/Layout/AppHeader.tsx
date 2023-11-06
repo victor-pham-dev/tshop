@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import { Avatar, Badge } from 'antd'
+import { Avatar, Badge, Button } from 'antd'
 import { useUser } from '@/hooks'
 import { useRouter } from 'next/router'
 import { PATH } from '@/const/app-const'
@@ -102,6 +102,14 @@ export default function AppHeader(): JSX.Element {
 					</Col>
 				</Row>
 			</Col> */}
+			<Button
+				onClick={() => {
+					sessionStorage.clear()
+					router.push('/auth/login')
+				}}
+			>
+				Đăng xuất
+			</Button>
 		</div>
 	)
 }

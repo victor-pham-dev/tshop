@@ -1,7 +1,6 @@
 import { NextApiRequest } from 'next'
-import { Classification } from '@prisma/client'
-import { STATUS_CODE } from '@/const/app-const'
 import { prisma } from '@/services/prisma'
+import { STATUS_CODE } from '@/const/app-const'
 
 interface BodyProps {
 	id: number
@@ -9,8 +8,7 @@ interface BodyProps {
 	alias: string
 	isActive: number
 }
-export default async function editProduct(req: NextApiRequest) {
-	console.log(req.body)
+export default async function edit(req: NextApiRequest) {
 	const { id, label, alias, isActive } = JSON.parse(req.body) as BodyProps
 	try {
 		await prisma.role.update({
@@ -24,10 +22,16 @@ export default async function editProduct(req: NextApiRequest) {
 		return {
 			ok: true,
 			data: `label: ${label} alias: ${alias} isActive: ${isActive}`,
-			msg: 'Chỉnh sửa quyền thành công'
+			msg: 'Chỉnh sửa quyền thành công',
+			status: STATUS_CODE.OK
 		}
 	} catch (error) {
 		console.log('🚀 ~ file: edit.ts:40 ~ createProduct ~ error:', error)
-		return null
+		return {
+			ok: false,
+			data: JSON.stringify(error),
+			msg: 'Internal server',
+			status: STATUS_CODE.INTERNAL
+		}
 	}
 }
