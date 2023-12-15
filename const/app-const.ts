@@ -69,19 +69,29 @@ export const STORAGE = {
 	SESSION: 'session'
 }
 
-export enum PRODUCTS_STATUS {
-	NEW = 'Mới',
-	SECOND_HAND = 'Đã qua sử dụng'
-}
+// export enum PRODUCTS_STATUS {
+// 	STOCKING:"STOCKING" ,
+// 	OUTOFSTOCK,
+// 	INCOMMING,
+// 	STOP_BUSSINESS
+// }
 
 export const productStatusOptions = [
 	{
-		label: PRODUCTS_STATUS.NEW,
-		value: PRODUCTS_STATUS.NEW
+		label: 'Còn hàng',
+		value: 'STOCKING'
 	},
 	{
-		label: PRODUCTS_STATUS.SECOND_HAND,
-		value: PRODUCTS_STATUS.SECOND_HAND
+		label: 'Hết hàng',
+		value: 'OUTOFSTOCK'
+	},
+	{
+		label: 'Sắp về hàng',
+		value: 'INCOMMING'
+	},
+	{
+		label: 'Ngừng kinh doanh',
+		value: 'STOP_BUSSINESS'
 	}
 ]
 

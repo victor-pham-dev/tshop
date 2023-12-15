@@ -3,17 +3,17 @@ import { API_AUTH } from '../configs/api'
 
 class Auth extends BaseService {
 	register = (data: any) => {
-		const endpoint = API_AUTH.register
+		const endpoint = this.BASE_URL + API_AUTH.register
 		return this.request.post(endpoint, data)
 	}
 
 	login = (data: any) => {
-		const endpoint = API_AUTH.login
+		const endpoint = this.BASE_URL + API_AUTH.login
 		return this.request.post(endpoint, data)
 	}
 
 	me = () => {
-		const endpoint = API_AUTH.me
+		const endpoint = this.BASE_URL + API_AUTH.me
 		return this.request.get(endpoint)
 	}
 }

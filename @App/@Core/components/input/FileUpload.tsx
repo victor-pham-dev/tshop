@@ -4,6 +4,7 @@ import { UploadOutlined, DeleteOutlined } from '@ant-design/icons'
 import { removeSpecial } from '@/ultis/dataConvert'
 
 import { supabase } from '@/services/supabase'
+import { uploadService } from '../../service/uploadService'
 
 interface Props {
 	form: FormInstance<any>
@@ -18,24 +19,11 @@ const FileUpload: React.FC<Props> = ({ form, maxItem, initValue, label, formName
 	// const isError
 	const [uploading, setUploading] = useState(false)
 	const [deleting, setDeleting] = useState(false)
-	const [fileList, setFileList] = useState<string[]>(() => {
-		const init: string[] = initValue?.map(item => {
-			const splitStr = item.split(
-				'https://esvelufzuzhhmsqjiior.supabase.co/storage/v1/object/public/file/public/'
-			)
-			return splitStr[1]
-		})
-		return init
-	})
+	const [fileList, setFileList] = useState<string[]>(initValue)
 
 	useEffect(() => {
-		let arr: undefined | string[] = undefined
-		if (fileList.length > 0) {
-			arr = fileList.map(
-				item => `https://esvelufzuzhhmsqjiior.supabase.co/storage/v1/object/public/file/public/${item}`
-			)
-		}
-		form.setFieldValue(formName, arr)
+		
+		form.setFieldValue(formName, fileList)
 	}, [fileList, form, formName])
 
 	useEffect(() => {
@@ -47,16 +35,15 @@ const FileUpload: React.FC<Props> = ({ form, maxItem, initValue, label, formName
 
 	async function handleUpload(file: File) {
 		setUploading(true)
-		const now = new Date()
-		const fileName = removeSpecial(file.name + now.getTime())
-		const { data, error } = await supabase.storage.from('file').upload(`public/${fileName}`, file, {
-			cacheControl: '3600',
-			upsert: false
-		})
-		if (error === null) {
-			message.success('Đã tải lên thành công')
-			setFileList(prevFileList => [...prevFileList, removeSpecial(fileName)])
-		} else {
+
+		const formData = new FormData()
+		formData.append('image', file)
+		try {
+			const result = await uploadService.uploadProduct(formData)
+				message.success('Đã tải lên thành công')
+			setFileList(prevFileList => [...prevFileList, result?.data])
+		} catch (error) {
+			console.log("🚀 ~ file: FileUpload.tsx:46 ~ handleUpload ~ error:", error)
 			message.error('Thất bại, tên file đã tồn tại hoặc kích thước quá lớn (chỉ chấp nhận file nhỏ hơn 3MB) ')
 		}
 		setUploading(false)
@@ -64,13 +51,13 @@ const FileUpload: React.FC<Props> = ({ form, maxItem, initValue, label, formName
 
 	const handleDelete = async (fileName: string) => {
 		setDeleting(true)
-		const { data, error } = await supabase.storage.from('file').remove([`public/${fileName}`])
-		if (error === null) {
+		// const { data, error } = await supabase.storage.from('file').remove([`public/${fileName}`])
+		// if (error === null) {
 			setFileList(prevFileList => prevFileList.filter(item => item !== fileName))
 			message.success('Đã xoá')
-		} else {
-			message.error('Xoá thất bại')
-		}
+		// } else {
+		// 	message.error('Xoá thất bại')
+		// }
 		setDeleting(false)
 	}
 
@@ -80,7 +67,7 @@ const FileUpload: React.FC<Props> = ({ form, maxItem, initValue, label, formName
 				<Image
 					loading="lazy"
 					height={160}
-					src={`https://esvelufzuzhhmsqjiior.supabase.co/storage/v1/object/public/file/public/${file}`}
+					src={file}
 					alt="vui ve thoi"
 				/>
 				<Button

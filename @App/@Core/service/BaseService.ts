@@ -12,7 +12,7 @@ interface findProps {
 }
 
 export class BaseService {
-	BASE_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : ''
+	BASE_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:8888' : ''
 	BASE_ENDPOINT: string | undefined = ''
 	constructor(endpoint?: string) {
 		this.BASE_ENDPOINT = endpoint
@@ -21,6 +21,18 @@ export class BaseService {
 	getToken = () => {
 		const token = sessionStorage.getItem('beep')
 		return token ?? ''
+	}
+
+	responseInterceptor = (result: any, status: number) => {
+		if (status === 403 || status === 401) {
+			//user not auth
+			window.location.assign('/404')
+		}
+
+		if (!result.success) {
+			throw { message: result?.message ?? 'API error', data: result }
+		}
+		return result
 	}
 
 	request = {
@@ -35,30 +47,26 @@ export class BaseService {
 					...config
 				})
 				const result = await response.json()
-				if (!result.ok) {
-					throw result
-				}
-				return result
+				return this.responseInterceptor(result, response?.status)
 			} catch (error: any) {
 				throw { message: error?.msg, status: error?.status }
 			}
 		},
 
-		post: async (endpoint: string, data: any, config?: any) => {
+		post: async (endpoint: string, data: any, config?: any, dataType = 'obj') => {
+			const defaultHeaderType = dataType === 'obj' ? { 'Content-type': 'application/json' } : {}
 			try {
 				const response = await fetch(endpoint, {
 					method: METHOD.POST,
 					headers: {
 						'x-access-token': this.getToken(),
-						...config
+						...config,
+						...defaultHeaderType
 					},
-					body: JSON.stringify(data)
+					body: dataType === 'obj' ? JSON.stringify(data) : data
 				})
 				const result = await response.json()
-				if (!result.ok) {
-					throw result
-				}
-				return result
+				return this.responseInterceptor(result, response?.status)
 			} catch (error: any) {
 				throw { message: error?.msg, status: error?.status }
 			}
@@ -75,10 +83,7 @@ export class BaseService {
 					body: JSON.stringify(data)
 				})
 				const result = await response.json()
-				if (!result.ok) {
-					throw result
-				}
-				return result
+				return this.responseInterceptor(result, response?.status)
 			} catch (error: any) {
 				throw { message: error?.msg, status: error?.status }
 			}
@@ -95,10 +100,7 @@ export class BaseService {
 					body: JSON.stringify(data)
 				})
 				const result = await response.json()
-				if (!result.ok) {
-					throw result
-				}
-				return result
+				return this.responseInterceptor(result, response?.status)
 			} catch (error: any) {
 				throw { message: error?.msg, status: error?.status }
 			}
@@ -114,10 +116,7 @@ export class BaseService {
 					}
 				})
 				const result = await response.json()
-				if (!result.ok) {
-					throw result
-				}
-				return result
+				return this.responseInterceptor(result, response?.status)
 			} catch (error: any) {
 				throw { message: error?.msg, status: error?.status }
 			}
