@@ -2,7 +2,7 @@ export const ROLE_API = {
 	endpoint: 'api/v1/admin/role'
 }
 export const ROLE_USERS_API = {
-	endpoint: 'api/v1/admin/role-users'
+	endpoint: 'api/v1/admin/role-user'
 }
 export const USERS_API = {
 	endpoint: 'api/v1/admin/users'
@@ -17,5 +17,5 @@ export const BANNER_API = {
 }
 
 export const VOUCHER_API = {
-	endpoint: 'api/v1/admin/voucher'
+	endpoint: 'api/v1/admin/promotion/voucher'
 }

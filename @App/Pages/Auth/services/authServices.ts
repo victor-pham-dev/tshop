@@ -8,6 +8,7 @@ class Auth extends BaseService {
 	}
 
 	login = (data: any) => {
+		console.log(this.BASE_URL)
 		const endpoint = this.BASE_URL + API_AUTH.login
 		return this.request.post(endpoint, data)
 	}

@@ -60,7 +60,7 @@ export const FromRole = (props: FromRoleProps) => {
 					<Input placeholder="Alias" />
 				</Form.Item>
 				{data && (
-					<Form.Item name="status" label={<label className="textTheme">Status</label>}>
+					<Form.Item name="isActive" label={<label className="textTheme">Status</label>}>
 						<Switch
 							checkedChildren={<CheckOutlined />}
 							unCheckedChildren={<CloseOutlined />}

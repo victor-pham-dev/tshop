@@ -13,6 +13,7 @@ interface findProps {
 
 export class BaseService {
 	BASE_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:8888' : ''
+	// BASE_URL = 'https://itxgear-gw.io.vn'
 	BASE_ENDPOINT: string | undefined = ''
 	constructor(endpoint?: string) {
 		this.BASE_ENDPOINT = endpoint
@@ -72,13 +73,16 @@ export class BaseService {
 			}
 		},
 
-		put: async (endpoint: string, data: any, config?: any) => {
+		put: async (endpoint: string, data: any, config?: any, dataType = 'obj') => {
+			const defaultHeaderType = dataType === 'obj' ? { 'Content-type': 'application/json' } : {}
+
 			try {
 				const response = await fetch(endpoint, {
 					method: METHOD.PUT,
 					headers: {
 						'x-access-token': this.getToken(),
-						...config
+						...config,
+						...defaultHeaderType
 					},
 					body: JSON.stringify(data)
 				})
