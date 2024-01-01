@@ -1,5 +1,5 @@
 import { useAntdTable, useRequest } from 'ahooks'
-import { useCoreContext } from '@/@App/@Core/hooks/useAppContext'
+import { useCorePageContext } from '@/@App/Core/hooks/useAppContext'
 import { bannerService } from '../../services/bannerService'
 
 interface PagingParam {
@@ -13,7 +13,7 @@ interface Result {
 }
 
 export const useTable = () => {
-	const { refreshTable, trigger } = useCoreContext()
+	const { refreshTable, trigger } = useCorePageContext()
 
 	const getTableData = async ({ current, pageSize }: PagingParam, formData: Object): Promise<Result> => {
 		const data = await bannerService.search({ params: { page: current, pageSize: pageSize, ...formData } })

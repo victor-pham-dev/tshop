@@ -1,9 +1,9 @@
-import { CoreCard } from '@/@App/@Core/components'
-import { useCoreContext } from '@/@App/@Core/hooks/useAppContext'
+import { CoreCard } from '@/@App/Core/components'
+import { useCorePageContext } from '@/@App/Core/hooks/useAppContext'
 import { Image } from 'antd'
 
 export const ProductInfo = () => {
-	const { warehouseItem } = useCoreContext()
+	const { warehouseItem } = useCorePageContext()
 	console.log('🚀 ~ file: ProductInfo.tsx:5 ~ ProductInfo ~ warehouseItem:', warehouseItem)
 
 	const firstImage = warehouseItem?.Product?.images ? JSON.parse(warehouseItem?.Product?.images)[0] : '/'

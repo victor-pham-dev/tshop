@@ -1,4 +1,4 @@
-import { CoreCard } from '@/@App/@Core/components'
+import { CoreCard } from '@/@App/Core/components'
 import WarehouseDetailProvider from './WarehouseDetailProvider'
 import BillForm from './components/BillForm'
 import { ProductInfo } from './components/ProductInfo'

@@ -1,4 +1,4 @@
-import { useCoreContext } from '@/@App/@Core/hooks/useAppContext'
+import { useCorePageContext } from '@/@App/Core/hooks/useAppContext'
 import FormDetail from './components/Form'
 import ProductDetailProvider from './OrderDetailProvider'
 import { Spin } from 'antd'

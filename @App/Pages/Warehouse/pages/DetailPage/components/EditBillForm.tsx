@@ -1,7 +1,7 @@
-import { useCoreContext } from '@/@App/@Core/hooks/useAppContext'
+import { useCorePageContext } from '@/@App/Core/hooks/useAppContext'
 import { Button, Form, Input, InputNumber, Tabs, TabsProps } from 'antd'
 import { useWarehouseBillForm } from '../hooks/useWarehouseBillForm'
-import InputRichText from '@/@App/@Core/components/input/InputRichText'
+import InputRichText from '@/@App/Core/components/input/InputRichText'
 import { WareHouseBill } from '@prisma/client'
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
 export default function EditBillForm({ initData, handleCloseModal }: Props) {
 	const [form] = Form.useForm()
 
-	const { id } = useCoreContext()
+	const { id } = useCorePageContext()
 	const { loadingCreateImportBill, onCreateImportBill } = useWarehouseBillForm({ form, handleCloseModal })
 
 	return (

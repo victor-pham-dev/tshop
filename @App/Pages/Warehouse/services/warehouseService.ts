@@ -1,4 +1,4 @@
-import { BaseService } from '@/@App/@Core/service/BaseService'
+import { BaseService } from '@/@App/Core/service/BaseService'
 import { WAREHOUSE_API } from '../configs/api'
 
 class Warehouse extends BaseService {}

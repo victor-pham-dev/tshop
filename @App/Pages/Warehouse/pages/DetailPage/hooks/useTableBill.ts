@@ -1,5 +1,5 @@
 import { useAntdTable } from 'ahooks'
-import { useCoreContext } from '@/@App/@Core/hooks/useAppContext'
+import { useCorePageContext } from '@/@App/Core/hooks/useAppContext'
 import { warehouseBillService } from '../../../services/warehouseBillService'
 
 interface PagingParam {
@@ -13,7 +13,7 @@ interface Result {
 }
 
 export const useTableBill = () => {
-	const { refreshTable, id } = useCoreContext()
+	const { refreshTable, id } = useCorePageContext()
 
 	const getTableData = async ({ current, pageSize }: PagingParam, formData: Object): Promise<Result> => {
 		const data = await warehouseBillService.search({

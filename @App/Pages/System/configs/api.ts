@@ -1,21 +1,11 @@
-export const ROLE_API = {
-	endpoint: 'api/v1/admin/role'
-}
-export const ROLE_USERS_API = {
-	endpoint: 'api/v1/admin/role-user'
-}
-export const USERS_API = {
-	endpoint: 'api/v1/admin/users'
+export const SYSTEM_CATEGORY_API = {
+	endpoint: '/api/v1/system/category'
 }
 
-export const CATEGORY_API = {
-	endpoint: 'api/v1/admin/category'
+export const SYSTEM_BANNER_API = {
+	endpoint: '/api/v1/system/banner'
 }
 
-export const BANNER_API = {
-	endpoint: 'api/v1/admin/banner'
-}
-
-export const VOUCHER_API = {
-	endpoint: 'api/v1/admin/promotion/voucher'
+export const SYSTEM_VOUCHER_API = {
+	endpoint: '/api/v1/system/promotion/voucher'
 }

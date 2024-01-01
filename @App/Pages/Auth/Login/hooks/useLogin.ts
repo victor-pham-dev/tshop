@@ -1,10 +1,9 @@
 import { useRequest } from 'ahooks'
 import { authService } from '../../services/authServices'
-import { STATUS_CODE } from '@/const/app-const'
 import { message } from 'antd'
-import { internalErrorMsg } from '@/ultis/msg'
-import { useUser } from '@/hooks'
-import { useUserInfo } from '@/@App/@Core/provider/AuthProvider'
+import { useUserInfo } from '@/@App/Core/provider/AuthProvider'
+import { useUser } from '@/@App/Core/provider/UserProvider'
+
 export const useLogin = () => {
 	const { login } = useUser()
 	const { fetchAuth } = useUserInfo()
@@ -12,12 +11,11 @@ export const useLogin = () => {
 		manual: true,
 		onSuccess: data => {
 			login(data?.data?.accessToken)
-			message.success(data?.msg)
+			message.success(data?.message)
 			fetchAuth()
 		},
 		onError: err => {
 			message.error(err?.message)
-			console.log('🚀 ~ file: useLogin.ts:19 ~ useLogin ~ err:', err)
 		}
 	})
 

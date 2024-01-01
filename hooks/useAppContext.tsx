@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 // import { LoadingContext } from "../contexts/LoadingContext";
 // import { ThemeContext } from "../contexts/ThemeContext";
-import { UserContext } from '../@App/@Core/provider/UserProvider'
+import { UserContext } from '../@App/Core/provider/UserProvider'
 // import { CartContext } from "@/contexts/CartContext";
 
 // export const useLoading = () => {

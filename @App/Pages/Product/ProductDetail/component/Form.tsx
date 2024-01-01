@@ -2,12 +2,12 @@ import { Button, Col, Divider, Form, Input, InputNumber, Row, Select, Spin, Swit
 import { productCategoryOptions, productStatusOptions } from '@/const/app-const'
 import { GiftOutlined, PlusOutlined } from '@ant-design/icons'
 import dynamic from 'next/dynamic'
-import { CoreCard, CoreSelectWithApi, FileUpload } from '@/@App/@Core/components'
+import { CoreCard, CoreSelectWithApi, FileUpload } from '@/@App/Core/components'
 import clsx from 'clsx'
-import { useCoreContext } from '@/@App/@Core/hooks/useAppContext'
+import { useCorePageContext } from '@/@App/Core/hooks/useAppContext'
 import { useFormDetail } from '../hooks/useFormDetail'
 import { categoryService } from '@/@App/Pages/System/services/categoryService'
-const InputRichText = dynamic(() => import('@/@App/@Core/components/input/InputRichText'), {
+const InputRichText = dynamic(() => import('@/@App/Core/components/input/InputRichText'), {
 	ssr: false,
 	loading: () => (
 		<div className="w-full">
@@ -20,7 +20,7 @@ const { TextArea } = Input
 
 const FormDetail = () => {
 	const [form] = Form.useForm()
-	const { product, id } = useCoreContext()
+	const { product, id } = useCorePageContext()
 	console.log('🚀 ~ file: Form.tsx:23 ~ FormDetail ~ product:', product)
 
 	const initImages = (product?.images ? JSON.parse(product?.images) : []) as string[]
@@ -42,7 +42,7 @@ const FormDetail = () => {
 					}}
 					autoComplete="off"
 					initialValues={{
-						id: id !== 'new' && id,
+						id: id !== 'new' ? id : null,
 						images: initImages,
 						name: product?.name,
 						status: product?.status,

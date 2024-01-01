@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useRequest } from 'ahooks'
 import { FormInstance, message } from 'antd'
-import { useCoreContext } from '@/@App/@Core/hooks/useAppContext'
+import { useCorePageContext } from '@/@App/Core/hooks/useAppContext'
 import { warehouseBillService } from '../../../services/warehouseBillService'
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 }
 export const useWarehouseBillForm = (props: Props) => {
 	const { form, handleCloseModal } = props
-	const { triggerRefresh } = useCoreContext()
+	const { triggerRefresh } = useCorePageContext()
 
 	const { loading: loadingCreateImportBill, run: onCreateImportBill } = useRequest(warehouseBillService.save, {
 		manual: true,

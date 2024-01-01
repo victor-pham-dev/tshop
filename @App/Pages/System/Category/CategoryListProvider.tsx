@@ -1,4 +1,4 @@
-import { CoreProvider } from '@/@App/@Core/provider/CoreProvider'
+import { CorePageProvider } from '@/@App/Core/provider/CorePageProvider'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useCategoryFormModal } from './hooks/useCategoryFormModal'
@@ -21,9 +21,9 @@ const CategoryListProvider: React.FC<any> = ({ children, ...restProps }) => {
 		...restProps
 	}
 	return (
-		<CoreProvider {...data}>
+		<CorePageProvider {...data}>
 			{children} {renderDetailModal()}
-		</CoreProvider>
+		</CorePageProvider>
 	)
 }
 

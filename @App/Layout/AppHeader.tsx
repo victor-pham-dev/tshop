@@ -1,15 +1,16 @@
 'use client'
 import React from 'react'
 import { Avatar, Badge, Button } from 'antd'
-import { useUser } from '@/hooks'
 import { useRouter } from 'next/router'
 import { PATH } from '@/const/app-const'
+import { useUser } from '../Core/provider/UserProvider'
 
 // import { useCart } from "@/hooks/useAppContext";
 
 export default function AppHeader(): JSX.Element {
 	const router = useRouter()
-	const { user } = useUser()
+	const { user, reset } = useUser()
+	// console.log('🚀 ~ file: AppHeader.tsx:13 ~ user:', user)
 	// console.log('🚀 ~ file: AppHeader.tsx:16 ~ user:', user)
 	// const { cart } = useCart();
 	// const { theme, changeTheme } = useTheme();
@@ -35,7 +36,7 @@ export default function AppHeader(): JSX.Element {
 	return (
 		<div className="flex items-center gap-4 p-4 text-white bg-blue-500">
 			<Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel" />
-			<div className="text-12">{user?.name}</div>
+			<div className="text-12">{user?.email}</div>
 			{/* <Col span={24}>
 				<Row id="header" align="middle" justify="space-between" style={{ padding: '1rem' }}>
 					<Col span={12}>
@@ -103,8 +104,8 @@ export default function AppHeader(): JSX.Element {
 				</Row>
 			</Col> */}
 			<Button
-				onClick={() => {
-					sessionStorage.clear()
+				onClick={async () => {
+					reset()
 					router.push('/auth/login')
 				}}
 			>

@@ -1,4 +1,4 @@
-import { BaseService } from '@/@App/@Core/service/BaseService'
+import { BaseService } from '@/@App/Core/service/BaseService'
 import { ORDER_API } from '../configs/api'
 
 class Order extends BaseService {}

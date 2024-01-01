@@ -1,4 +1,4 @@
-import { CoreProvider } from '@/@App/@Core/provider/CoreProvider'
+import { CorePageProvider } from '@/@App/Core/provider/CorePageProvider'
 import { useRequest } from 'ahooks'
 import { useRouter } from 'next/router'
 import { warehouseService } from '../../services/warehouseService'
@@ -21,7 +21,7 @@ const WarehouseDetailProvider: React.FC<any> = ({ children, ...restProps }) => {
 		...restProps
 	}
 	return (
-		<CoreProvider {...data}>
+		<CorePageProvider {...data}>
 			{loadingWarehouseItem ? (
 				<div className="w-full flex justify-center items-center min-h-[30vh]">
 					<Spin />
@@ -29,7 +29,7 @@ const WarehouseDetailProvider: React.FC<any> = ({ children, ...restProps }) => {
 			) : (
 				children
 			)}
-		</CoreProvider>
+		</CorePageProvider>
 	)
 }
 

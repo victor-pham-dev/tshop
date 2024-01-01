@@ -3,14 +3,14 @@ import { useTable } from '../hooks/useTable'
 
 import { CheckOutlined, CloseOutlined, EditOutlined } from '@ant-design/icons'
 import { useRouter } from 'next/router'
-import { useCoreContext } from '@/@App/@Core/hooks/useAppContext'
+import { useCorePageContext } from '@/@App/Core/hooks/useAppContext'
 import { Role } from '@prisma/client'
 
 export default () => {
 	const router = useRouter()
 	const { tableProps } = useTable()
 
-	const { handleOpenDetailModal } = useCoreContext()
+	const { handleOpenDetailModal } = useCorePageContext()
 
 	// const { type, changeType, submit, reset } = search
 

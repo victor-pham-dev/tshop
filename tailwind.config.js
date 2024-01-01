@@ -3,7 +3,7 @@ module.exports = {
 	corePlugins: {
 		preflight: false
 	},
-	content: ['./@App/**/*.{js,ts,jsx,tsx}', './@App/**/**/*.{js,ts,jsx,tsx}'],
+	content: ['./@App/**/*.{js,ts,jsx,tsx}', './@App/**/**/*.{js,ts,jsx,tsx}', './@App/**/**/**/*.{js,ts,jsx,tsx}'],
 	theme: {
 		extend: {}
 	},

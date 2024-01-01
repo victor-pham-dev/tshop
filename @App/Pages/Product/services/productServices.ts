@@ -1,4 +1,4 @@
-import { BaseService } from '@/@App/@Core/service/BaseService'
+import { BaseService } from '@/@App/Core/service/BaseService'
 import { PRODUCT_API } from '../configs/api'
 
 class Product extends BaseService {}

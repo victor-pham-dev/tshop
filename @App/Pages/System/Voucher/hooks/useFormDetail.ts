@@ -1,10 +1,10 @@
 import { useRequest } from 'ahooks'
 import { message } from 'antd'
-import { useCoreContext } from '@/@App/@Core/hooks/useAppContext'
+import { useCorePageContext } from '@/@App/Core/hooks/useAppContext'
 import { voucherService } from '../../services/voucherService'
 
 export const useFormDetail = () => {
-	const { triggerRefresh, handleCloseDetailModal } = useCoreContext()
+	const { triggerRefresh, handleCloseDetailModal } = useCorePageContext()
 
 	const { loading: loadingSubmit, run: onSubmit } = useRequest(voucherService.save, {
 		manual: true,

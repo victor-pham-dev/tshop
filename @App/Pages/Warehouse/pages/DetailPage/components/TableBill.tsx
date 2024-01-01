@@ -6,7 +6,7 @@ import moment from 'moment'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { useRouter } from 'next/router'
 // import { PRODUCT_ROUTER } from '../../configs/router'
-import { useCoreContext } from '@/@App/@Core/hooks/useAppContext'
+import { useCorePageContext } from '@/@App/Core/hooks/useAppContext'
 import { WareHouseBill, WarehouseLogReason } from '@prisma/client'
 import { useNoteModal } from '../hooks/useNoteModal'
 import { useEditFormModal } from '../hooks/useEditFormModal'
@@ -15,7 +15,7 @@ export default function TableBill() {
 	const router = useRouter()
 	const { tableProps } = useTableBill()
 
-	const { handleOpenRoleModal } = useCoreContext()
+	const { handleOpenRoleModal } = useCorePageContext()
 	const { handleOpenNoteModal, renderNoteModal } = useNoteModal()
 	const { handleCloseEditModal, renderEditModal, handleOpenEditModal } = useEditFormModal()
 	// const { type, changeType, submit, reset } = search

@@ -1,4 +1,4 @@
-import { CoreProvider } from '@/@App/@Core/provider/CoreProvider'
+import { CorePageProvider } from '@/@App/Core/provider/CorePageProvider'
 import { useFormDetail } from './hooks/useFormDetail'
 
 const OrderDetailProvider: React.FC<any> = ({ children, ...restProps }) => {
@@ -10,7 +10,7 @@ const OrderDetailProvider: React.FC<any> = ({ children, ...restProps }) => {
 		saveOrder,
 		...restProps
 	}
-	return <CoreProvider {...data}>{children}</CoreProvider>
+	return <CorePageProvider {...data}>{children}</CorePageProvider>
 }
 
 export default OrderDetailProvider

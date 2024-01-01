@@ -1,19 +1,19 @@
 import { Button, Col, Divider, Input, Row, Select } from 'antd'
-import { CoreCard } from '@/@App/@Core/components'
-import { useCoreContext } from '@/@App/@Core/hooks/useAppContext'
+import { CoreCard } from '@/@App/Core/components'
+import { useCorePageContext } from '@/@App/Core/hooks/useAppContext'
 import { useFormDetail } from '../hooks/useFormDetail'
 import Table from './Table'
 import { buttonStatus } from '@/const/order-const'
 import { useCallback, useEffect, useState } from 'react'
 
 const FormDetail = () => {
-	const { orderForm, id, loadingSaveOrder, saveOrder, statusChange } = useCoreContext()
+	const { orderForm, id, loadingSaveOrder, saveOrder, statusChange } = useCorePageContext()
 	console.log('🚀 ~ file: Form.tsx:11 ~ FormDetail ~ statusChange:', statusChange)
 	const { order, customer, payment } = orderForm || { order: {}, customer: {}, payment: {} }
 	const [status, setStatus] = useState(order?.status as 'WAITING' | 'CONFIRM' | 'SHIPPING' | 'CANCELED' | 'DONE')
 
 	useEffect(() => {
-		if (statusChange !== ''){
+		if (statusChange !== '') {
 			setStatus(statusChange)
 		}
 	}, [statusChange])

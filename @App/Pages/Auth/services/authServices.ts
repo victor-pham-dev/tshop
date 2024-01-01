@@ -1,4 +1,4 @@
-import { BaseService } from '@/@App/@Core/service/BaseService'
+import { BaseService } from '@/@App/Core/service/BaseService'
 import { API_AUTH } from '../configs/api'
 
 class Auth extends BaseService {
@@ -16,6 +16,11 @@ class Auth extends BaseService {
 	me = () => {
 		const endpoint = this.BASE_URL + API_AUTH.me
 		return this.request.get(endpoint)
+	}
+
+	logout = () => {
+		const endpoint = API_AUTH.logout
+		return this.request.post(endpoint, {})
 	}
 }
 export const authService = new Auth()
