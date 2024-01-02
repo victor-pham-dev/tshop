@@ -4,13 +4,16 @@ import { useTable } from '../hooks/useTable'
 import { CheckOutlined, CloseOutlined, EditOutlined } from '@ant-design/icons'
 import { useRouter } from 'next/router'
 import { useCorePageContext } from '@/@App/Core/hooks/useAppContext'
-import { Role } from '@prisma/client'
+import { EditAction, ViewAction } from '@/@App/Core/components/action'
+import { useViewCategoryModal } from '../hooks/useViewCategoryModal'
+import { useCategoryFormModal } from '../hooks/useCategoryFormModal'
 
 export default () => {
 	const router = useRouter()
 	const { tableProps } = useTable()
 
-	const { handleOpenDetailModal } = useCorePageContext()
+	const { handleCloseAddCategoryModal, handleOpenAddCategoryModal, renderAddCategoryModal } = useCorePageContext()
+	const { handleCloseDetailModal, renderDetailModal, handleOpenDetailModal } = useViewCategoryModal()
 
 	// const { type, changeType, submit, reset } = search
 
@@ -20,7 +23,7 @@ export default () => {
 			dataIndex: 'id'
 		},
 		{
-			title: 'Tên Quyền',
+			title: 'Tên Danh mục',
 			dataIndex: 'label'
 		},
 		{
@@ -29,27 +32,17 @@ export default () => {
 		},
 		{
 			title: 'Status',
-			dataIndex: 'isActive',
-			render: (data: number) => (
-				<Tag color={data === 1 ? 'green' : 'red'}> {data === 1 ? 'Hoạt động' : 'OFF'}</Tag>
-			)
+			dataIndex: 'active',
+			render: (data: boolean) => <Tag color={data ? 'green' : 'red'}> {data ? 'Active' : 'OFF'}</Tag>
 		},
 		{
 			title: 'Hành động',
 			dataIndex: '',
-			render: (data: Role) => {
+			render: (data: any) => {
 				return (
-					<div className="flex flex-col gap-2">
-						<Tooltip placement="topLeft" title={'Chỉnh sửa'}>
-							<Button
-								onClick={() => handleOpenDetailModal(data?.id)}
-								type="primary"
-								color="success"
-								style={{ width: '50%' }}
-							>
-								<EditOutlined />
-							</Button>
-						</Tooltip>
+					<div className="flex gap-2">
+						<ViewAction action={() => handleOpenDetailModal(data?.id)} />
+						<EditAction action={() => handleOpenAddCategoryModal(data?.id)} />
 					</div>
 				)
 			}
@@ -57,16 +50,12 @@ export default () => {
 	]
 	return (
 		<>
-			<Button
-				onClick={() => handleOpenDetailModal('new')}
-				type="primary"
-				color="success"
-				style={{ width: '20%', marginBottom: '10px' }}
-			>
-				Thêm mới
+			<Button onClick={() => handleOpenAddCategoryModal('new')} type="primary" className="mb-2 w-max">
+				Thêm mới danh mục lớn
 			</Button>
 			<Table columns={columns} rowKey="id" {...tableProps} />
-			{/* {renderRoleModal()} */}
+			{renderDetailModal()}
+			{renderAddCategoryModal()}
 		</>
 	)
 }

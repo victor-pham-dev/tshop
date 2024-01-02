@@ -1,6 +1,6 @@
 import { useAntdTable, useRequest } from 'ahooks'
 import { useCorePageContext } from '@/@App/Core/hooks/useAppContext'
-import { categoryService } from '../../services/categoryService'
+import { systemCategoryService } from '../../services/systemCategoryService'
 
 interface PagingParam {
 	current: number
@@ -16,7 +16,7 @@ export const useTable = () => {
 	const { refreshTable, trigger } = useCorePageContext()
 
 	const getTableData = async ({ current, pageSize }: PagingParam, formData: Object): Promise<Result> => {
-		const data = await categoryService.search({ params: { page: current, pageSize: pageSize, ...formData } })
+		const data = await systemCategoryService.search({ params: { page: current, pageSize: pageSize, ...formData } })
 
 		return {
 			list: data?.data?.dataTable ?? [],

@@ -6,7 +6,7 @@ import { CoreCard, CoreSelectWithApi, FileUpload } from '@/@App/Core/components'
 import clsx from 'clsx'
 import { useCorePageContext } from '@/@App/Core/hooks/useAppContext'
 import { useFormDetail } from '../hooks/useFormDetail'
-import { categoryService } from '@/@App/Pages/System/services/categoryService'
+import { categoryService } from '@/@App/Pages/System/services/systemCategoryService'
 const InputRichText = dynamic(() => import('@/@App/Core/components/input/InputRichText'), {
 	ssr: false,
 	loading: () => (

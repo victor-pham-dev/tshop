@@ -3,7 +3,13 @@ module.exports = {
 		browser: true,
 		es2021: true
 	},
-	extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
+	extends: [
+		'eslint:recommended',
+		'plugin:@typescript-eslint/recommended',
+		'plugin:import/errors',
+		'plugin:import/warnings',
+		'prettier'
+	],
 	overrides: [
 		{
 			env: {
@@ -20,8 +26,9 @@ module.exports = {
 		ecmaVersion: 'latest',
 		sourceType: 'module'
 	},
-	plugins: ['@typescript-eslint', 'unused-imports'],
+	plugins: ['@typescript-eslint', 'unused-imports', 'import'],
 	rules: {
+		'prettier/prettier': 'error',
 		'no-unused-vars': 'off',
 		'unused-imports/no-unused-imports': 'error',
 		'unused-imports/no-unused-vars': [

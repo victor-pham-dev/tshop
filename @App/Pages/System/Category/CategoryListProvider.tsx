@@ -9,22 +9,17 @@ const CategoryListProvider: React.FC<any> = ({ children, ...restProps }) => {
 	const [refreshTable, setRefreshTable] = useState<Boolean>(false)
 	const triggerRefresh = () => setRefreshTable(prev => !prev)
 
-	// const { handleOpenRoleModal, renderRoleModal, handleCloseRoleModal } = useRoleModal()
-	const { handleCloseDetailModal, handleOpenDetailModal, renderDetailModal } = useCategoryFormModal()
+	const { handleCloseAddCategoryModal, handleOpenAddCategoryModal, renderAddCategoryModal } = useCategoryFormModal()
 
 	const data = {
-		handleCloseDetailModal,
-		handleOpenDetailModal,
-
+		handleCloseAddCategoryModal,
+		handleOpenAddCategoryModal,
+		renderAddCategoryModal,
 		refreshTable,
 		triggerRefresh,
 		...restProps
 	}
-	return (
-		<CorePageProvider {...data}>
-			{children} {renderDetailModal()}
-		</CorePageProvider>
-	)
+	return <CorePageProvider {...data}>{children}</CorePageProvider>
 }
 
 export default CategoryListProvider

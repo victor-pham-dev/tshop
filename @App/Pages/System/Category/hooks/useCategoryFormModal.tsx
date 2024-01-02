@@ -1,8 +1,8 @@
 import { useState, useCallback } from 'react'
 import { Modal, Spin } from 'antd'
-import { CategoryFromDetail } from '../components/CategoryFromDetail'
+import CategoryForm from '../components/CategoryForm'
 import { useRequest } from 'ahooks'
-import { categoryService } from '../../services/categoryService'
+import { systemCategoryService } from '../../services/systemCategoryService'
 
 export interface role {
 	id: number
@@ -13,19 +13,19 @@ export interface role {
 }
 export const useCategoryFormModal = () => {
 	const [openModal, setOpenModal] = useState(false)
-	const [initData, setInitData] = useState<any>({ data: null })
-	const { runAsync, loading } = useRequest(categoryService.find, {
+	const [initData, setInitData] = useState<any>(null)
+	const { runAsync, loading } = useRequest(systemCategoryService.find, {
 		manual: true
 	})
 
 	const handleOpen = async (id: string) => {
+		setOpenModal(true)
 		if (id !== 'new') {
 			const data = await runAsync(id)
-			setInitData(data)
+			setInitData(data?.data)
 		} else {
-			setInitData({ data: null })
+			setInitData(null)
 		}
-		setOpenModal(true)
 	}
 
 	const handleClose = () => setOpenModal(false)
@@ -33,18 +33,27 @@ export const useCategoryFormModal = () => {
 	const renderModal = () => {
 		return (
 			openModal && (
-				<Modal open={openModal} onCancel={handleClose} footer={null} width={'90%'} title={'Cập nhật / tạo mới	'}>
+				<Modal
+					open={openModal}
+					onCancel={handleClose}
+					footer={null}
+					title={loading || initData ? 'Sửa danh mục' : 'Tạo danh mục lớn'}
+				>
 					{loading ? (
 						<div className="flex justify-center">
 							<Spin />
 						</div>
 					) : (
-						<CategoryFromDetail data={initData} />
+						<CategoryForm data={initData} />
 					)}
 				</Modal>
 			)
 		)
 	}
 
-	return { handleOpenDetailModal: handleOpen, handleCloseDetailModal: handleClose, renderDetailModal: renderModal }
+	return {
+		handleOpenAddCategoryModal: handleOpen,
+		handleCloseAddCategoryModal: handleClose,
+		renderAddCategoryModal: renderModal
+	}
 }
