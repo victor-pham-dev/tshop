@@ -1,10 +1,11 @@
 import { useRequest } from 'ahooks'
 import { systemCategoryService } from '../../services/systemCategoryService'
-import { useCallback, useEffect, useState } from 'react'
-import { Button, Spin, Typography, message } from 'antd'
+import React, { useCallback, useEffect, useState } from 'react'
+import { Button, Input, Spin, Tree, Typography, message } from 'antd'
 import { TbCategoryPlus } from 'react-icons/tb'
 import { AddAction, DeleteAction, EditAction } from '@/@App/Core/components/action'
 import CategoryForm from './CategoryForm'
+import { DownOutlined } from '@ant-design/icons'
 interface Props {
 	id: number
 }
@@ -17,6 +18,7 @@ export default function CategoryDetail(props: any) {
 
 	const [root, setRoot] = useState<any>(null)
 	const [children, setChildren] = useState<any[]>([])
+	console.log('🚀 ~ file: CategoryDetail.tsx:20 ~ CategoryDetail ~ children:', children)
 
 	const { loading: loadingGetDetail, run: getDetailCategory } = useRequest(
 		systemCategoryService.getDetailAndSubCategory,
@@ -24,7 +26,22 @@ export default function CategoryDetail(props: any) {
 			manual: true,
 			onSuccess: data => {
 				setRoot(data?.data?.root)
-				setChildren(data?.data?.children)
+
+				const convertDataToTree = (array: any[]): any[] => {
+					const result = array.map((item: any) => {
+						console.log('🚀 ~ file: CategoryDetail.tsx:35 ~ result ~ item:', item?.children)
+
+						return {
+							title: item?.label,
+							key: item.id,
+							children: convertDataToTree(item?.children ?? []),
+							originData: item
+						}
+					})
+					return result
+				}
+				const convertedData = convertDataToTree(data?.data?.children)
+				setChildren(convertedData)
 			},
 			onError: error => {
 				message.error(error?.message)
@@ -51,6 +68,43 @@ export default function CategoryDetail(props: any) {
 		setFormType('')
 		setFormData(null)
 	}, [])
+
+	// const colorList = ['bg-green-500', 'bg-red-500', 'bg-blue-500', ]
+
+	// const renderChidlrenCategory = (data: any[], parent: any): JSX.Element[] => {
+	// 	return data.map((item, index) => {
+	// 		const subChildren = item?.children ?? []
+	// 		return (
+	// 			<React.Fragment key={item?.id}>
+	// 				<div className="flex items-center justify-between gap-2 p-2 bg-blue-50">
+	// 					<span className="p-2 text-white bg-blue-500 rounded-md font-600">
+	// 						{parent?.label} - {index + 1}
+	// 					</span>
+	// 					<Typography.Text>{item?.label}</Typography.Text>
+	// 					<div className="flex gap-2">
+	// 						<AddAction
+	// 							action={() => {
+	// 								setFormType('add')
+	// 								setFormData({ parentId: item?.id })
+	// 								setSelected(item)
+	// 							}}
+	// 						/>
+	// 						<EditAction
+	// 							action={() => {
+	// 								setFormType('edit')
+	// 								setFormData(item)
+	// 								setSelected(item)
+	// 							}}
+	// 						/>
+	// 						<DeleteAction action={() => handleDelete(item?.id)} />
+	// 					</div>
+	// 				</div>
+	// 				{subChildren.length > 0 ? renderChidlrenCategory(subChildren, item) : null}
+	// 			</React.Fragment>
+	// 		)
+	// 	})
+	// }
+
 	return (
 		<div className="flex gap-2">
 			<div className="relative w-2/3">
@@ -59,27 +113,61 @@ export default function CategoryDetail(props: any) {
 						<Spin />
 					</div>
 				) : (
-					<div className="flex items-center justify-between gap-2 p-2 bg-blue-50">
-						<TbCategoryPlus className="text-blue-500" />
-						<Typography.Text>{root?.label}</Typography.Text>
-						<div className="flex gap-2">
-							<AddAction
-								action={() => {
-									setFormType('add')
-									setFormData({ parentId: root?.id })
-									setSelected(root)
-								}}
-							/>
-							<EditAction
-								action={() => {
-									setFormType('edit')
-									setFormData(root)
-									setSelected(root)
-								}}
-							/>
-							<DeleteAction action={() => handleDelete(root?.id)} />
+					<React.Fragment>
+						<div className="flex items-center justify-between gap-2 p-2 bg-blue-50">
+							<TbCategoryPlus className="text-blue-500" />
+							<Typography.Text>{root?.label}</Typography.Text>
+							<div className="flex gap-2">
+								<AddAction
+									action={() => {
+										setFormType('add')
+										setFormData({ parentId: root?.id })
+										setSelected(root)
+									}}
+								/>
+								<EditAction
+									action={() => {
+										setFormType('edit')
+										setFormData(root)
+										setSelected(root)
+									}}
+								/>
+								<DeleteAction action={() => handleDelete(root?.id)} />
+							</div>
 						</div>
-					</div>
+
+						<Tree
+							showLine
+							switcherIcon={<DownOutlined />}
+							// onSelect={onSelect}
+							treeData={children || []}
+							titleRender={(data: any) => {
+								console.log('🚀 ~ file: CategoryDetail.tsx:144 ~ CategoryDetail ~ dataHientai:', data)
+								return (
+									<div className="flex items-center gap-2 p-2 rounded-md shadow-lg bg-blue-50 my-[4px]">
+										<p className="font-500 text-[1rem] md:min-w-[300px]">{data?.title}</p>
+										<AddAction
+											action={() => {
+												setFormType('add')
+												setFormData({ parentId: data?.originData?.id })
+												setSelected(data?.originData)
+											}}
+										/>
+										<EditAction
+											action={() => {
+												setFormType('edit')
+												setFormData(data?.originData)
+												setSelected(data?.originData)
+											}}
+										/>
+										<DeleteAction action={() => handleDelete(data?.id)} />
+									</div>
+								)
+							}}
+						/>
+
+						{/* <div className="flex flex-col w-full">{renderChidlrenCategory(children, root)}</div> */}
+					</React.Fragment>
 				)}
 			</div>
 			{formType === 'add' || formType === 'edit' ? (
