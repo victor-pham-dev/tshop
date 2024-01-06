@@ -1,10 +1,11 @@
 import { useRequest } from 'ahooks'
 import { systemCategoryService } from '../../services/systemCategoryService'
 import { useCallback, useEffect, useState } from 'react'
-import { Button, Spin, Typography, message } from 'antd'
+import { Button, Spin, Tree, Typography, message } from 'antd'
 import { TbCategoryPlus } from 'react-icons/tb'
 import { AddAction, DeleteAction, EditAction } from '@/@App/Core/components/action'
 import CategoryForm from './CategoryForm'
+import { DownOutlined } from '@ant-design/icons'
 interface Props {
 	id: number
 }
@@ -25,6 +26,21 @@ export default function CategoryDetail(props: any) {
 			onSuccess: data => {
 				setRoot(data?.data?.root)
 				setChildren(data?.data?.children)
+				console.log(data);
+				
+				const convertDataToTree = (array: any[]) : any[] =>{
+					const result = array.map(item =>{
+						return {
+							title: item?.label,
+							key: item?.id,
+							children: convertDataToTree(item?.children ?? []),
+						}
+					})
+					return result
+					
+				}
+				const convertedData = convertDataToTree(data?.data?.children);
+				setChildren(convertedData)
 			},
 			onError: error => {
 				message.error(error?.message)
@@ -59,6 +75,7 @@ export default function CategoryDetail(props: any) {
 						<Spin />
 					</div>
 				) : (
+				<div>
 					<div className="flex items-center justify-between gap-2 p-2 bg-blue-50">
 						<TbCategoryPlus className="text-blue-500" />
 						<Typography.Text>{root?.label}</Typography.Text>
@@ -80,6 +97,38 @@ export default function CategoryDetail(props: any) {
 							<DeleteAction action={() => handleDelete(root?.id)} />
 						</div>
 					</div>
+						<Tree className=''
+							showLine
+							switcherIcon={<DownOutlined />}
+							defaultExpandedKeys={['0-0-0']}
+							treeData={children}
+							titleRender={(data) => {
+								console.log(data)
+								return (
+									// <div className='bg-blue-50 text-black p-2 w-full'>{data?.title}</div>
+									<div className="flex items-center gap-2 p-2 rounded-md shadow-lg bg-blue-50 my-[4px]">
+										<p className="font-500 text-[1rem] md:min-w-[700px]">{data?.title}</p>
+										<AddAction
+											action={() => {
+												setFormType('add')
+												setFormData({ parentId: data?.originData?.id })
+												setSelected(data?.originData)
+											}}
+										/>
+										<EditAction
+											action={() => {
+												setFormType('edit')
+												setFormData(data?.originData)
+												setSelected(data?.originData)
+											}}
+										/>
+										<DeleteAction action={() => handleDelete(data?.id)} />
+									</div>
+								)
+							}}
+						/>
+				</div>
+					
 				)}
 			</div>
 			{formType === 'add' || formType === 'edit' ? (
