@@ -34,6 +34,7 @@ export default function CategoryDetail(props: any) {
 							title: item?.label,
 							key: item?.id,
 							children: convertDataToTree(item?.children ?? []),
+							originData: item
 						}
 					})
 					return result
