@@ -6,7 +6,6 @@ export const useCategoryFilterModal = () => {
 	
 
 	const handleOpen = () => {
-        console.log('test');
 		setOpenModal(true)
 	}
 
@@ -21,9 +20,9 @@ export const useCategoryFilterModal = () => {
 					title="Title"
 					onCancel={handleClose}
 					footer={[
-					<Button key="back" onClick={()=>{}}>
-						Return
-					</Button>,
+					// <Button key="back" onClick={()=>{}}>
+					// 	Return
+					// </Button>,
 					
 					]}
 				>
