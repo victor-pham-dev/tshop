@@ -3,5 +3,7 @@ export const SYSTEM_ROUTER = {
 	ROLE_USERS: '/system/role-users',
 	CATEGORY: '/system/category',
 	BANNER: '/system/banner',
-	VOUCHER: '/system/voucher'
+	VOUCHER: '/system/voucher' ,
+	CATEGORY_FILTERS: '/system/category-filter',
+
 }

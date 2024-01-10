@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
 import { Modal, Spin } from 'antd'
 import CategoryForm from '../components/CategoryForm'
+import CategoryFilterForm from '../../CategoryFiters/pages/ListPage/CategoryFilterForm'
 import { useRequest } from 'ahooks'
 import { systemCategoryService } from '../../services/systemCategoryService'
 
@@ -51,9 +52,32 @@ export const useCategoryFormModal = () => {
 		)
 	}
 
+	const renderModalFilter = () => {
+		return (
+			openModal && (
+				<Modal
+					open={openModal}
+					onCancel={handleClose}
+					footer={null}
+					title={loading || initData ? 'Sửa Bộ Lọc' : 'Tạo Bộ Lọc'}
+				>
+					{loading ? (
+						<div className="flex justify-center">
+							<Spin />
+						</div>
+					) : (
+						<CategoryFilterForm data={initData} />
+					)}
+				</Modal>
+			)
+		)
+	}
+
 	return {
 		handleOpenAddCategoryModal: handleOpen,
 		handleCloseAddCategoryModal: handleClose,
-		renderAddCategoryModal: renderModal
+		renderAddCategoryModal: renderModal,
+		handleOpenAddCategoryFilter:handleOpen,
+		renderAddCategoryFilter: renderModalFilter
 	}
 }

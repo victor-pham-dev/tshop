@@ -67,7 +67,7 @@ export default () => {
 				Thêm Quyền
 			</Button>
 			<Table columns={columns} rowKey="id" {...tableProps} />
-			{renderRoleModal()}
+			{/* {renderRoleModal()} */}
 		</>
 	)
 }
