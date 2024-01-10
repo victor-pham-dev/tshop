@@ -1,7 +1,7 @@
 import { NavItemProps } from '@/@App/Layout/AppNav/navList'
 import { SYSTEM_ROUTER } from './router'
 import { MenuOutlined, PictureTwoTone, SettingTwoTone, TagsTwoTone } from '@ant-design/icons'
-
+import { FaFilter } from "react-icons/fa";
 export const roleNavItems: NavItemProps[] = [
 	{
 		role: 'system',
@@ -29,7 +29,14 @@ export const roleNavItems: NavItemProps[] = [
 				label: 'Quản lý Voucher',
 				route: SYSTEM_ROUTER.VOUCHER,
 				icon: <TagsTwoTone twoToneColor="red" />
-			}
+			},
+			{
+				role: 'admin',
+				key: 'filter',
+				label: 'Quản lý lọc',
+				// route: SYSTEM_ROUTER.VOUCHER,
+				icon: <FaFilter  />
+			},
 		]
 	}
 ]

@@ -10,7 +10,6 @@ import { GrUserAdmin } from 'react-icons/gr'
 export default function UserTable() {
 	const router = useRouter()
 	const { tableProps } = useUserTable()
-
 	// const { renderRoleModal, triggerRefresh } = useCorePageContext()
 	const { renderUserRoleModal, handleCloseUserRoleModal, handleOpenUserRoleModal } = useUserRoleModal()
 	// const { type, changeType, submit, reset } = search
@@ -37,6 +36,7 @@ export default function UserTable() {
 		{
 			title: 'Ngày tạo',
 			dataIndex: 'createdAt',
+			
 			render: (data: string) => moment(data).format('HH:mm DD/MM/YYYY')
 		},
 		{
