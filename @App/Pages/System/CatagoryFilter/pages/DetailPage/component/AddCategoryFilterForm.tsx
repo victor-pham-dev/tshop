@@ -1,6 +1,6 @@
 import { CoreCard } from '@/@App/Core/components'
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
-import { Button, Form, Input, Select, Space } from 'antd'
+import { CloseOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
+import { Button, Card, Form, Input, Select, Space } from 'antd'
 
 interface CustomFieldData {
 	name: string
@@ -47,167 +47,103 @@ const AddCategoryForm = () => {
 			// onValuesChange={handleChange}
 			autoComplete="off"
 			initialValues={{
-				filters: [{label: '', valueType: '', option: ''}]
+				filters: [{ label: '', valueType: '', option: '' }]
 			}}
 		>
 			<Form.Item
-				label="Name"
+				label="Name :"
 				name="name"
 				rules={[{ required: true, message: 'Please input category filter name!' }]}
 			>
 				<Input size="large" className="" />
 			</Form.Item>
 
-			<Form.Item label="Description" name="description">
+			<Form.Item label="Description :" name="description">
 				<Input.TextArea />
 			</Form.Item>
-
-			<Form.List name="filters">
-				{(fields, { add, remove }) => {
-					return (
-						<div className="bg-white p-2">
+			<Form.Item label="Filters :">
+				<Form.List name="filters">
+					{(fields, { add, remove }) => (
+						<div style={{ display: 'flex', rowGap: 16, flexDirection: 'column' }}>
 							<Button
 								type="primary"
 								color="success"
-								onClick={() => add({ label: '', valueType: '', option: '' })}
-								style={{ width: '20%', marginBottom: '10px' }}
+								onClick={() => add()}
+								style={{ width: '30%', marginBottom: '10px' }}
 								block
-								icon={<PlusOutlined />}
 							>
-								Thêm
+								+ Add Item
 							</Button>
-							{fields.map(({ key, name, ...restField }, index) => {
-								console.log(key);
+							{fields.map(field => (
+								<div className='flex justify-between items-center'>
+									<Card
 
-								var selectValue = (currentFiltersValue[name]) ? currentFiltersValue[key]?.valueType : null
-								
-								// if (currentFiltersValue[key]?.valueType) {
-								// 	var selectValue = currentFiltersValue[key]?.valueType;
-								// 	console.log(selectValue,'select1');
-									
-								// }
-
-								return (
-									<Space
-										key={key}
-										style={{ display: 'flex', alignItems: 'center', marginBottom: 8 }}
-										align="baseline"
+										size='small'
+										className='w-[84%]'
+										title={`Filter ${field.name + 1}`}
+										key={field.key}
 									>
-										<div className="bg-gray-200 w-[400px] p-2">
-											<Form.Item
-												className="w-full"
-												{...restField}
-												name={[name, 'label']}
-												rules={[{ required: true, message: 'Missing Label' }]}
-											>
-												<Input placeholder="Label" />
-											</Form.Item>
-											<Form.Item
-												{...restField}
-												name={[name, 'valueType']}
-												// name="valueType"
-												rules={[{ required: true, message: 'Missing Value Type' }]}
-											>
-												<Select
-													placeholder="ValueType"
-													// defaultValue=""
-													style={{ width: '100%' }}
-													// onChange={handleChange}
-													options={[
-														{ value: 'string', label: 'String' },
-														{ value: 'number', label: 'Number' },
-														{ value: 'dateTime', label: 'DateTime' },
-														{ value: 'select', label: 'Select' }
-													]}
-												/>
-											</Form.Item>
+										<Form.Item
+											name={[field.name, 'label']}
+											rules={[{ required: true, message: 'Missing Value Type' }]}
+										>
+											<Input placeholder="Label" />
+										</Form.Item>
+										<Form.Item
+											name={[field.name, 'valueType']}
+											rules={[{ required: true, message: 'Missing Value Type' }]}
+										>
+											<Select
+												placeholder="ValueType"
+												// defaultValue=""
+												style={{ width: '100%' }}
+												// onChange={handleChange}
+												options={[
+													{ value: 'string', label: 'String' },
+													{ value: 'number', label: 'Number' },
+													{ value: 'dateTime', label: 'DateTime' },
+													{ value: 'select', label: 'Select' }
+												]}
+											/>
+										</Form.Item>
 
-											{/* <Form.Item
-												className="w-full"
-												{...restField}
-												name={[name, 'option']}
-												// rules={[{ required: false, message: 'Missing option' }]}
-											>
-												<Input placeholder="Option" className="w-full" />
-											</Form.Item> */}
-
-											<Form.List name="option">
-												{(fields, { add, remove }) => {
-													// console.log(selectValue)
-
-													if (selectValue === 'select') {
-														return (
-															<>
-																{fields.map(({ key, name, ...restField }) => (
-																	<div
-																		key={key}
-																		style={{ display: 'flex', marginBottom: 8 }}
-																		// align="baseline"
-																	>
-																		<Form.Item
-																			{...restField}
-																			name={[name, 'first']}
-																			rules={[
-																				{
-																					required: true,
-																					message: 'Missing first name'
-																				}
-																			]}
-																		>
-																			<Input placeholder="First Name" />
-																		</Form.Item>
-																		<Form.Item
-																			{...restField}
-																			name={[name, 'last']}
-																			rules={[
-																				{
-																					required: true,
-																					message: 'Missing last name'
-																				}
-																			]}
-																		>
-																			<Input placeholder="Last Name" />
-																		</Form.Item>
-																		<MinusCircleOutlined
-																			onClick={() => remove(name)}
-																		/>
-																	</div>
-																))}
-																<Form.Item>
-																	<Button
-																		type="dashed"
-																		onClick={() => add()}
-																		block
-																		icon={<PlusOutlined />}
-																	>
-																		Add field
-																	</Button>
+										{/* Nest Form.List */}
+										<Form.Item label="Option :" className=''>
+											<Form.List name={[field.name, 'option']}>
+												{(subFields, subOpt) => (
+													<div style={{ display: 'flex', flexDirection: 'column', rowGap: 16 }}>
+														{subFields.map(subField => (
+															<Space key={subField.key}>
+																<Form.Item noStyle name={[subField.name, 'first']}>
+																	<Input placeholder="first" />
 																</Form.Item>
-															</>
-														)
-													} else {
-														<Form.Item
-															className="w-full"
-															{...restField}
-															name={[name, 'option']}
-															// rules={[{ required: false, message: 'Missing option' }]}
-														>
-															<Input placeholder="Option" className="w-full" />
-														</Form.Item>
-													}
-												}}
+																<CloseOutlined
+																	onClick={() => {
+																		subOpt.remove(subField.name)
+																	}}
+																/>
+															</Space>
+														))}
+														<Button type="dashed" onClick={() => subOpt.add()} block>
+															+ Add Sub Item
+														</Button>
+													</div>
+												)}
 											</Form.List>
-										</div>
-										<Button type="primary" danger onClick={() => remove(name)}>
+										{/* <CloseOutlined onClick={() => {remove(field.name)}}/> */}
+										</Form.Item>
+									</Card>
+									<Button type="primary" danger onClick={() => remove(field.name)}>
 											Xoa
 										</Button>
-									</Space>
-								)
-							})}
+								</div>
+							))}
+							
 						</div>
-					)
-				}}
-			</Form.List>
+					)}
+				</Form.List>
+				
+			</Form.Item>
 			<Button htmlType="submit" type="primary" className="w-full mt-3">
 				Submit
 			</Button>
