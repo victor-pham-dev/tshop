@@ -4,5 +4,6 @@ export const SYSTEM_ROUTER = {
 	CATEGORY: '/system/category',
 	BANNER: '/system/banner',
 	VOUCHER: '/system/voucher',
-	CATEGORY_FILTER: '/system/categoryFilter'
+	CATEGORY_FILTER: '/system/category-filter',
+	CATEGORY_FILTER_DETAIL: (id: string) => `/system/category-filter/${id}`
 }
