@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react'
-import { Button, Modal, Spin } from 'antd'
-import AddCategoryForm from '../pages/DetailPage/component/AddCategoryFilterForm'
+import { useState } from 'react'
+import { Modal } from 'antd'
+import CategoryForm from '../../Category/components/CategoryForm'
 export const useCategoryFilterModal = () => {
 	const [openModal, setOpenModal] = useState(true)
-	
 
 	const handleOpen = () => {
 		setOpenModal(true)
@@ -14,23 +13,24 @@ export const useCategoryFilterModal = () => {
 	const renderModal = () => {
 		return (
 			// openModal && (
-				<Modal
-					width={600}
-					open={openModal}
-					title="Title"
-					onCancel={handleClose}
-					footer={[
-					// <Button key="back" onClick={()=>{}}>
-					// 	Return
-					// </Button>,
-					
-					]}
-				>
-					<AddCategoryForm/>
-				</Modal>
-						// )
+			<Modal
+				width={600}
+				open={openModal}
+				title="Title"
+				onCancel={handleClose}
+				footer={
+					[
+						// <Button key="back" onClick={()=>{}}>
+						// 	Return
+						// </Button>,
+					]
+				}
+			>
+				<CategoryForm />
+			</Modal>
+			// )
 		)
 	}
 
-	return { handleOpen,handleClose,renderModal }
+	return { handleOpen, handleClose, renderModal }
 }

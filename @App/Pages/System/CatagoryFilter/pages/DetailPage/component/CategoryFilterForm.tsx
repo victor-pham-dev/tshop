@@ -7,15 +7,20 @@ import { NamePath } from 'antd/es/form/interface'
 import { useRouter } from 'next/router'
 import React, { MemoExoticComponent, memo, useMemo } from 'react'
 import { FaTrash } from 'react-icons/fa'
+import { CategoryFilterEntity } from '../../ListPage/component/TableListCategoryFilter'
 
+interface CategoryFormProps {
+	initData: CategoryFilterEntity
+}
 
-const AddCategoryForm = () => {
+const CategoryForm: React.FC<CategoryFormProps> = props => {
+	const { initData } = props
+	console.log('🚀 ~ file: AddCategoryFilterForm.tsx:20 ~ initData:', initData)
 	const router = useRouter()
 	const { id } = router.query
 	const [form] = Form.useForm()
 
 	const handleSubmitCategoryFilterForm = async (values: any) => {
-		
 		try {
 			await systemCategoryFilterService.save(values)
 			message.success(id === 'new' ? 'Tạo thành công' : 'Cập nhật thành công')
@@ -25,8 +30,8 @@ const AddCategoryForm = () => {
 			message.error(error?.message)
 		}
 	}
-	const currentFiltersValue = Form.useWatch('filters', form)
-	console.log(currentFiltersValue);
+	const currentFiltersValue = Form.useWatch('filters', form) ?? []
+
 	return (
 		<Form
 			form={form}
@@ -35,11 +40,11 @@ const AddCategoryForm = () => {
 			name="basic"
 			onFinish={handleSubmitCategoryFilterForm}
 			autoComplete="off"
-			initialValues={
-				{
-				}
-			}
+			initialValues={{
+				...initData
+			}}
 		>
+			<Form.Item name="id" hidden></Form.Item>
 			<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 				<CoreCard className="">
 					<Form.Item
@@ -55,19 +60,18 @@ const AddCategoryForm = () => {
 					</Form.Item>
 
 					<Button htmlType="submit" type="primary" className="w-full mt-3">
-						Submit
+						Xác nhận
 					</Button>
 				</CoreCard>
 
-				<CoreCard className=''>
+				<CoreCard className="">
 					<p className="font-600 text-[1rem] my-4">Các thuộc tính của bộ lọc:</p>
 					<Form.List name="filters">
 						{(fields, { add, remove }) => (
 							<div className="flex flex-col gap-4 max-h-[560px] overflow-y-scroll">
 								{fields.map(({ key, name, ...restField }) => {
-									const selectedValueType = currentFiltersValue[key ?? 0]?.valueType
-									
-									
+									const selectedValueType = currentFiltersValue[name ?? 0]?.valueType
+
 									return (
 										<div key={key} className="flex items-center gap-4">
 											<CoreCard className="!bg-gray-200 w-4/5">
@@ -154,7 +158,7 @@ const AddCategoryForm = () => {
 		</Form>
 	)
 }
-export default AddCategoryForm
+export default CategoryForm
 
 interface DynamicOptionForSelectProps {
 	valueType: string
@@ -162,8 +166,8 @@ interface DynamicOptionForSelectProps {
 }
 
 export const DynamicOptionForSelect: React.FC<DynamicOptionForSelectProps> = React.memo(props => {
-	const { valueType, name } =  props
-	
+	const { valueType, name } = props
+
 	console.log('tesssscon')
 	if (valueType !== 'SELECT') {
 		return null

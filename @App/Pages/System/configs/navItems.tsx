@@ -1,7 +1,14 @@
 import { NavItemProps } from '@/@App/Layout/AppNav/navList'
 import { SYSTEM_ROUTER } from './router'
-import { MenuOutlined, PictureTwoTone, SettingTwoTone, TagsTwoTone } from '@ant-design/icons'
-import { FaFilter } from "react-icons/fa6";
+import {
+	FilterOutlined,
+	FilterTwoTone,
+	MenuOutlined,
+	PictureTwoTone,
+	SettingTwoTone,
+	TagsTwoTone
+} from '@ant-design/icons'
+import { FaFilter } from 'react-icons/fa6'
 export const roleNavItems: NavItemProps[] = [
 	{
 		role: 'system',
@@ -35,7 +42,7 @@ export const roleNavItems: NavItemProps[] = [
 				key: 'category-filter',
 				label: 'Quản lý Bộ Lọc',
 				route: SYSTEM_ROUTER.CATEGORY_FILTER,
-				icon: <FaFilter className="text-blue-400" />
+				icon: <FilterTwoTone twoToneColor="blue" />
 			}
 		]
 	}
