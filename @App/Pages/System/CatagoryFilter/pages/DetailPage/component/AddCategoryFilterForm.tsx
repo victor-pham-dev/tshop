@@ -5,17 +5,9 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
 import { Button, Checkbox, Form, Input, Select, Space, message } from 'antd'
 import { NamePath } from 'antd/es/form/interface'
 import { useRouter } from 'next/router'
-import { MemoExoticComponent, memo } from 'react'
+import React, { MemoExoticComponent, memo, useMemo } from 'react'
 import { FaTrash } from 'react-icons/fa'
 
-interface CustomFieldData {
-	name: string
-	value?: any
-	touched?: boolean
-	validating?: boolean
-	errors?: string[]
-	rules?: any
-}
 
 const AddCategoryForm = () => {
 	const router = useRouter()
@@ -23,7 +15,7 @@ const AddCategoryForm = () => {
 	const [form] = Form.useForm()
 
 	const handleSubmitCategoryFilterForm = async (values: any) => {
-		console.log(values)
+		
 		try {
 			await systemCategoryFilterService.save(values)
 			message.success(id === 'new' ? 'Tạo thành công' : 'Cập nhật thành công')
@@ -33,25 +25,18 @@ const AddCategoryForm = () => {
 			message.error(error?.message)
 		}
 	}
-
 	const currentFiltersValue = Form.useWatch('filters', form)
-	// console.log('🚀 ~ currentFiltersValue:', currentFiltersValue)
+	console.log(currentFiltersValue);
 	return (
 		<Form
 			form={form}
 			layout="vertical"
 			className="w-full p-4 bg-gray-200"
 			name="basic"
-			// labelCol={{ span: 8 }}
-			// wrapperCol={{ span: 30 }}
-			// style={{ width: 600 }}
 			onFinish={handleSubmitCategoryFilterForm}
-			// onFinishFailed={onFinishFailed}
-			// onValuesChange={handleChange}
 			autoComplete="off"
 			initialValues={
 				{
-					// filters: [{ label: '', valueType: '', option: '' }]
 				}
 			}
 		>
@@ -74,16 +59,17 @@ const AddCategoryForm = () => {
 					</Button>
 				</CoreCard>
 
-				<CoreCard>
+				<CoreCard className=''>
 					<p className="font-600 text-[1rem] my-4">Các thuộc tính của bộ lọc:</p>
 					<Form.List name="filters">
 						{(fields, { add, remove }) => (
-							<div className="flex flex-col gap-4">
+							<div className="flex flex-col gap-4 max-h-[560px] overflow-y-scroll">
 								{fields.map(({ key, name, ...restField }) => {
 									const selectedValueType = currentFiltersValue[key ?? 0]?.valueType
-
+									
+									
 									return (
-										<div key={`truong-${key}`} className="flex items-center gap-4">
+										<div key={key} className="flex items-center gap-4">
 											<CoreCard className="!bg-gray-200 w-4/5">
 												<Form.Item
 													{...restField}
@@ -175,8 +161,10 @@ interface DynamicOptionForSelectProps {
 	name: NamePath
 }
 
-export const DynamicOptionForSelect: React.FC<DynamicOptionForSelectProps> = props => {
-	const { valueType, name } = props
+export const DynamicOptionForSelect: React.FC<DynamicOptionForSelectProps> = React.memo(props => {
+	const { valueType, name } =  props
+	
+	console.log('tesssscon')
 	if (valueType !== 'SELECT') {
 		return null
 	}
@@ -184,10 +172,10 @@ export const DynamicOptionForSelect: React.FC<DynamicOptionForSelectProps> = pro
 	return (
 		<Form.List name={name}>
 			{(fields, { add, remove }) => (
-				<CoreCard className="flex flex-col gap-4">
+				<CoreCard className="flex flex-col gap-4 ">
 					{fields.map(({ key, name, ...restField }) => {
 						return (
-							<div key={Math.random().toString() + key} className="flex items-center gap-4">
+							<div key={key + 1} className="flex items-center gap-4">
 								<Form.Item
 									{...restField}
 									label={`Lựa chọn ${key + 1}`}
@@ -224,4 +212,4 @@ export const DynamicOptionForSelect: React.FC<DynamicOptionForSelectProps> = pro
 			)}
 		</Form.List>
 	)
-}
+})

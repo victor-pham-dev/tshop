@@ -6,11 +6,9 @@ interface CategoryFilterProps {
 	children: ReactNode
 }
 const CategoryFilterProvider: React.FC<CategoryFilterProps> = props => {
-	// const {renderModal, handleOpen} = useCategoryFilterModal()
 	const { children, ...resProps } = props
 
 	const data = {
-		// handleOpen,
 		...resProps
 	}
 	return <CorePageProvider {...data}>{children}</CorePageProvider>

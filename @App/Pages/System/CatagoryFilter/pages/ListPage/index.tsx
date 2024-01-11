@@ -2,8 +2,6 @@ import { ReactNode } from 'react'
 import CategoryFilterProvider from '../CategoryFilterProvider'
 import TableListCategoryFilter from './component/TableListCategoryFilter'
 import { Button } from 'antd'
-// import { useCorePageContext } from "@/@App/Core/hooks/useAppContext"
-// import {useCategoryFilterModal} from "../../hooks/useCategoryFilterModal"
 import { useRouter } from 'next/router'
 import { SYSTEM_ROUTER } from '../../../configs/router'
 const ListPageCategoryFilter = () => {
