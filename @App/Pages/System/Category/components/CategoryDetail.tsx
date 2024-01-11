@@ -1,13 +1,18 @@
 import { useRequest } from 'ahooks'
 import { systemCategoryService } from '../../services/systemCategoryService'
-import { useCallback, useEffect, useState } from 'react'
-import { Button, Spin, Typography, message } from 'antd'
+import React , { useCallback, useEffect, useState } from 'react'
+import { Button, Spin, Typography, message, Tree} from 'antd'
+import { DownOutlined} from '@ant-design/icons'
 import { TbCategoryPlus } from 'react-icons/tb'
-import { AddAction, DeleteAction, EditAction } from '@/@App/Core/components/action'
+import { AddAction, DeleteAction, EditAction} from '@/@App/Core/components/action'
 import CategoryForm from './CategoryForm'
+
 interface Props {
 	id: number
 }
+
+const { DirectoryTree } = Tree;
+
 export default function CategoryDetail(props: any) {
 	const { id } = props
 
@@ -24,13 +29,29 @@ export default function CategoryDetail(props: any) {
 			manual: true,
 			onSuccess: data => {
 				setRoot(data?.data?.root)
-				setChildren(data?.data?.children)
+
+				const convertDataToTree = (array: any[]): any[] => {
+					const result = array.map((item: any) => {
+						console.log('item35', item?.children)
+
+						return {
+							title: item?.label,
+							key: item.id,
+							children: convertDataToTree(item?.children ?? []),
+							originData: item,
+						}
+					})
+					return result
+				}
+				const convertedData = convertDataToTree(data?.data?.children)
+				setChildren(convertedData)
 			},
 			onError: error => {
 				message.error(error?.message)
 			}
 		}
 	)
+
 
 	const handleDelete = async (id: string) => {
 		try {
@@ -59,27 +80,60 @@ export default function CategoryDetail(props: any) {
 						<Spin />
 					</div>
 				) : (
-					<div className="flex items-center justify-between gap-2 p-2 bg-blue-50">
-						<TbCategoryPlus className="text-blue-500" />
-						<Typography.Text>{root?.label}</Typography.Text>
-						<div className="flex gap-2">
-							<AddAction
-								action={() => {
-									setFormType('add')
-									setFormData({ parentId: root?.id })
-									setSelected(root)
-								}}
-							/>
-							<EditAction
-								action={() => {
-									setFormType('edit')
-									setFormData(root)
-									setSelected(root)
-								}}
-							/>
-							<DeleteAction action={() => handleDelete(root?.id)} />
+					<React.Fragment>
+						<div className="flex items-center justify-between gap-2 p-2 bg-blue-50">
+							<TbCategoryPlus className="text-blue-500" />
+							<Typography.Text>{root?.label}</Typography.Text>
+							<div className="flex gap-2">
+								<AddAction
+									action={() => {
+										setFormType('add')
+										setFormData({ parentId: root?.id })
+										setSelected(root)
+									}}
+								/>
+								<EditAction
+									action={() => {
+										setFormType('edit')
+										setFormData(root)
+										setSelected(root)
+									}}
+								/>
+								<DeleteAction action={() => handleDelete(root?.id)} />
+							</div>
 						</div>
-					</div>
+
+						<DirectoryTree
+							showLine
+							switcherIcon={<DownOutlined />}
+							treeData={children || []}
+							defaultExpandedKeys={['0-0-0']}
+							titleRender={(data: any) => {
+								console.log('🚀 ~ file: CategoryDetail.tsx:144 ~ CategoryDetail ~ dataHientai:', data)
+								return (
+									<div className="flex items-center gap-2 p-2 rounded-md shadow-lg bg-blue-50 my-[4px]">
+										<p className="font-500 text-[1rem] md:min-w-[300px]">{data?.title}</p>
+										<AddAction
+											action={() => {
+												setFormType('add')
+												setFormData({ parentId: data?.originData?.id })
+												setSelected(data?.originData)
+											}}
+										/>
+										<EditAction
+											action={() => {
+												setFormType('edit')
+												setFormData(data?.originData)
+												setSelected(data?.originData)
+											}}
+										/>
+										<DeleteAction action={() => handleDelete(data?.id)} />
+									</div>
+								)
+							}}
+						/>
+
+					</React.Fragment>
 				)}
 			</div>
 			{formType === 'add' || formType === 'edit' ? (
