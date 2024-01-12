@@ -5,6 +5,7 @@ import { Button, Spin, Tree, Typography, message } from 'antd'
 import { TbCategoryPlus } from 'react-icons/tb'
 import { AddAction, DeleteAction, EditAction } from '@/@App/Core/components/action'
 import CategoryForm from './CategoryForm'
+
 import { DownOutlined } from '@ant-design/icons'
 interface Props {
 	id: number
@@ -43,6 +44,7 @@ export default function CategoryDetail(props: any) {
 				const convertedData = convertDataToTree(data?.data?.children);
 				setChildren(convertedData)
 			},
+
 			onError: error => {
 				message.error(error?.message)
 			}
@@ -70,13 +72,15 @@ export default function CategoryDetail(props: any) {
 	}, [])
 	return (
 		<div className="flex gap-2">
-			<div className="relative w-2/3">
+			<div className='w-full'>
+				<div className="relative w-3/3">
 				{loadingGetDetail ? (
 					<div className="absolute w-full h-full z-[2] flex items-center justify-center">
 						<Spin />
 					</div>
 				) : (
 				<div>
+
 					<div className="flex items-center justify-between gap-2 p-2 bg-blue-50">
 						<TbCategoryPlus className="text-blue-500" />
 						<Typography.Text>{root?.label}</Typography.Text>
@@ -130,8 +134,11 @@ export default function CategoryDetail(props: any) {
 						/>
 				</div>
 					
+
 				)}
 			</div>
+			</div>
+			
 			{formType === 'add' || formType === 'edit' ? (
 				<div className="w-full p-4 rounded-md md:w-1/3 bg-gray-50">
 					<div className="flex items-center justify-between gap-2">

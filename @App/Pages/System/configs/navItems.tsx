@@ -9,6 +9,7 @@ import {
 	TagsTwoTone
 } from '@ant-design/icons'
 import { FaFilter } from 'react-icons/fa6'
+
 export const roleNavItems: NavItemProps[] = [
 	{
 		role: 'system',
@@ -44,6 +45,7 @@ export const roleNavItems: NavItemProps[] = [
 				route: SYSTEM_ROUTER.CATEGORY_FILTER,
 				icon: <FilterTwoTone twoToneColor="blue" />
 			}
+
 		]
 	}
 ]
