@@ -37,7 +37,6 @@ const TableListCategoryFilter = () =>{
 		}
 	}
 
-
    const columns = [
 		{
 			title: 'Name',

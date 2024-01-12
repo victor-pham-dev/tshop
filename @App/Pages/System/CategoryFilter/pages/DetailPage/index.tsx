@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+
 import { useDetailCategoryFilter } from "./hooks/useDetailCategoryFilter";
 import DetailCategoryFilterProvider from "./DetailCategoryFilterProvider";
 import CategoryFilterForm from "./components/CategoryFilterForm";
@@ -12,6 +13,8 @@ export const DetailPage = () =>{
     
 
     const {detailCategoryFilterData, fetchingCategoryFilterData} = useDetailCategoryFilter(id as string)
+    console.log("detailCategoryFilterData", detailCategoryFilterData)
+    console.log("fetchingCategoryFilterData", fetchingCategoryFilterData)
 
     return(
         <>

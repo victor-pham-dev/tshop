@@ -16,7 +16,7 @@ export const useDetailCategoryFilter = (id:string) => {
     )
 
     useEffect(() =>{
-        if(id != 'new'){
+        if(id !== 'new'){
             fetchCategoryFilter(id)
         }
     },[id])

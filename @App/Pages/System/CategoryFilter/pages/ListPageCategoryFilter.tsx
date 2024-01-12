@@ -8,16 +8,13 @@ const ListPageCategoryFilterProvider: React.FC<any> = ({ children, ...restProps}
     const [refreshTable, setRefreshTable] = useState<Boolean>(false);
     const triggerRefresh = () => setRefreshTable(prev => ! prev)
 
-    const {handleOpenCategoryFilterModal, 
-            handleCloseCategoryFilterModal, 
-            renderCategoryModal
-            }= useCategoryFilterFormModal()
+    // const {handleOpenCategoryFilterModal, 
+    //         handleCloseCategoryFilterModal, 
+    //         renderCategoryModal
+    //         }= useCategoryFilterFormModal()
 
     const data = {
         ...restProps,
-        handleOpenCategoryFilterModal,
-        handleCloseCategoryFilterModal,
-        renderCategoryModal,
         refreshTable,
         triggerRefresh
     }
