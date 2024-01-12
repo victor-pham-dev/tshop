@@ -1,24 +1,27 @@
 import { useRequest } from 'ahooks'
 import { systemCategoryService } from '../../services/systemCategoryService'
 import React, { useCallback, useEffect, useState } from 'react'
-import { Button, Input, Spin, Tree, Typography, message } from 'antd'
+import { Button, Input, Spin, Tooltip, Tree, Typography, message } from 'antd'
 import { TbCategoryPlus } from 'react-icons/tb'
-import { AddAction, DeleteAction, EditAction } from '@/@App/Core/components/action'
+import { AddAction, DeleteAction, EditAction, ViewAction } from '@/@App/Core/components/action'
 import CategoryForm from './CategoryForm'
 import { DownOutlined } from '@ant-design/icons'
+import UpdateFilterForCategory from './UpdateFilterForCategoryForm'
+import { TbFilterPlus } from 'react-icons/tb'
+import { useCorePageContext } from '@/@App/Core/hooks/useAppContext'
 interface Props {
 	id: number
 }
 export default function CategoryDetail(props: any) {
+	const { handleOpenDetailFilterModal } = useCorePageContext()
 	const { id } = props
 
-	const [formType, setFormType] = useState('')
+	const [formType, setFormType] = useState<'add' | 'edit' | 'updateFilter' | ''>('')
 	const [formData, setFormData] = useState<any>(null)
 	const [selected, setSelected] = useState<any>(null)
 
 	const [root, setRoot] = useState<any>(null)
 	const [children, setChildren] = useState<any[]>([])
-	console.log('🚀 ~ file: CategoryDetail.tsx:20 ~ CategoryDetail ~ children:', children)
 
 	const { loading: loadingGetDetail, run: getDetailCategory } = useRequest(
 		systemCategoryService.getDetailAndSubCategory,
@@ -26,14 +29,14 @@ export default function CategoryDetail(props: any) {
 			manual: true,
 			onSuccess: data => {
 				setRoot(data?.data?.root)
+				setChildren(data?.data?.children)
+				console.log(data)
 
 				const convertDataToTree = (array: any[]): any[] => {
-					const result = array.map((item: any) => {
-						console.log('🚀 ~ file: CategoryDetail.tsx:35 ~ result ~ item:', item?.children)
-
+					const result = array.map(item => {
 						return {
 							title: item?.label,
-							key: item.id,
+							key: item?.id,
 							children: convertDataToTree(item?.children ?? []),
 							originData: item
 						}
@@ -113,11 +116,30 @@ export default function CategoryDetail(props: any) {
 						<Spin />
 					</div>
 				) : (
-					<React.Fragment>
+					<div>
 						<div className="flex items-center justify-between gap-2 p-2 bg-blue-50">
 							<TbCategoryPlus className="text-blue-500" />
 							<Typography.Text>{root?.label}</Typography.Text>
 							<div className="flex gap-2">
+								{root?.CategoryFilters ? (
+									<ViewAction
+										tooltipTitle={'Xem chi tiết bộ lọc'}
+										action={() => handleOpenDetailFilterModal(root?.CategoryFilters?.filters ?? [])}
+									/>
+								) : null}
+								<Tooltip placement="topLeft" title={'Cập nhật bộ lọc'}>
+									<Button
+										onClick={() => {
+											setFormType('updateFilter')
+											setFormData(root)
+											setSelected(root)
+										}}
+										type="dashed"
+										className="w-max"
+									>
+										<TbFilterPlus className="text-green-500" />
+									</Button>
+								</Tooltip>
 								<AddAction
 									action={() => {
 										setFormType('add')
@@ -135,17 +157,40 @@ export default function CategoryDetail(props: any) {
 								<DeleteAction action={() => handleDelete(root?.id)} />
 							</div>
 						</div>
-
 						<Tree
+							className=""
 							showLine
 							switcherIcon={<DownOutlined />}
-							// onSelect={onSelect}
-							treeData={children || []}
-							titleRender={(data: any) => {
-								console.log('🚀 ~ file: CategoryDetail.tsx:144 ~ CategoryDetail ~ dataHientai:', data)
+							treeData={children}
+							titleRender={data => {
 								return (
+									// <div className='w-full p-2 text-black bg-blue-50'>{data?.title}</div>
 									<div className="flex items-center gap-2 p-2 rounded-md shadow-lg bg-blue-50 my-[4px]">
-										<p className="font-500 text-[1rem] md:min-w-[300px]">{data?.title}</p>
+										<p className="font-500 text-[1rem] md:min-w-[700px]">{data?.title}</p>
+										{data?.originData?.CategoryFilters ? (
+											<ViewAction
+												tooltipTitle={'Xem chi tiết bộ lọc'}
+												action={() =>
+													handleOpenDetailFilterModal(
+														data?.originData?.CategoryFilters?.filters ?? []
+													)
+												}
+											/>
+										) : null}
+
+										<Tooltip placement="topLeft" title={'Cập nhật bộ lọc'}>
+											<Button
+												onClick={() => {
+													setFormType('updateFilter')
+													setFormData(data?.originData)
+													setSelected(data?.originData)
+												}}
+												type="dashed"
+												className="w-max"
+											>
+												<TbFilterPlus className="text-green-500" />
+											</Button>
+										</Tooltip>
 										<AddAction
 											action={() => {
 												setFormType('add')
@@ -165,18 +210,18 @@ export default function CategoryDetail(props: any) {
 								)
 							}}
 						/>
-
-						{/* <div className="flex flex-col w-full">{renderChidlrenCategory(children, root)}</div> */}
-					</React.Fragment>
+					</div>
 				)}
 			</div>
-			{formType === 'add' || formType === 'edit' ? (
+			{['add', 'edit', 'updateFilter'].includes(formType) ? (
 				<div className="w-full p-4 rounded-md md:w-1/3 bg-gray-50">
 					<div className="flex items-center justify-between gap-2">
 						<h3 className="text-blue-500 font-[1.2rem]">
 							{formType === 'add'
 								? `Thêm danh mục con cho: ${selected?.label}`
-								: `Chỉnh sửa danh mục: ${selected?.label}`}
+								: formType === 'edit'
+								? `Chỉnh sửa danh mục: ${selected?.label}`
+								: `Chỉnh sửa bộ loc: ${selected?.label}`}
 						</h3>
 						<Button danger onClick={() => setFormType('')}>
 							Huỷ
@@ -192,11 +237,12 @@ export default function CategoryDetail(props: any) {
 
 interface FormDetailOneProps {
 	formData?: any
-	type: 'add' | 'edit'
+	type: 'add' | 'edit' | 'updateFilter' | ''
 	refreshData: () => void
 }
 export function FormDetailOne(props: FormDetailOneProps) {
 	const { type, formData, refreshData } = props
+	console.log('🚀 ~ file: CategoryDetail.tsx:213 ~ FormDetailOne ~ type:', type)
 
 	if (type === 'add') {
 		return <CategoryForm data={formData} actionAfterSubmit={refreshData} />
@@ -204,6 +250,10 @@ export function FormDetailOne(props: FormDetailOneProps) {
 
 	if (type === 'edit' && formData) {
 		return <CategoryForm data={formData} actionAfterSubmit={refreshData} />
+	}
+
+	if (type === 'updateFilter') {
+		return <UpdateFilterForCategory data={formData} actionAfterSubmit={refreshData} />
 	}
 
 	return null
