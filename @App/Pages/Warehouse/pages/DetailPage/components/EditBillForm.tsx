@@ -2,10 +2,9 @@ import { useCorePageContext } from '@/@App/Core/hooks/useAppContext'
 import { Button, Form, Input, InputNumber, Tabs, TabsProps } from 'antd'
 import { useWarehouseBillForm } from '../hooks/useWarehouseBillForm'
 import InputRichText from '@/@App/Core/components/input/InputRichText'
-import { WareHouseBill } from '@prisma/client'
 
 interface Props {
-	initData: WareHouseBill
+	initData: any
 	handleCloseModal: () => void
 }
 
@@ -94,7 +93,7 @@ export default function EditBillForm({ initData, handleCloseModal }: Props) {
 					/>
 				</Form.Item>
 				<Form.Item name="note" label="Ghi chú">
-					<InputRichText form={form} name="note" />
+					{/* <InputRichText form={form} name="note" /> */}
 				</Form.Item>
 
 				<Form.Item wrapperCol={{ span: 24 }}>

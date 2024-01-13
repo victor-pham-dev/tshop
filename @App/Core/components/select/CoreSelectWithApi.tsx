@@ -44,6 +44,7 @@ export const CoreSelectWithApi: React.FC<Props> = ({
 		<Select
 			showSearch
 			size={size}
+			loading={loading}
 			placeholder="Chọn"
 			defaultActiveFirstOption={false}
 			showArrow={false}

@@ -22,7 +22,6 @@ const FileUpload: React.FC<Props> = ({ form, maxItem, initValue, label, formName
 	const [fileList, setFileList] = useState<string[]>(initValue)
 
 	useEffect(() => {
-		
 		form.setFieldValue(formName, fileList)
 	}, [fileList, form, formName])
 
@@ -39,11 +38,12 @@ const FileUpload: React.FC<Props> = ({ form, maxItem, initValue, label, formName
 		const formData = new FormData()
 		formData.append('image', file)
 		try {
-			const result = await uploadService.uploadProduct(formData)
-				message.success('Đã tải lên thành công')
+			const result = await uploadService.uploadImage(formData, 'product')
+
+			message.success('Đã tải lên thành công')
 			setFileList(prevFileList => [...prevFileList, result?.data])
 		} catch (error) {
-			console.log("🚀 ~ file: FileUpload.tsx:46 ~ handleUpload ~ error:", error)
+			console.log('🚀 ~ file: FileUpload.tsx:46 ~ handleUpload ~ error:', error)
 			message.error('Thất bại, tên file đã tồn tại hoặc kích thước quá lớn (chỉ chấp nhận file nhỏ hơn 3MB) ')
 		}
 		setUploading(false)
@@ -51,25 +51,21 @@ const FileUpload: React.FC<Props> = ({ form, maxItem, initValue, label, formName
 
 	const handleDelete = async (fileName: string) => {
 		setDeleting(true)
-		// const { data, error } = await supabase.storage.from('file').remove([`public/${fileName}`])
-		// if (error === null) {
+		try {
+			await uploadService.deleteImage('product', fileName)
 			setFileList(prevFileList => prevFileList.filter(item => item !== fileName))
 			message.success('Đã xoá')
-		// } else {
-		// 	message.error('Xoá thất bại')
-		// }
+		} catch (error: any) {
+			message.error(error?.message)
+		}
+
 		setDeleting(false)
 	}
 
 	const renderUploadList = (fileList: string[]) => {
 		return fileList.map((file, i) => (
 			<div key={file + i} className="flex flex-col items-center gap-2 p-2 bg-white rounded-md shadow-2xl">
-				<Image
-					loading="lazy"
-					height={160}
-					src={file}
-					alt="vui ve thoi"
-				/>
+				<Image loading="lazy" height={160} src={file} alt="vui ve thoi" />
 				<Button
 					htmlType="button"
 					loading={deleting}

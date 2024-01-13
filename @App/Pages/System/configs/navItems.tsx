@@ -25,6 +25,13 @@ export const roleNavItems: NavItemProps[] = [
 			},
 			{
 				role: 'system',
+				key: 'category-filter',
+				label: 'Quản lý Bộ Lọc Sản phẩm',
+				route: SYSTEM_ROUTER.CATEGORY_FILTER,
+				icon: <FilterTwoTone twoToneColor="blue" />
+			},
+			{
+				role: 'system',
 				key: 'banner',
 				label: 'Quản lý Banner',
 				route: SYSTEM_ROUTER.BANNER,
@@ -36,13 +43,6 @@ export const roleNavItems: NavItemProps[] = [
 				label: 'Quản lý Voucher',
 				route: SYSTEM_ROUTER.VOUCHER,
 				icon: <TagsTwoTone twoToneColor="red" />
-			},
-			{
-				role: 'system',
-				key: 'category-filter',
-				label: 'Quản lý Bộ Lọc',
-				route: SYSTEM_ROUTER.CATEGORY_FILTER,
-				icon: <FilterTwoTone twoToneColor="blue" />
 			}
 		]
 	}

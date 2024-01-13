@@ -72,42 +72,6 @@ export default function CategoryDetail(props: any) {
 		setFormData(null)
 	}, [])
 
-	// const colorList = ['bg-green-500', 'bg-red-500', 'bg-blue-500', ]
-
-	// const renderChidlrenCategory = (data: any[], parent: any): JSX.Element[] => {
-	// 	return data.map((item, index) => {
-	// 		const subChildren = item?.children ?? []
-	// 		return (
-	// 			<React.Fragment key={item?.id}>
-	// 				<div className="flex items-center justify-between gap-2 p-2 bg-blue-50">
-	// 					<span className="p-2 text-white bg-blue-500 rounded-md font-600">
-	// 						{parent?.label} - {index + 1}
-	// 					</span>
-	// 					<Typography.Text>{item?.label}</Typography.Text>
-	// 					<div className="flex gap-2">
-	// 						<AddAction
-	// 							action={() => {
-	// 								setFormType('add')
-	// 								setFormData({ parentId: item?.id })
-	// 								setSelected(item)
-	// 							}}
-	// 						/>
-	// 						<EditAction
-	// 							action={() => {
-	// 								setFormType('edit')
-	// 								setFormData(item)
-	// 								setSelected(item)
-	// 							}}
-	// 						/>
-	// 						<DeleteAction action={() => handleDelete(item?.id)} />
-	// 					</div>
-	// 				</div>
-	// 				{subChildren.length > 0 ? renderChidlrenCategory(subChildren, item) : null}
-	// 			</React.Fragment>
-	// 		)
-	// 	})
-	// }
-
 	return (
 		<div className="flex gap-2">
 			<div className="relative w-2/3">

@@ -11,5 +11,11 @@ class Catergory extends BaseService {
 		const endpoint = `/api/v1/system/category/filter`
 		return this.request.patch(endpoint, data)
 	}
+
+	getAllWithChildren = () => {
+		const endpoint = `/api/v1/system/category/product/all-with-children`
+		return this.request.get(endpoint)
+	}
 }
+
 export const systemCategoryService = new Catergory(SYSTEM_CATEGORY_API.endpoint)

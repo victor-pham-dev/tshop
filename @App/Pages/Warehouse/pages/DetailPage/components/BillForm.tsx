@@ -103,7 +103,7 @@ function ImportForm() {
 					/>
 				</Form.Item>
 				<Form.Item name="note" label="Ghi chú">
-					<InputRichText form={form} name="note" />
+					{/* <InputRichText form={form} name="note" /> */}
 				</Form.Item>
 
 				<Form.Item wrapperCol={{ span: 24 }}>

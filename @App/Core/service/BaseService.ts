@@ -62,16 +62,19 @@ export class BaseService {
 			}
 		},
 
-		post: async (endpoint: string, data: any, config?: any, contentType: string | null = null) => {
+		post: async (endpoint: string, data: any, config?: any, isUploadFile = false) => {
+			const contentTypeHeaders =
+				typeof data === 'object' && !isUploadFile ? { 'Content-type': 'application/json' } : {}
+			const body = typeof data === 'object' && !isUploadFile ? JSON.stringify(data) : data
 			try {
 				const response = await fetch(this.checkEndpointHaveBaseUrl(endpoint), {
 					method: METHOD.POST,
 					headers: {
 						'x-access-token': this.getToken(),
-						'Content-type': contentType ?? 'application/json',
+						...contentTypeHeaders,
 						...config
 					},
-					body: contentType && contentType !== 'application/json' ? data : JSON.stringify(data)
+					body
 				})
 				const result = await response.json()
 				return this.responseInterceptor(result, response?.status)
@@ -80,16 +83,18 @@ export class BaseService {
 			}
 		},
 
-		put: async (endpoint: string, data: any, config?: any, contentType: string | null = null) => {
+		put: async (endpoint: string, data: any, config?: any) => {
+			const contentTypeHeaders = typeof data === 'object' ? { 'Content-type': 'application/json' } : {}
+			const body = typeof data === 'object' ? JSON.stringify(data) : data
 			try {
 				const response = await fetch(this.checkEndpointHaveBaseUrl(endpoint), {
 					method: METHOD.PUT,
 					headers: {
 						'x-access-token': this.getToken(),
-						'Content-type': contentType ?? 'application/json',
+						...contentTypeHeaders,
 						...config
 					},
-					body: contentType && contentType !== 'application/json' ? data : JSON.stringify(data)
+					body
 				})
 				const result = await response.json()
 				return this.responseInterceptor(result, response?.status)
@@ -98,17 +103,19 @@ export class BaseService {
 			}
 		},
 
-		patch: async (endpoint: string, data: any, config?: any, contentType: string | null = null) => {
+		patch: async (endpoint: string, data: any, config?: any, isUploadFile = false) => {
+			const contentTypeHeaders =
+				typeof data === 'object' && !isUploadFile ? { 'Content-type': 'application/json' } : {}
+			const body = typeof data === 'object' && !isUploadFile ? JSON.stringify(data) : data
 			try {
 				const response = await fetch(this.checkEndpointHaveBaseUrl(endpoint), {
 					method: METHOD.PATCH,
 					headers: {
 						'x-access-token': this.getToken(),
-						'Content-type': contentType ?? 'application/json',
-
+						...contentTypeHeaders,
 						...config
 					},
-					body: contentType && contentType !== 'application/json' ? data : JSON.stringify(data)
+					body
 				})
 				const result = await response.json()
 				return this.responseInterceptor(result, response?.status)
