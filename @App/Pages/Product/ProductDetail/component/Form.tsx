@@ -58,17 +58,8 @@ const FormDetail = () => {
 				}}
 				autoComplete="off"
 				initialValues={{
-					id: id !== 'new' ? Number(id) : null,
+					...product,
 					images: initImages,
-					name: product?.name,
-					status: product?.status,
-					category: product?.category,
-					price: product?.price,
-					salePrice: product?.salePrice,
-					description: product?.description,
-					configInfo: product?.configInfo,
-					seo: product?.seo,
-					keywords: product?.keywords,
 					overView: product?.overView
 						? JSON.parse(product?.overView)?.map((item: any) => ({ name: item }))
 						: [],
@@ -157,7 +148,7 @@ const FormDetail = () => {
 							<InputRichText form={form} name="description" />
 						</Form.Item>
 					</Col>
-					<Form.Item valuePropName="active" name="active" label="Bật tắt Hiển thị">
+					<Form.Item valuePropName="checked" name="active" label="Bật tắt Hiển thị">
 						<Switch defaultChecked={product?.active ?? true} />
 					</Form.Item>
 				</Row>
@@ -274,14 +265,11 @@ const ProductCategoryAndProperties: React.FC<ProductCategoryAndPropertiesProps> 
 		loading: loadingDetailCategory,
 		run: getDetailCategory
 	} = useRequest(systemCategoryService.find, { manual: true })
-	console.log(
-		'🚀 ~ constProductCategoryAndProperties:React.FC<ProductCategoryAndPropertiesProps>=memo ~ detailCategory:',
-		detailCategory
-	)
 
 	useUpdateEffect(() => {
 		if (categoryId) {
 			getDetailCategory(categoryId)
+			form.setFieldValue('properties', {})
 		}
 	}, [categoryId])
 
@@ -293,7 +281,15 @@ const ProductCategoryAndProperties: React.FC<ProductCategoryAndPropertiesProps> 
 	}, [JSON.stringify(detailCategory)])
 
 	const renderPropertiesInput = () => {
-		if (filters.length === 0) {
+		if (loadingDetailCategory) {
+			return (
+				<div className="flex justify-center items-center h-[120px]">
+					<Spin />
+				</div>
+			)
+		}
+
+		if (filters?.length === 0) {
 			return null
 		}
 
