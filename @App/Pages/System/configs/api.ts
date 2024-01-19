@@ -11,5 +11,5 @@ export const SYSTEM_VOUCHER_API = {
 }
 
 export const SYSTEM_CATEGORY_FILTER = {
-	endpoint: '/api/v1//system/category-filter'
+	endpoint: '/api/v1/system/category-filter'
 }

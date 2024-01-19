@@ -6,7 +6,8 @@ const DashboardAdmin = () => {
 				name="role"
 				customRender={(option: any) => <>{`${option?.label} --  ${option?.alias}`}</>}
 			/> */}
-			1
+			Đây là trang chủ 
+			
 		</>
 	)
 }

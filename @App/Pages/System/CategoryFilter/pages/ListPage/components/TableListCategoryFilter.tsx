@@ -22,6 +22,7 @@ const TableListCategoryFilter = () =>{
 
 	const router = useRouter()
 	const { tableProps } = useTableListCategoryFilter()
+	console.log(tableProps)
    	const { handleCloseDetailFilterModal, handleOpenDetailFilterModal, renderDetailFilterModal } =
 		useDetailCategoryFilterModal()
 
@@ -45,27 +46,26 @@ const TableListCategoryFilter = () =>{
 		},
 		{
 			title: 'Describe',
-			dataIndex: 'describe',
-			key: 'describe'
+			dataIndex: 'description',
+			key: 'description'
 		},
 		{
 			title: 'Date created',
-			dataIndex: 'date_created',
-			key: 'date_created',
+			dataIndex: 'createdAt',
+			key: 'createdAt',
 			render:(data:Date) => <>{moment(data).format('HH:mm:ss - DD/MM/YYYY')}</>
 
 		},
 		{
 			title: 'Update day',
-			dataIndex: 'update_day',
-			key: 'update_day',
+			dataIndex: 'updatedAt',
+			key: 'updatedAt',
 			render:(data:Date) => <>{moment(data).format('HH:mm:ss - DD/MM/YYYY')}</>
-
+			
 		},
 		{
 			title: 'Filter Details',
-			dataIndex: 'filter_details',
-			key: 'filter_details',
+			dataIndex: 'filters',
 			render:(
 				data: DetailCategoryFilter[]
 			) => (
@@ -79,15 +79,14 @@ const TableListCategoryFilter = () =>{
 		},
 		{
 			title: 'Act',
-			dataIndex: 'act',
-			key: 'act',
+			dataIndex: '',
 			render:(
 				data: CategoryFilterEntity
 			) => {
 				return(
 					<div className="flex items-center gap-2">
-						<EditAction action={() => router.push(SYSTEM_ROUTER.CATEGORY_FILTER_DETAIL(String(data.id)))}/>
-						<DeleteAction action={() => handleDeleteCategoryFilter(data.id)}/>
+						<EditAction action={() => router.push(SYSTEM_ROUTER.CATEGORY_FILTER_DETAIL(String(data?.id)))}/>
+						<DeleteAction action={() => handleDeleteCategoryFilter(data?.id)}/>
 					</div>
 				)
 			}
@@ -95,7 +94,7 @@ const TableListCategoryFilter = () =>{
 	]
 	return(
         <>
-            <Table columns={columns}></Table>
+            <Table columns={columns} {...tableProps}></Table>
 			{renderDetailFilterModal()}
         </> 
     )

@@ -1,13 +1,14 @@
 import { CoreCard } from "@/@App/Core/components";
 import { Modal, Select } from "antd";
 import { useState } from "react";
+import clsx from "clsx";
 
 
 export interface DetailCategoryFilter{
     label: string
-    options: { value:string}[]
-    required: boolean
-    valueType: 'STRING' | 'NUMBER' | 'DATETIME' | 'SELECT'
+	options: { value: string }[]
+	required: boolean
+	valueType: 'STRING' | 'NUMBER' | 'DATETIME' | 'SELECT'
 }
 
 export const useDetailCategoryFilterModal = () => {
@@ -38,40 +39,35 @@ export const useDetailCategoryFilterModal = () => {
         open={open}
         onCancel={handleClose}
         footer={null}>
-            <div className="flex flex-col gap-2">
-                {
-                    modalData.map((item, index) =>(
-                        <CoreCard className="flex flex-col gap-2 !bg-gray-100">
-                            <div className="flex gap-2">
-                                <span className="font-500">
-                                    Phân loại:
-                                </span>
-                                <span className="{clsx('font-600', {
-                                    'text-red-500': !item.required,
-                                    'text-green-500': !item.required,
-                                })}">
-                                    {item.label}
-                                </span>
-                            </div>
-                            <div className="flex gap-2">
-                                <span className="font-500">
-                                    Phân loại:
-                                </span>
-                                <span className="text-blue-500 font-600">
-                                    {valueTypeText[item.valueType]}
-                                </span>
-                            </div>
-                            {
-                                item.valueType === 'SELECT' ? (
-                                <Select 
-                                placeholder="Xem lựa chọn có sẵn"
-                                options={item.options.map(item =>({...item, label:item.value}))}/>
-                                ) :(null)
-                            }
-                        </CoreCard>
-                    ))
-                }
-            </div>
+
+                <div className="flex flex-col gap-2">
+					{modalData.map((item, index) => (
+						<CoreCard className="flex flex-col gap-2  !bg-gray-100">
+							<div className="flex gap-2">
+								<span className="font-500">Phân loại:</span>
+								<span
+									className={clsx('font-600', {
+										'text-red-500': !item.required,
+										'text-green-500': item.required
+									})}
+								>
+									{item.label}
+								</span>
+							</div>
+							<div className="flex gap-2">
+								<span className="font-500">Phân loại:</span>
+								<span className="text-blue-500 font-600">{valueTypeText[item.valueType]}</span>
+							</div>
+							{item.valueType === 'SELECT' ? (
+								<Select
+									placeholder="Xem các lựa chọn sẵn có"
+									options={item.options.map(item => ({ ...item, label: item.value }))}
+								/>
+							) : null}
+						</CoreCard>
+					))}
+				</div>
+           
         </Modal>
        ): null
     }

@@ -14,6 +14,7 @@ interface Props {
 	customRender?: (data: any[]) => void
 	placeholder?: string
 	searchKey?: string
+	size?: 'middle' | 'large' | 'small'
 }
 
 export const CoreSelectWithApi: React.FC<Props> = ({
@@ -24,6 +25,7 @@ export const CoreSelectWithApi: React.FC<Props> = ({
 	valuePath = 'id',
 	labelPath = 'name',
 	customRender,
+	size = 'middle',
 	...restProps
 }) => {
 	const [searchText, setSearchText] = useState<string>('')
@@ -41,7 +43,9 @@ export const CoreSelectWithApi: React.FC<Props> = ({
 	return (
 		<Select
 			showSearch
-			placeholder="Select an option"
+			size={size}
+			loading={loading}
+			placeholder="Chọn"
 			defaultActiveFirstOption={false}
 			showArrow={false}
 			filterOption={false}
