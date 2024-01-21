@@ -12,32 +12,35 @@ export default () => {
 	const router = useRouter()
 	const { tableProps } = useTable()
 
-	const { handleCloseAddCategoryModal, handleOpenAddCategoryModal, renderAddCategoryModal } = useCorePageContext()
-	const { handleCloseDetailModal, renderDetailModal, handleOpenDetailModal } = useViewCategoryModal()
-
-	// const { type, changeType, submit, reset } = search
+	const { handleOpenAddCategoryModal, renderAddCategoryModal } = useCorePageContext()
+	const { renderDetailModal, handleOpenDetailModal } = useViewCategoryModal()
 
 	const columns = [
 		{
 			title: 'ID',
-			dataIndex: 'id'
+			dataIndex: 'id',
+			key:'id'
 		},
 		{
 			title: 'Tên Danh mục',
-			dataIndex: 'label'
+			dataIndex: 'label',
+			key:'label'
 		},
 		{
 			title: 'Alias',
-			dataIndex: 'alias'
+			dataIndex: 'alias',
+			key:'alias'
 		},
 		{
 			title: 'Status',
 			dataIndex: 'active',
+			key: 'active',
 			render: (data: boolean) => <Tag color={data ? 'green' : 'red'}> {data ? 'Active' : 'OFF'}</Tag>
 		},
 		{
 			title: 'Hành động',
 			dataIndex: '',
+			key:'action',
 			render: (data: any) => {
 				return (
 					<div className="flex gap-2">

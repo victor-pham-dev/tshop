@@ -1,6 +1,6 @@
-import ListPageCategoryFilterProvider from "../ListPageCategoryFilter";
-import TableListCategoryFilter from "./components/TableListCategoryFilter";
+import CategoryFilterProvide from "../CategoryFilterProvider";
 import { SYSTEM_ROUTER } from "../../../configs/router";
+import TableListCategoryFilter from "./components/TableListCategoryFilter";
 
 import { useRouter } from "next/router";
 
@@ -11,7 +11,7 @@ const ListPageCategoryFilter = () => {
   const router =  useRouter();
 
     return(
-      <ListPageCategoryFilterProvider >
+      <CategoryFilterProvide >
         <div className="flex items-center gap-2">
           <Button 
           type="primary"  
@@ -23,7 +23,7 @@ const ListPageCategoryFilter = () => {
           </Button>
         </div>
         <TableListCategoryFilter/>
-      </ListPageCategoryFilterProvider>
+      </CategoryFilterProvide>
     );
 }
 

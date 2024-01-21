@@ -7,7 +7,7 @@ interface CategoryFilterProviderProps{
 }
 
 
-const ListPageCategoryFilterProvider: React.FC<CategoryFilterProviderProps> = props => {
+const CategoryFilterProvide: React.FC<CategoryFilterProviderProps> = props => {
 
     const {children, ...restProps} = props;
     const [refreshTable, setRefreshTable] = useState<Boolean>(false);
@@ -26,5 +26,5 @@ const ListPageCategoryFilterProvider: React.FC<CategoryFilterProviderProps> = pr
     );
 }
 
-export default ListPageCategoryFilterProvider
+export default CategoryFilterProvide
 

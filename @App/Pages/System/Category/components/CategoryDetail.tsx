@@ -1,11 +1,18 @@
 import { useRequest } from 'ahooks'
+
 import { systemCategoryService } from '../../services/systemCategoryService'
+import { AddAction, DeleteAction, EditAction, ViewAction} from '@/@App/Core/components/action'
+import CategoryForm from './CategoryForm'
+import { useCorePageContext } from '@/@App/Core/hooks/useAppContext'
+import UpdateFilterForCategory from './UpdateFilterForCategory'
+
 import React , { useCallback, useEffect, useState } from 'react'
-import { Button, Spin, Typography, message, Tree} from 'antd'
+
+
+import { Button, Spin, Typography, message, Tree, Tooltip} from 'antd'
 import { DownOutlined} from '@ant-design/icons'
 import { TbCategoryPlus } from 'react-icons/tb'
-import { AddAction, DeleteAction, EditAction} from '@/@App/Core/components/action'
-import CategoryForm from './CategoryForm'
+
 
 interface Props {
 	id: number
@@ -14,6 +21,7 @@ interface Props {
 const { DirectoryTree } = Tree;
 
 export default function CategoryDetail(props: any) {
+	const { handleOpenDetailFilterModal } = useCorePageContext()
 	const { id } = props
 
 	const [formType, setFormType] = useState('')
@@ -29,6 +37,8 @@ export default function CategoryDetail(props: any) {
 			manual: true,
 			onSuccess: data => {
 				setRoot(data?.data?.root)
+				setChildren(data?.data?.children)
+				console.log("data33", data)
 
 				const convertDataToTree = (array: any[]): any[] => {
 					const result = array.map((item: any) => {
@@ -80,11 +90,35 @@ export default function CategoryDetail(props: any) {
 						<Spin />
 					</div>
 				) : (
-					<React.Fragment>
+					<div>
 						<div className="flex items-center justify-between gap-2 p-2 bg-blue-50">
 							<TbCategoryPlus className="text-blue-500" />
 							<Typography.Text>{root?.label}</Typography.Text>
 							<div className="flex gap-2">
+								{
+									root?.CategoryFilters ? 
+									( 
+										<ViewAction
+										tooltipTitle={'Xem chi tiết bộ lọc'}
+										action={() => handleOpenDetailFilterModal(root?.CategoryFilters?.filters ?? [])}
+										/>
+									) : null
+								}
+
+								<Tooltip placement='topLeft' title={"Cập nhập bộ lộc"}>
+									<Button
+										onClick={() => {
+											setFormData(root)
+											setSelected(root)
+											setFormType('updateFilter')
+										}}
+										type='dashed'
+										className='w-max'
+									>
+										<TbCategoryPlus className='text-green-500'/>
+									</Button>
+								</Tooltip>
+
 								<AddAction
 									action={() => {
 										setFormType('add')
@@ -113,6 +147,32 @@ export default function CategoryDetail(props: any) {
 								return (
 									<div className="flex items-center gap-2 p-2 rounded-md shadow-lg bg-blue-50 my-[4px]">
 										<p className="font-500 text-[1rem] md:min-w-[300px]">{data?.title}</p>
+											{
+												data?.originData?.CategoryFilters ? (
+													<ViewAction
+														tooltipTitle={"Xem chi tiết bộ lọc"}
+														action={() => {
+															handleOpenDetailFilterModal(
+																data?.originData?.CategoryFilters?.filters ?? []
+															)
+														}}
+													/>
+												) : null
+											}
+
+											<Tooltip placement='topLeft' title={'Cập nhập bộ lọc'}>
+												<Button 
+													onClick={() => {
+														setFormType('updateFilter')
+														setFormData(data?.originData)
+														setSelected(data?.originData)
+													}}
+													type='dashed'
+													className='w-max'
+												>
+													<TbCategoryPlus className='text-green-500'/>
+												</Button>
+											</Tooltip>
 										<AddAction
 											action={() => {
 												setFormType('add')
@@ -133,15 +193,17 @@ export default function CategoryDetail(props: any) {
 							}}
 						/>
 
-					</React.Fragment>
+					</div>
 				)}
 			</div>
-			{formType === 'add' || formType === 'edit' ? (
+			{['add', 'edit', 'updateFilter'].includes(formType) ? (
 				<div className="w-full p-4 rounded-md md:w-1/3 bg-gray-50">
 					<div className="flex items-center justify-between gap-2">
 						<h3 className="text-blue-500 font-[1.2rem]">
 							{formType === 'add'
 								? `Thêm danh mục con cho: ${selected?.label}`
+								: formType === 'edit'
+								? `Chỉnh sửa danh mục: ${selected?.label}`
 								: `Chỉnh sửa danh mục: ${selected?.label}`}
 						</h3>
 						<Button danger onClick={() => setFormType('')}>
@@ -158,11 +220,12 @@ export default function CategoryDetail(props: any) {
 
 interface FormDetailOneProps {
 	formData?: any
-	type: 'add' | 'edit'
+	type: 'add' | 'edit' | 'updateFilter'|''
 	refreshData: () => void
 }
 export function FormDetailOne(props: FormDetailOneProps) {
 	const { type, formData, refreshData } = props
+	console.log("type228", type)
 
 	if (type === 'add') {
 		return <CategoryForm data={formData} actionAfterSubmit={refreshData} />
@@ -170,6 +233,10 @@ export function FormDetailOne(props: FormDetailOneProps) {
 
 	if (type === 'edit' && formData) {
 		return <CategoryForm data={formData} actionAfterSubmit={refreshData} />
+	}
+
+	if ( type === 'updateFilter') {
+		return <UpdateFilterForCategory data={formData} actionAfterSubmit={refreshData}/>
 	}
 
 	return null

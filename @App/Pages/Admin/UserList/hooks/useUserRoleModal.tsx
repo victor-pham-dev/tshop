@@ -109,6 +109,7 @@ export const AddRoleForm = (props: AddRoleFormProps) => {
 					]}
 				>
 					<CoreSelectWithApi
+						size="large"
 						apiService={adminRoleService.search}
 						// name="roleId"
 						customRender={(option: any) => option?.label}
