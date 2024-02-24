@@ -1,5 +1,5 @@
 export interface ResponseProps<p> {
-  code: number;
+  code?: number;
   msg: string;
   data: p;
 }
