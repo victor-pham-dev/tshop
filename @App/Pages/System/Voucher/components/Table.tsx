@@ -4,7 +4,6 @@ import { useTable } from '../hooks/useTable'
 import { EditOutlined } from '@ant-design/icons'
 import { useRouter } from 'next/router'
 import { useCorePageContext } from '@/@App/Core/hooks/useAppContext'
-import { Role } from '@prisma/client'
 import moment from 'moment'
 import clsx from 'clsx'
 export default () => {

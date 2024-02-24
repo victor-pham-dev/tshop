@@ -3,7 +3,6 @@ import { orderServices } from '../../services/orderServices'
 import { useEffect, useState } from 'react'
 import { useUser } from '@/hooks'
 import { useRouter } from 'next/router'
-import { Order } from '@prisma/client'
 
 export const useOrderDetail = () => {
 	const router = useRouter()

@@ -1,9 +1,7 @@
 import { useRequest } from 'ahooks'
 import { productServices } from '../../services/productServices'
 import { useEffect, useState } from 'react'
-import { useUser } from '@/hooks'
 import { useRouter } from 'next/router'
-import { Product } from '@prisma/client'
 
 export const useProductDetail = () => {
 	const router = useRouter()
