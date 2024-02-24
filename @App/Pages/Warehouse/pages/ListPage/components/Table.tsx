@@ -4,7 +4,6 @@ import { useTable } from '../hooks/useTable'
 import { EditOutlined, EyeOutlined, FolderViewOutlined } from '@ant-design/icons'
 import { useRouter } from 'next/router'
 import { useCorePageContext } from '@/@App/Core/hooks/useAppContext'
-import { Product, Role } from '@prisma/client'
 import moment from 'moment'
 import clsx from 'clsx'
 import { WAREHOUSE_ROUTER } from '../../../configs/router'
@@ -24,12 +23,12 @@ export default () => {
 		{
 			title: '',
 			dataIndex: 'Product',
-			render: (data: Product) => <img alt="123" className="w-32 h-32" src={JSON.parse(data?.images)[0]} />
+			render: (data: any) => <img alt="123" className="w-32 h-32" src={JSON.parse(data?.images)[0]} />
 		},
 		{
 			title: 'Tên sản phẩm',
 			dataIndex: 'Product',
-			render: (data: Product) => <>{data?.name}</>
+			render: (data: any) => <>{data?.name}</>
 		},
 
 		{
@@ -59,7 +58,7 @@ export default () => {
 		{
 			title: 'Hành động',
 			dataIndex: '',
-			render: (data: Role) => {
+			render: (data: any) => {
 				return (
 					<div className="flex flex-col gap-2">
 						<Tooltip placement="topLeft" title={'Chi tiết'}>

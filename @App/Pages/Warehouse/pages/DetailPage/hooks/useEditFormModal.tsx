@@ -1,13 +1,12 @@
 import { useState } from 'react'
-import { WareHouseBill } from '@prisma/client'
 import { Modal, Spin } from 'antd'
 import EditBillForm from '../components/EditBillForm'
 
 export const useEditFormModal = () => {
 	const [open, setOpen] = useState(false)
-	const [data, setData] = useState<WareHouseBill | null>(null)
+	const [data, setData] = useState<any>(null)
 
-	const handleOpen = (initData: WareHouseBill) => {
+	const handleOpen = (initData: any) => {
 		setOpen(true)
 		setData(initData)
 	}

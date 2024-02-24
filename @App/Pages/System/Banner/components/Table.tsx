@@ -4,7 +4,6 @@ import { useTable } from '../hooks/useTable'
 import { EditOutlined } from '@ant-design/icons'
 import { useRouter } from 'next/router'
 import { useCorePageContext } from '@/@App/Core/hooks/useAppContext'
-import { Role } from '@prisma/client'
 
 export default () => {
 	const router = useRouter()
@@ -40,7 +39,7 @@ export default () => {
 		{
 			title: 'Hành động',
 			dataIndex: '',
-			render: (data: Role) => {
+			render: (data: any) => {
 				return (
 					<div className="flex flex-col gap-2">
 						<Tooltip placement="topLeft" title={'Chỉnh sửa'}>

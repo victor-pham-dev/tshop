@@ -7,7 +7,7 @@ import { useState } from 'react'
 
 export const useFormDetail = () => {
 	const [statusChange, setStatusChange] = useState('')
-	const { loading: loadingSaveOrder, run: saveOrder } = useRequest(orderServicesStatus.update, {
+	const { loading: loadingSaveOrder, run: saveOrder } = useRequest(orderServicesStatus.save, {
 		manual: true,
 		onSuccess: data => {
 			message.success('Cập nhật đơn hàng thành công')

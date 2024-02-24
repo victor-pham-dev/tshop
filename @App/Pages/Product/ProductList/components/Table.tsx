@@ -1,14 +1,12 @@
 import { useAntdTable } from 'ahooks'
 import { Button, Image, Table, Tag, Tooltip } from 'antd'
 import { useTable } from '../hooks/useTable'
-import { useEffect } from 'react'
 import { useImageModal } from '../hooks/useImageModal'
 import moment from 'moment'
 import { EditOutlined } from '@ant-design/icons'
 import { useRouter } from 'next/router'
 import { PRODUCT_ROUTER } from '../../configs/router'
 import { useDescriptionModal } from '../hooks/useDescriptionModal'
-import { WareHouse } from '@prisma/client'
 import clsx from 'clsx'
 
 export default () => {
@@ -43,7 +41,7 @@ export default () => {
 		{
 			title: 'Kho',
 			dataIndex: 'WareHouse',
-			render: (data?: WareHouse) => (
+			render: (data?: any) => (
 				<span
 					className={clsx('rounded-md text-white  p-4', {
 						'bg-red-500': data?.quantity === 0,

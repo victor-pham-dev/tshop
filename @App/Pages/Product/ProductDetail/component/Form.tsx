@@ -268,8 +268,9 @@ const ProductCategoryAndProperties: React.FC<ProductCategoryAndPropertiesProps> 
 
 	useUpdateEffect(() => {
 		if (categoryId) {
+			console.log('ua ma oi')
 			getDetailCategory(categoryId)
-			form.setFieldValue('properties', {})
+			// form.setFieldValue('properties', {})
 		}
 	}, [categoryId])
 

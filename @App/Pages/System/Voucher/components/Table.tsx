@@ -75,7 +75,7 @@ export default () => {
 		{
 			title: 'Hành động',
 			dataIndex: '',
-			render: (data: Role) => {
+			render: (data: any) => {
 				return (
 					<div className="flex flex-col gap-2">
 						<Tooltip placement="topLeft" title={'Chỉnh sửa'}>

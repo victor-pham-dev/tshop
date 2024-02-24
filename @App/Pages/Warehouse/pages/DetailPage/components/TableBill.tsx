@@ -7,7 +7,6 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { useRouter } from 'next/router'
 // import { PRODUCT_ROUTER } from '../../configs/router'
 import { useCorePageContext } from '@/@App/Core/hooks/useAppContext'
-import { WareHouseBill, WarehouseLogReason } from '@prisma/client'
 import { useNoteModal } from '../hooks/useNoteModal'
 import { useEditFormModal } from '../hooks/useEditFormModal'
 
@@ -28,7 +27,7 @@ export default function TableBill() {
 		{
 			title: 'Hành động',
 			dataIndex: 'reason',
-			render: (data: WarehouseLogReason) => {
+			render: (data: any) => {
 				return (
 					<Tag
 						color={data === 'DAMAGED' ? 'red' : data === 'IMPORT' ? 'blue' : data === 'SELL' ? 'green' : ''}
@@ -76,7 +75,7 @@ export default function TableBill() {
 		{
 			title: 'Nền tảng',
 			dataIndex: '',
-			render: (data: WareHouseBill) => <>{`${data.platformSell} - Id: ${data?.platformOrderId}`}</>
+			render: (data: any) => <>{`${data.platformSell} - Id: ${data?.platformOrderId}`}</>
 		},
 		{
 			title: 'Đơn hàng',
@@ -85,7 +84,7 @@ export default function TableBill() {
 		},
 		{
 			title: 'Hành động',
-			render: (data: WareHouseBill) => {
+			render: (data: any) => {
 				return (
 					<div className="flex flex-col gap-2">
 						<Tooltip placement="topLeft" title={'Chỉnh sửa'}>
