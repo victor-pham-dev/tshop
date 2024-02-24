@@ -12,7 +12,7 @@ interface findProps {
 }
 
 export class BaseService {
-	BASE_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:8888' : ''
+	BASE_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:8888' : process.env.NEXT_PUBLIC_BE_URL
 	// BASE_URL = 'https://itxgear-gw.io.vn'
 	BASE_ENDPOINT: string | undefined = ''
 	constructor(endpoint?: string) {
