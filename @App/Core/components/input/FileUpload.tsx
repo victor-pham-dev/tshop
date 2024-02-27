@@ -38,7 +38,7 @@ const FileUpload: React.FC<Props> = ({ form, maxItem, initValue, label, formName
 		const formData = new FormData()
 		formData.append('image', file)
 		try {
-			const result = await uploadService.uploadImage(formData, 'product')
+			const result = await uploadService.uploadImage(formData, 'p-images')
 
 			message.success('Đã tải lên thành công')
 			setFileList(prevFileList => [...prevFileList, result?.data])
