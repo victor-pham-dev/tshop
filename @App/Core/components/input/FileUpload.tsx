@@ -52,7 +52,7 @@ const FileUpload: React.FC<Props> = ({ form, maxItem, initValue, label, formName
 	const handleDelete = async (fileName: string) => {
 		setDeleting(true)
 		try {
-			await uploadService.deleteImage('product', fileName)
+			await uploadService.deleteImage('p-images', fileName)
 			setFileList(prevFileList => prevFileList.filter(item => item !== fileName))
 			message.success('Đã xoá')
 		} catch (error: any) {
